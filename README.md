@@ -1,4 +1,4 @@
-# Projeto Integrador (MeliFresh)
+![image](https://user-images.githubusercontent.com/101267189/164761759-18d208fe-c31e-4307-ab75-212aadaa33ec.png)
 
 ### Subindo infra da aplicação
 ```sh
