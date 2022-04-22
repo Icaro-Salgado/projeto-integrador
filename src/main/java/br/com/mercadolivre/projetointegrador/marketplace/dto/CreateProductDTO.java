@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CreateProductDTO {
 
-    @NotEmpty(message = "nome do producto é obrigatório.")
+    @NotEmpty(message = "nome do produto é obrigatório.")
     private String name;
 
     @NotEmpty(message = "categoria é obrigatória.")
