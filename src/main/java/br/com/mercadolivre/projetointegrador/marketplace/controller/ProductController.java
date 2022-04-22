@@ -37,7 +37,8 @@ public class ProductController {
     public ResponseEntity<Void> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
-            UriComponentsBuilder uriBuilder) throws NotFoundException {
+            UriComponentsBuilder uriBuilder
+  ) throws NotFoundException {
 
         Product product = createOrUpdateProductDTO.mountProduct();
         productService.updateProduct(id, product);
