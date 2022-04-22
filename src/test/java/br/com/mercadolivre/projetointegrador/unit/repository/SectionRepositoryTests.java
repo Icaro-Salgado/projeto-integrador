@@ -1,4 +1,4 @@
-package br.com.mercadolivre.projetointegrador.repository;
+package br.com.mercadolivre.projetointegrador.unit.repository;
 
 import br.com.mercadolivre.projetointegrador.test_utils.SectionServiceTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;

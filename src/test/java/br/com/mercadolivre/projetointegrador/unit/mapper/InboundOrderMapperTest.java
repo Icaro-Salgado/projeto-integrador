@@ -1,4 +1,4 @@
-package br.com.mercadolivre.projetointegrador.warehouse.mapper;
+package br.com.mercadolivre.projetointegrador.unit.mapper;
 
 import org.junit.jupiter.api.Test;
 

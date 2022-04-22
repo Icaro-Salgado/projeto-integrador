@@ -1,4 +1,4 @@
-package br.com.mercadolivre.projetointegrador.warehouse.controller;
+package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
