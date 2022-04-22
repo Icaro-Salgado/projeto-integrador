@@ -20,7 +20,7 @@ public class InboundOrderController {
 
     // Aqui podemos fazer um put em /{id} ou na raiz, se for na raíz o ID tem que vir no DTO
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateInboundOrder(@RequestBody InboundOrderDTO dto) {
+    public ResponseEntity<?> updateInboundOrder(@RequestBody InboundOrderDTO dto, @PathVariable String id) {
         // TODO: Converte DTO para Model
         // TODO: Atualizar o InboundOrder
         // TODO: Converter o retorno para DTO
