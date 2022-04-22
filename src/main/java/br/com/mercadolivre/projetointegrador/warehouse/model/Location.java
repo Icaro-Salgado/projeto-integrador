@@ -1,11 +1,13 @@
 package br.com.mercadolivre.projetointegrador.warehouse.model;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Location {
 
     @Id
