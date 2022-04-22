@@ -46,4 +46,11 @@ public class ProductController {
 
         return ResponseEntity.noContent().location(uri).build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getById(@PathVariable Long id) throws NotFoundException {
+        Product product = productService.findById(id);
+
+        return ResponseEntity.ok(product);
+    }
 }
