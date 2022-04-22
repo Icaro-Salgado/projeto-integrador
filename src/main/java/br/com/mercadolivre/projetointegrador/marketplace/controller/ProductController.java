@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -53,5 +54,11 @@ public class ProductController {
         Product product = productService.findById(id);
 
         return ResponseEntity.ok(product);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Product>> getAll() {
+        List<Product> products = productService.findAll();
+        return ResponseEntity.ok(products);
     }
 }
