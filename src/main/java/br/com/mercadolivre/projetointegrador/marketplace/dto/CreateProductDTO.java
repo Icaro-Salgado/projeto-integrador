@@ -17,7 +17,7 @@ public class CreateProductDTO {
     @NotEmpty(message = "nome do producto é obrigatório.")
     private String name;
 
-    @NotEmpty(message = "categoria é obrigatório.")
+    @NotEmpty(message = "categoria é obrigatória.")
     private String category;
 
     @Min(value = 0, message = "O preço não pode ser menor do que zero.")
