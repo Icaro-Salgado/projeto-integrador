@@ -5,7 +5,6 @@ import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundExcep
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -60,5 +59,10 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAll() {
         List<Product> products = productService.findAll();
         return ResponseEntity.ok(products);
+    }
+
+    @DeleteMapping("/{id}")
+    public void exclude(@PathVariable Long id) throws NotFoundException {
+       productService.delete(id);
     }
 }

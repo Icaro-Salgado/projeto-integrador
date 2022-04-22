@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -43,5 +44,11 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
 
         return products;
+    }
+
+    public void delete(Long id) throws NotFoundException {
+        Product product = findById(id);
+
+        productRepository.delete(product);
     }
 }
