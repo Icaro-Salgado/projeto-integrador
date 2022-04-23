@@ -4,7 +4,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderD
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+
 public interface InboundOrderMapper {
 
     InboundOrderMapper INSTANCE = Mappers.getMapper(InboundOrderMapper.class);
