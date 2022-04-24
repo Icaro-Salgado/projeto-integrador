@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProductService {
@@ -35,5 +37,17 @@ public class ProductService {
         oldProduct.setName(updatedProduct.getName());
 
         productRepository.save(oldProduct);
+    }
+
+    public List<Product> findAll() {
+        List<Product> products = productRepository.findAll();
+
+        return products;
+    }
+
+    public void delete(Long id) throws NotFoundException {
+        Product product = findById(id);
+
+        productRepository.delete(product);
     }
 }
