@@ -1,7 +1,9 @@
 package br.com.mercadolivre.projetointegrador.marketplace.controller;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dto.CreateOrUpdateProductDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.exception.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
+import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -24,7 +26,7 @@ public class ProductController {
     public ResponseEntity<Void> createProduct(
             @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
             UriComponentsBuilder uriBuilder
-    ) {
+    ) throws InvalidCategoryException, ProductAlreadyExists {
         Product product = createOrUpdateProductDTO.mountProduct();
         productService.createProduct(product);
 
@@ -38,7 +40,7 @@ public class ProductController {
             @PathVariable Long id,
             @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
             UriComponentsBuilder uriBuilder
-  ) throws NotFoundException {
+  ) throws NotFoundException, InvalidCategoryException {
 
         Product product = createOrUpdateProductDTO.mountProduct();
         productService.updateProduct(id, product);
