@@ -1,18 +1,17 @@
 package br.com.mercadolivre.projetointegrador.marketplace.controller;
 
-import br.com.mercadolivre.projetointegrador.marketplace.dto.CreateProductDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.dto.CreateOrUpdateProductDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -23,10 +22,10 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Void> createProduct(
-            @Valid @RequestBody CreateProductDTO createProductDTO,
+            @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
             UriComponentsBuilder uriBuilder
     ) {
-        Product product = createProductDTO.mountProduct();
+        Product product = createOrUpdateProductDTO.mountProduct();
         productService.createProduct(product);
 
         URI uri = uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
@@ -34,4 +33,37 @@ public class ProductController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
+            UriComponentsBuilder uriBuilder
+  ) throws NotFoundException {
+
+        Product product = createOrUpdateProductDTO.mountProduct();
+        productService.updateProduct(id, product);
+
+        URI uri = uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
+
+        return ResponseEntity.noContent().location(uri).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getById(@PathVariable Long id) throws NotFoundException {
+        Product product = productService.findById(id);
+
+        return ResponseEntity.ok(product);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Product>> getAll() {
+        List<Product> products = productService.findAll();
+        return ResponseEntity.ok(products);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> exclude(@PathVariable Long id) throws NotFoundException {
+       productService.delete(id);
+       return ResponseEntity.noContent().build();
+    }
 }

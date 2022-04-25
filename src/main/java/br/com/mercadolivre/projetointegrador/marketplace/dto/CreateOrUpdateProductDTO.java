@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Getter @Setter
 @NoArgsConstructor
-public class CreateProductDTO {
+public class CreateOrUpdateProductDTO {
 
     @NotEmpty(message = "nome do produto é obrigatório.")
     private String name;
