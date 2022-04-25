@@ -37,7 +37,6 @@ public class ProductServiceTests {
         newTestProduct = new Product();
         newTestProduct.setId(1L);
         newTestProduct.setName("new product");
-        newTestProduct.setPrice(BigDecimal.valueOf(10.0));
         newTestProduct.setCategory("new category");
     }
 
@@ -81,13 +80,11 @@ public class ProductServiceTests {
 
         Product updatedProduct = new Product();
         updatedProduct.setName("novo nome");
-        updatedProduct.setPrice(BigDecimal.valueOf(50.0));
         updatedProduct.setCategory("nova categoria");
 
         Mockito.when(productRepository.findById(1L)).thenReturn(Optional.ofNullable(newTestProduct));
 
         newTestProduct.setName("novo nome");
-        newTestProduct.setPrice(BigDecimal.valueOf(50.0));
         newTestProduct.setCategory("nova categoria");
 
         Mockito.when(productRepository.save(newTestProduct)).thenReturn(newTestProduct);
