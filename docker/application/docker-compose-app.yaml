@@ -1,0 +1,62 @@
+version: '3.1'
+
+services:
+  db:
+    container_name: postgres
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: melifresh
+    ports:
+      - 5432:5432
+  db-tests:
+    container_name: postgres-test
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: melifreshtest
+    ports:
+      - 5433:5432
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./es01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.11.2
+    container_name: kibana
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: '["http://es01:9200"]'
+
+  application:
+    build:
+      context: ../../
+      dockerfile: ./docker/application/Dockerfile
+    image: bootcamp-projeto-integrador-application
+    environment:
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/melifresh
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_TEST_URL: jdbc:postgresql://postgres-test:5433/melifreshtest?createDatabaseIfNotExist=true
+      POSTGRES_TEST_USER: postgres
+      POSTGRES_TEST_PASSWORD: docker
+    ports:
+      - 8080:8080
