@@ -39,7 +39,6 @@ public class ProductControllerTests {
     public void beforeEach() {
         fakeProduct = new Product();
         fakeProduct.setName("new product");
-        fakeProduct.setPrice(BigDecimal.valueOf(10.0));
         fakeProduct.setCategory("new category");
     }
 
@@ -75,7 +74,6 @@ public class ProductControllerTests {
 
         Product updatedProduct = new Product();
         updatedProduct.setName("updated product");
-        updatedProduct.setPrice(BigDecimal.valueOf(20.0));
         updatedProduct.setCategory("updated category");
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/{id}", 1L)
@@ -89,7 +87,6 @@ public class ProductControllerTests {
 
         Assertions.assertEquals("updated product", productDeleted.get().getName());
         Assertions.assertEquals("updated category", productDeleted.get().getCategory());
-        Assertions.assertEquals(BigDecimal.valueOf(20.0).stripTrailingZeros(), productDeleted.get().getPrice().stripTrailingZeros());
     }
 
     @Test
