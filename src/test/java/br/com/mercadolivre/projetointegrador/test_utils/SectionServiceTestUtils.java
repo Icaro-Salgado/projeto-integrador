@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
-import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 
 import java.math.BigDecimal;
@@ -17,17 +16,6 @@ public class SectionServiceTestUtils {
                 .id(1L)
                 .warehouse("wh1")
                 .manager("m1")
-                .location(
-                        new Location(
-                                "Brazil",
-                                "SP",
-                                "São Paulo",
-                                "neigh",
-                                "street",
-                                11,
-                                13134123
-                        )
-                )
                 .maximumTemperature(BigDecimal.valueOf(25.33))
                 .minimumTemperature(BigDecimal.valueOf(15.33))
                 .capacity(100)

@@ -30,10 +30,6 @@ public class Section {
     @Column
     private String manager; // TODO: change to entity
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
-    private Location location;
-
     @Column(nullable = false, name = "maximum_temperature")
     @Digits(integer = 3, fraction = 2)
     private BigDecimal maximumTemperature;
