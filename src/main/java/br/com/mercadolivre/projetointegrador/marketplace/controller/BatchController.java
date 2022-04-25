@@ -50,4 +50,11 @@ public class BatchController {
 
         return ResponseEntity.noContent().location(uri).build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBatch(@PathVariable Long id) throws NotFoundException {
+        batchService.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

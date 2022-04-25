@@ -15,7 +15,9 @@ public class BatchService {
 
     BatchRepository batchRepository;
 
-    public void createBatch(Batch batch) { batchRepository.save(batch); }
+    public void createBatch(Batch batch) {
+        batchRepository.save(batch);
+    }
 
     public List<Batch> findAll() {
         return batchRepository.findAll();
@@ -43,5 +45,11 @@ public class BatchService {
         batch.setQuantity(updatedBatch.getQuantity());
 
         batchRepository.save(batch);
+    }
+
+    public void delete(Long id) throws NotFoundException {
+        Batch batch = findById(id);
+
+        batchRepository.delete(batch);
     }
 }
