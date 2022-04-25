@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.mapper;
 
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -9,5 +10,5 @@ public interface InboundOrderMapper {
 
     InboundOrderMapper INSTANCE = Mappers.getMapper(InboundOrderMapper.class);
 
-    InboundOrderDTO toDTO();
+    InboundOrderDTO toDTO(InboundOrder inboundOrder);
 }
