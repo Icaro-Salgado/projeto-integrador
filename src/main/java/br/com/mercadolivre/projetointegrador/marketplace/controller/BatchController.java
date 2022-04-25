@@ -38,6 +38,11 @@ public class BatchController {
         return ResponseEntity.ok(batchService.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Batch> getBatchById(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(batchService.findById(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBatch(
             @PathVariable Long id,
