@@ -29,8 +29,8 @@ public class InboundOrderController {
         return null;
     }
 
-    // Aqui podemos fazer um put em /{id} ou na raiz, se for na raíz o ID tem que vir no DTO
-    @PutMapping("/{id}")
+
+    @PutMapping
     // TODO: EntityModel<?> -> EntityModel<SavedBatch>
     public EntityModel<?> updateInboundOrder(@RequestBody InboundOrderDTO dto, @PathVariable String id) {
         InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
