@@ -20,14 +20,10 @@ public class CreateOrUpdateProductDTO {
     @NotEmpty(message = "categoria é obrigatória.")
     private String category;
 
-    @Min(value = 0, message = "O preço não pode ser menor do que zero.")
-    private BigDecimal price;
-
     public Product mountProduct() {
         Product product = new Product();
         product.setName(name);
         product.setCategory(category);
-        product.setPrice(price);
         product.setCreated_at(LocalDate.now());
 
         return product;
