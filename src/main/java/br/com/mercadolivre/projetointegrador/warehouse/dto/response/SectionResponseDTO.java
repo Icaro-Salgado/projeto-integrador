@@ -40,7 +40,4 @@ public class SectionResponseDTO {
 
     @JsonView(SectionView.Detail.class)
     private List<Map<String, String>> links;
-
-
-
 }

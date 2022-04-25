@@ -6,7 +6,6 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +38,6 @@ public class InboundOrderController {
         // TODO: Converter o retorno para DTO
         // TODO: Montar o EntityModel
         // TODO: Retornar created com a URI
-       return null;
+        return null;
     }
 }
