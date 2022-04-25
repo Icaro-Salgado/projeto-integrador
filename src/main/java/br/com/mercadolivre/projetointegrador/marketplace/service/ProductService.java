@@ -4,7 +4,6 @@ import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundExcep
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +32,6 @@ public class ProductService {
         Product oldProduct = findById(id);
 
         oldProduct.setCategory(updatedProduct.getCategory());
-        oldProduct.setPrice(updatedProduct.getPrice());
         oldProduct.setName(updatedProduct.getName());
 
         productRepository.save(oldProduct);
