@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,18 @@ import java.util.List;
 public class WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
+
+    public List<Batch> findProductOnManagerSection(Long managerId, Long productId, String sortType) {
+
+        // TODO:
+        //  - Procurar manager (Manager requestManager)
+        //      - Se não encontrar ele lança um erro
+        //  - Procurar a Section do manager (Section managerSection)
+        //  - Procurar os lotes na Section (List<Batch> foundedBatches)
+        //      - Se não encontrar levantar uma RuntimeException
+
+        return new ArrayList<>();
+    }
 
     public List<Object> saveBatchInSection(InboundOrder inboundOrder) {
 

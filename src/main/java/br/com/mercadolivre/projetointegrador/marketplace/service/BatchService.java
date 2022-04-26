@@ -2,6 +2,7 @@ package br.com.mercadolivre.projetointegrador.marketplace.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -55,5 +56,10 @@ public class BatchService {
         Batch batch = findById(id);
 
         batchRepository.delete(batch);
+    }
+
+    public List<Batch> findProductBatches(Long productId) throws NotFoundException {
+        Product product = productService.findById(productId);
+        return batchRepository.findBatchByProduct(product);
     }
 }
