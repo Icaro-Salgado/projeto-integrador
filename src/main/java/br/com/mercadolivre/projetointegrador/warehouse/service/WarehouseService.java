@@ -1,13 +1,22 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.marketplace.service.BatchService;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Manager;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.ManagerRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,16 +24,19 @@ public class WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
 
-    public List<Batch> findProductOnManagerSection(Long managerId, Long productId, String sortType) {
+    private final SectionService sectionService;
+    private final BatchService batchService;
 
-        // TODO:
-        //  - Procurar manager (Manager requestManager)
-        //      - Se não encontrar ele lança um erro
-        //  - Procurar a Section do manager (Section managerSection)
-        //  - Procurar os lotes na Section (List<Batch> foundedBatches)
-        //      - Se não encontrar levantar uma RuntimeException
+    public List<Batch> findProductOnManagerSection(Long managerId, Long productId, String sortType) throws RuntimeException, NotFoundException {
+        Section managerSection = sectionService.findSectionByManager(managerId);
+        List<Batch> productBatches = batchService.findProductBatches(productId);
 
-        return new ArrayList<>();
+        List<Batch> foundedProducts = productBatches
+                .stream()
+                .filter(b -> b.getSection_id().equals(managerSection.getId()))
+                .collect(Collectors.toList());
+
+        return foundedProducts;
     }
 
     public List<Object> saveBatchInSection(InboundOrder inboundOrder) {
