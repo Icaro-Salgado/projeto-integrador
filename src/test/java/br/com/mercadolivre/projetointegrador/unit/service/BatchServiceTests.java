@@ -134,4 +134,29 @@ public class BatchServiceTests {
 
         Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
     }
+
+    @Test
+    @DisplayName("Given a existing batch, when call deleteBatch, then should call batchRepository.delete once with this batch")
+    public void deleteBatchById() throws NotFoundException {
+        Batch batch = new Batch();
+        Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
+
+        batchService.delete(1L);
+
+        Mockito.verify(batchRepository, Mockito.times(1)).delete(batch);
+    }
+
+    @Test
+    @DisplayName("Given a non existing batch, when call deleteBatch, then throws an NotFoundException(\"Lote não encontrado\");")
+    public void throwsWhenDeleteNonExistingBatch() {
+        Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.empty());
+
+        NotFoundException thrown = Assertions.assertThrows(
+                NotFoundException.class,
+                () ->  batchService.delete(1L)
+        );
+
+        Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
+    }
+
 }
