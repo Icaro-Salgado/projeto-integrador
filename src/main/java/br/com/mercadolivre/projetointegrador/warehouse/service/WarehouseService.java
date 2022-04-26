@@ -18,7 +18,7 @@ public class WarehouseService {
     public List<Batch> findProductOnWarehouse(Long managerId, Long productId, String sortType) {
 
         // TODO:
-        //  - Procurar manager
+        //  - Procurar manager (Manager requestManager)
         //      - Se não encontrar ele lança um erro
         //  - Procurar a Section do manager (Section managerSection)
         //  - Procurar os lotes na Section (List<Batch> foundedBatches)
