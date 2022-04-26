@@ -40,6 +40,9 @@ public class Section {
     @Column(nullable = false)
     private Integer capacity;
 
+    @Column
+    private String product_category;
+
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
