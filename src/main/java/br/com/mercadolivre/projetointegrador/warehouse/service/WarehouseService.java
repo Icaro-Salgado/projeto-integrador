@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,11 @@ import java.util.List;
 public class WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
+
+    public List<Batch> findProductOnWarehouse(Long managerId, Long productId, String sortType) {
+
+        return new ArrayList<>();
+    }
 
     public List<Object> saveBatchInSection(InboundOrder inboundOrder) {
 
