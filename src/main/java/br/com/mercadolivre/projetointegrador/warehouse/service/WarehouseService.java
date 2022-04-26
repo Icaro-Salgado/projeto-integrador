@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,11 +28,15 @@ public class WarehouseService {
     private final BatchService batchService;
 
     public List<Batch> findProductOnManagerSection(Long managerId, Long productId, String sortType) throws RuntimeException, NotFoundException {
-
         Section managerSection = sectionService.findSectionByManager(managerId);
         List<Batch> productBatches = batchService.findProductBatches(productId);
 
-        return productBatches.stream().filter(b -> b.getSection_id().equals(managerSection.getId())).collect(Collectors.toList());
+        List<Batch> foundedProducts = productBatches
+                .stream()
+                .filter(b -> b.getSection_id().equals(managerSection.getId()))
+                .collect(Collectors.toList());
+
+        return foundedProducts;
     }
 
     public List<Object> saveBatchInSection(InboundOrder inboundOrder) {
