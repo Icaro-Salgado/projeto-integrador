@@ -12,7 +12,7 @@ public class SectionService {
 
     private final SectionRepository sectionRepository;
 
-    public Section findSectionById(Long id){
+    public Section findSectionById(Long id) {
         return sectionRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException("Section not found")); //TODO: replace exception
     }
 

@@ -11,4 +11,6 @@ public interface InboundOrderMapper {
     InboundOrderMapper INSTANCE = Mappers.getMapper(InboundOrderMapper.class);
 
     InboundOrderDTO toDTO(InboundOrder inboundOrder);
+
+    InboundOrder toModel(InboundOrderDTO inboundOrder);
 }
