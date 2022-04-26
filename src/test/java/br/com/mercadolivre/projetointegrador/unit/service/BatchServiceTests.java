@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,5 +75,28 @@ public class BatchServiceTests {
         Assertions.assertEquals(3, existingBatches.size());
     }
 
+    @Test
+    @DisplayName("Given an ID with existing batch, when call findById, then should return this one")
+    public void findExistingBatchById() throws NotFoundException {
+        Batch batch = new Batch();
+        batch.setPrice(BigDecimal.ONE);
+        Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
 
+        Batch foundBatch = batchService.findById(1L);
+
+        Assertions.assertEquals(BigDecimal.ONE, foundBatch.getPrice());
+    }
+
+    @Test
+    @DisplayName("Given an ID to non existing batch, when call findById, then throws an NotFoundException(\"Lote não encontrado\");")
+    public void throwsToNonExistingBatch() {
+        Mockito.when(batchRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+
+        NotFoundException thrown = Assertions.assertThrows(
+                NotFoundException.class,
+                () ->  batchService.findById(1L)
+        );
+
+        Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
+    }
 }
