@@ -1,10 +1,13 @@
 package br.com.mercadolivre.projetointegrador.marketplace.service;
 
+import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.marketplace.exception.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,7 +49,24 @@ public class ProductService {
         productRepository.save(oldProduct);
     }
 
+    public List<Product> findAll(String querytype) throws InvalidCategoryException, NotFoundException {
+        if (querytype == null) {
+            return findAll();
+        }
+
+        if (!CategoryEnum.contains(querytype)) {
+            throw new InvalidCategoryException("Categoria inválida.");
+        }
+
+        List<Product> products = productRepository.findAllByCategory(querytype);
+        if (products.size() == 0) {
+            throw new NotFoundException("Nenhum produto cadastrado");
+        }
+        return products;
+    }
+
     public List<Product> findAll() {
+
         return productRepository.findAll();
     }
 
