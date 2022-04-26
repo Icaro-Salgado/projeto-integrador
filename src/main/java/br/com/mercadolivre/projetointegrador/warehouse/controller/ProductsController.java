@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
@@ -27,7 +28,7 @@ public class ProductsController {
     @GetMapping("list")
     public ResponseEntity<?> listStockProducts(
             @RequestParam(required = false, name = "querytype") List<String> queries
-    ){
+    ) throws NotFoundException {
         // TODO: change for Authentication object from spring security
         Long managerId = 1L;
 
