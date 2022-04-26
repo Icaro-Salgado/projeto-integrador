@@ -5,6 +5,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.dto.response.CreatedBatch
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.BatchMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.utils.ResponseUtils;
 import org.springframework.hateoas.Links;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,6 @@ public class BatchAssembler {
             dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
         }
 
-        return ResponseEntity.ok(createdBatchesDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBatchesDTO);
     }
 }

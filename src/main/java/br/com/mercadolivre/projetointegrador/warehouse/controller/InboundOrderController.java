@@ -28,7 +28,7 @@ public class InboundOrderController {
         InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
 
         // TODO: Quando o serivce retornar o tipo correto, fazer a conversão
-        List<Object> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
+        //      TODO: List<Object> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
         List<Batch> savedBatchesTemporary = new ArrayList<>();
 
         return assembler.toCreatedResponse(savedBatchesTemporary);
