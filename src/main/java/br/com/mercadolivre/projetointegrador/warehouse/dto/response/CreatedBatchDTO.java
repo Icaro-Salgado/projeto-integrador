@@ -4,15 +4,16 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import lombok.*;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @Builder
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreatedBatchResponseDTO {
+public class CreatedBatchDTO {
 
     private Long id;
 
@@ -26,6 +27,8 @@ public class CreatedBatchResponseDTO {
     private LocalDate manufacturing_datetime;
     private LocalDate due_date;
     private LocalDate created_at;
+
+    private List<Map<String, String>> links;
 
     public Batch toModel() {
         return Batch
@@ -43,8 +46,8 @@ public class CreatedBatchResponseDTO {
                 .build();
     }
 
-    public static CreatedBatchResponseDTO fromModel(Batch batch) {
-        return CreatedBatchResponseDTO
+    public static CreatedBatchDTO fromModel(Batch batch) {
+        return CreatedBatchDTO
                 .builder()
                 .product(batch.getProduct())
                 .section_id(batch.getSection_id())
