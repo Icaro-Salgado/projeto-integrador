@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -40,6 +39,9 @@ public class Section {
 
     @Column(nullable = false)
     private Integer capacity;
+
+    @Column
+    private String product_category;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)

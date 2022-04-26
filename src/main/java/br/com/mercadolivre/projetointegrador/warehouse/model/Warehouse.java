@@ -1,7 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Warehouse {
