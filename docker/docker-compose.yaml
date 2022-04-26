@@ -10,3 +10,8 @@ services:
       POSTGRES_DB: melifresh
     ports:
       - 5432:5432
+
+  redis:
+    image: redis:3.2.5-alpine
+    ports:
+      - 6379:6379
