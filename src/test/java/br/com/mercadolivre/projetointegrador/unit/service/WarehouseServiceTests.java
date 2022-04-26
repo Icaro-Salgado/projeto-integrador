@@ -5,6 +5,6 @@ import org.junit.jupiter.api.Test;
 public class WarehouseServiceTests {
     @Test
     public void TestIfReturnsRightBatchesOnFindProduct() {
-        assert true;
+        assert false;
     }
 }
