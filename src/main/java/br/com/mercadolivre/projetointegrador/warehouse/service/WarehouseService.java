@@ -1,35 +1,67 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.marketplace.service.BatchService;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class WarehouseService {
 
-    private final WarehouseRepository warehouseRepository;
+    private final SectionRepository sectionRepository;
+    private final BatchService batchService;
 
-    public List<Object> saveBatchInSection(InboundOrder inboundOrder) {
+    public List<Batch> saveBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
+
 
         //TODO: validar inboundOrder
-        //TODO: salvar inboundOrder
-        //TODO: retornar lotes salvos
 
-        //TODO: Mudar para list<Batch>
-        List<Object> addedBatches = new ArrayList<>();
+        List<Batch> addedBatches = new ArrayList<>();
 
-        for (Object batch : inboundOrder.getBatches()) {
-            //TODO: setar id da section
-            addedBatches.add(batch);
-            //TODO: addedBatches.add(batchService.add(batch))
+        Optional<Section> id = sectionRepository.findById(inboundOrder.getSectionCode());
+
+        if (id.isPresent()) {
+            return null;
+        } else {
+
+            for (Batch batch : inboundOrder.getBatches()) {
+
+                batch.setSection_id(inboundOrder.getSectionCode());
+                addedBatches.add(batch);
+                batchService.createBatch(batch);
+            }
+            return addedBatches;
         }
+    }
 
+    public List<Batch> updateBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
 
-        return addedBatches;
+        //TODO: validar inboundOrder
+
+        List<Batch> addedBatches = new ArrayList<>();
+
+        Optional<Section> id = sectionRepository.findById(inboundOrder.getSectionCode());
+
+        if (id.isPresent()) {
+
+            for (Batch batch : inboundOrder.getBatches()) {
+
+                addedBatches.add(batch);
+                batchService.createBatch(batch);
+            }
+            return addedBatches;
+        } else {
+            return null;
+        }
     }
 }
