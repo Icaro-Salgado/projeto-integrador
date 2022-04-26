@@ -17,6 +17,11 @@ public class WarehouseService {
 
     public List<Batch> findProductOnWarehouse(Long managerId, Long productId, String sortType) {
 
+        // TODO:
+        //  - Procurar a Section do manager (Section managerSection)
+        //  - Procurar os lotes na Section (List<Batch> foundedBatches)
+        //      - Se não encontrar levantar uma RuntimeException
+
         return new ArrayList<>();
     }
 
