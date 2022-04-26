@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
+import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.service.ProductService;
@@ -42,7 +43,7 @@ public class ProductServiceTests {
 
     @Test
     @DisplayName("Given a valid product, when call createProduct, then createProduct must be called once.")
-    public void createProductMustBeCalledOnce() throws NotFoundException {
+    public void createProductMustBeCalledOnce() throws ProductAlreadyExists {
 
         Mockito.when(productRepository.save(Mockito.any())).thenReturn(newTestProduct);
 

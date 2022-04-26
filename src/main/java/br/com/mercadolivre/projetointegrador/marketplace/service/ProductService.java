@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.marketplace.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
+import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,11 @@ public class ProductService {
 
     ProductRepository productRepository;
 
-    public void createProduct(Product product) {
+    public void createProduct(Product product) throws ProductAlreadyExists {
+        Product existingProduct = findByName(product.getName());
+        if (existingProduct != null) {
+            throw new ProductAlreadyExists("Produto com o nome informado já cadastrado.");
+        }
         productRepository.save(product);
     }
 
@@ -28,6 +33,10 @@ public class ProductService {
         return product;
     }
 
+    public Product findByName(String name) {
+        return productRepository.findByName(name);
+    }
+
     public void updateProduct(Long id, Product updatedProduct) throws NotFoundException {
         Product oldProduct = findById(id);
 
@@ -38,9 +47,7 @@ public class ProductService {
     }
 
     public List<Product> findAll() {
-        List<Product> products = productRepository.findAll();
-
-        return products;
+        return productRepository.findAll();
     }
 
     public void delete(Long id) throws NotFoundException {
