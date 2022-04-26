@@ -32,6 +32,11 @@ public class ProductsController {
         Long managerId = 1L;
 
         Long productId = Long.valueOf(queries.stream().filter(s -> s.matches("^[0-9]+$")).findFirst().orElse("-1"));
+
+        if(productId < 0) {
+            throw new IllegalArgumentException();
+        }
+
         String sortType = queries.stream().filter(sortTypes::contains).findFirst().orElse("L");
 
         List<Batch> batchProducts = warehouseService.findProductOnManagerSection(managerId, productId, sortType);

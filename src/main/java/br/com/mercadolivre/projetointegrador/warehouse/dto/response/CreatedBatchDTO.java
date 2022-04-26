@@ -2,6 +2,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.dto.response;
 
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -34,7 +35,7 @@ public class CreatedBatchDTO {
         return Batch
                 .builder()
                 .product(this.product)
-                .section_id(this.section_id)
+                .section(new Section())
                 .seller_id(this.seller_id)
                 .price(this.price)
                 .order_number(this.order_number)
@@ -50,7 +51,7 @@ public class CreatedBatchDTO {
         return CreatedBatchDTO
                 .builder()
                 .product(batch.getProduct())
-                .section_id(batch.getSection_id())
+                .section_id(batch.getSection().getId())
                 .seller_id(batch.getSeller_id())
                 .price(batch.getPrice())
                 .order_number(batch.getOrder_number())
