@@ -28,7 +28,7 @@ public class CreateOrUpdateBatchDTO {
     public Batch mountBatch() {
         Batch batch = new Batch();
         batch.setProduct(product);
-        batch.setSection_id(section_id);
+//        batch.setSection_id(section_id);
         batch.setSeller_id(seller_id);
         batch.setPrice(price);
         batch.setOrder_number(order_number);

@@ -1,9 +1,17 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 
+import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +38,15 @@ public class ProductControllerTests {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private BatchRepository batchRepository;
+
+    @Autowired
+    private SectionRepository sectionRepository;
+
+    @Autowired
+    private WarehouseRepository warehouseRepository;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -113,6 +130,64 @@ public class ProductControllerTests {
 
         Optional<Product> productDeleted = productRepository.findById(1L);
         Assertions.assertTrue(productDeleted.isEmpty());
+    }
+
+    @Test
+    @DisplayName("ProductController - GET - /api/v1/fresh-products/list")
+    public void testListProducts() throws Exception {
+        Product product = productRepository.save(fakeProduct);
+        Warehouse warehouse = warehouseRepository.save(
+                new Warehouse(
+                       "warehouse 01",
+                       new Location(
+                               "Brazil",
+                               "SP",
+                               "Osasco",
+                               "Bomfim",
+                               "Av. das Nações Unidas",
+                               3003,
+                               06233200
+                       )
+
+                )
+        );
+
+
+
+        Section section = sectionRepository.save(
+                new Section(
+                        null,
+                        warehouse,
+                        "manager 1",
+                        BigDecimal.valueOf(33.33),
+                        BigDecimal.ZERO,
+                        1000,
+                        null
+                )
+        );
+
+
+        batchRepository.save(
+                new Batch(
+                        null,
+                        fakeProduct,
+                        section,
+                        1L,
+                        BigDecimal.valueOf(129.99),
+                        123,
+                        1,
+                        50,
+                        null,
+                        null,
+                        null
+                )
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.
+                get("/api/v1/fresh-products/list?productId=" + product.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty()).andReturn();
     }
 
 }

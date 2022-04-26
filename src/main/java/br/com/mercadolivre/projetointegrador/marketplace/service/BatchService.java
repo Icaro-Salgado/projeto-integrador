@@ -28,6 +28,12 @@ public class BatchService {
         return batchRepository.findAll();
     }
 
+    public List<Batch> findSectionProducts(Long managerId, Long productId){
+
+        return batchRepository.findAllBySection_id(1L);
+
+    }
+
     public Batch findById(Long id) throws NotFoundException {
         Optional<Batch> optionalBatch = batchRepository.findById(id);
         if (optionalBatch.isEmpty()) {
@@ -45,7 +51,7 @@ public class BatchService {
         batch.setManufacturing_datetime(updatedBatch.getManufacturing_datetime());
         batch.setProduct(updatedBatch.getProduct());
         batch.setOrder_number(updatedBatch.getOrder_number());
-        batch.setSection_id(updatedBatch.getSection_id());
+//        batch.setSection_id(updatedBatch.getSeller_id());
         batch.setSeller_id(updatedBatch.getSeller_id());
         batch.setQuantity(updatedBatch.getQuantity());
 

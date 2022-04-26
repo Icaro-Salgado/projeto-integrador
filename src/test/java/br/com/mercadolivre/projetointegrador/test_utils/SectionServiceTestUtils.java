@@ -14,7 +14,7 @@ public class SectionServiceTestUtils {
         return Section
                 .builder()
                 .id(1L)
-                .warehouse("wh1")
+                .warehouse(null)
                 .manager("m1")
                 .maximumTemperature(BigDecimal.valueOf(25.33))
                 .minimumTemperature(BigDecimal.valueOf(15.33))

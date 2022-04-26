@@ -8,5 +8,9 @@ import java.util.List;
 
 public interface BatchRepository extends JpaRepository<Batch, Long> {
 
+<<<<<<< Updated upstream
     List<Batch> findBatchByProduct(Product product);
+=======
+    public List<Batch> findAllBySection_id(Long id);
+>>>>>>> Stashed changes
 }
