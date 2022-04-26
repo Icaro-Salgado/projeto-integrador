@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
@@ -24,7 +25,7 @@ public class InboundOrderController {
     private final BatchAssembler assembler;
 
     @PostMapping
-    public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(@RequestBody InboundOrderDTO dto) {
+    public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(@RequestBody InboundOrderDTO dto) throws NotFoundException {
         InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
 
         // TODO: Quando o serivce retornar o tipo correto, fazer a conversão
