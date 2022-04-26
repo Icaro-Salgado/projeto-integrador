@@ -6,8 +6,10 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Manager;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.ManagerRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,6 +50,9 @@ public class ProductControllerTests {
     @Autowired
     private WarehouseRepository warehouseRepository;
 
+    @Autowired
+    private ManagerRepository managerRepository;
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     Product fakeProduct;
@@ -56,17 +61,18 @@ public class ProductControllerTests {
     public void beforeEach() {
         fakeProduct = new Product();
         fakeProduct.setName("new product");
-        fakeProduct.setCategory("new category");
+        fakeProduct.setCategory("FS");
     }
 
     @Test
     @DisplayName("ProductController - POST - /api/v1/fresh-products")
     public void testCreateProduct() throws Exception {
-
+        Product newProduct = fakeProduct;
+        newProduct.setName(fakeProduct.getName().concat("new product"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(fakeProduct))
+                        .content(objectMapper.writeValueAsString(newProduct))
                 )
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
@@ -80,8 +86,7 @@ public class ProductControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/{id}", 1L))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("new product"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("new category"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(10.0));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("FS"));
     }
 
     @Test
@@ -91,7 +96,7 @@ public class ProductControllerTests {
 
         Product updatedProduct = new Product();
         updatedProduct.setName("updated product");
-        updatedProduct.setCategory("updated category");
+        updatedProduct.setCategory("RF");
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -103,7 +108,7 @@ public class ProductControllerTests {
         Assertions.assertFalse(productDeleted.isEmpty());
 
         Assertions.assertEquals("updated product", productDeleted.get().getName());
-        Assertions.assertEquals("updated category", productDeleted.get().getCategory());
+        Assertions.assertEquals("RF", productDeleted.get().getCategory());
     }
 
     @Test
@@ -136,6 +141,12 @@ public class ProductControllerTests {
     @DisplayName("ProductController - GET - /api/v1/fresh-products/list")
     public void testListProducts() throws Exception {
         Product product = productRepository.save(fakeProduct);
+
+        Manager manager = managerRepository.save(
+                new Manager()
+        );
+
+
         Warehouse warehouse = warehouseRepository.save(
                 new Warehouse(
                        "warehouse 01",
@@ -158,7 +169,7 @@ public class ProductControllerTests {
                 new Section(
                         null,
                         warehouse,
-                        "manager 1",
+                        manager,
                         BigDecimal.valueOf(33.33),
                         BigDecimal.ZERO,
                         1000,
@@ -184,7 +195,7 @@ public class ProductControllerTests {
         );
 
         mockMvc.perform(MockMvcRequestBuilders.
-                get("/api/v1/fresh-products/list?productId=" + product.getId()))
+                get("/api/v1/fresh-products/list?querytype=" + product.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty()).andReturn();
