@@ -18,6 +18,7 @@ public class SectionServiceTestUtils {
                 .manager("m1")
                 .maximumTemperature(BigDecimal.valueOf(25.33))
                 .minimumTemperature(BigDecimal.valueOf(15.33))
+                .product_category("category")
                 .capacity(100)
                 .createdAt(calendar.getTime())
                 .build();
