@@ -7,7 +7,7 @@ public class WarehouseTest {
 
     @Test
     public void TestIfReturnsRightBatchesOnFindProduct() {
-
+        assert true;
     }
 
     @Test
