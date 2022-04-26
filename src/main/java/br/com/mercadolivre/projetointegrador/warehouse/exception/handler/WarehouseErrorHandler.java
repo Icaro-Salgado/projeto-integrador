@@ -4,13 +4,14 @@ import br.com.mercadolivre.projetointegrador.warehouse.exception.StandardError;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class WarehouseErrorHandler {
 
     @ExceptionHandler(value = WarehouseNotFoundException.class)
