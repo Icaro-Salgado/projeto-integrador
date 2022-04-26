@@ -2,6 +2,7 @@ package br.com.mercadolivre.projetointegrador.unit.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Manager;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
@@ -29,6 +30,7 @@ public class WarehouseServiceTests {
 
         // SETUP
         Manager requestManager = Manager.builder().id(1L).build();
+        Section section = Section.builder().id(1L).build();
 
         // ACT
 

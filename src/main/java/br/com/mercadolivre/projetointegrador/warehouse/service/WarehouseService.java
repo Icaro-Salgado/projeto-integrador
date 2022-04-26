@@ -15,7 +15,7 @@ public class WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
 
-    public List<Batch> findProductOnWarehouse(Long managerId, Long productId, String sortType) {
+    public List<Batch> findProductOnManagerSection(Long managerId, Long productId, String sortType) {
 
         // TODO:
         //  - Procurar manager (Manager requestManager)
