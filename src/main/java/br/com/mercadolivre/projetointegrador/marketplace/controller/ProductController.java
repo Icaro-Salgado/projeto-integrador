@@ -58,8 +58,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAll() {
+    public ResponseEntity<List<Product>> getAll() throws NotFoundException {
         List<Product> products = productService.findAll();
+        if (products.isEmpty()) {
+            throw new NotFoundException("Nenhum produto cadastrado.");
+        }
         return ResponseEntity.ok(products);
     }
 
