@@ -38,7 +38,14 @@ public class SectionAndProductMatchValidator implements WarehouseValidator{
             Product element = productsFromDb.get(i);
 
             if (!element.getCategory().equals(orderSection.getProduct_category())){
-                throw new SectionDoesNotMatchWithProductException("The product category does not match with the section!");
+
+                String msg = "The Product(" + element.getName()
+                        + ")"
+                        + " category("
+                        + element.getCategory()
+                        + ")"
+                        + " category does not match with the section("+orderSection.getProduct_category()+")";
+                throw new SectionDoesNotMatchWithProductException(msg);
             }
             break;
         }
