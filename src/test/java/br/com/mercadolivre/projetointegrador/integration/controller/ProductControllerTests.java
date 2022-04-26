@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,14 +37,14 @@ public class ProductControllerTests {
     @BeforeEach
     public void beforeEach() {
         fakeProduct = new Product();
-        fakeProduct.setName("new product");
-        fakeProduct.setCategory("new category");
+        fakeProduct.setCategory("RF");
     }
 
     @Test
     @DisplayName("ProductController - POST - /api/v1/fresh-products")
     public void testCreateProduct() throws Exception {
 
+        fakeProduct.setName("Post Product");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -58,23 +57,25 @@ public class ProductControllerTests {
     @Test
     @DisplayName("ProductController - GET - /api/v1/fresh-products/{id}")
     public void testFindProductById() throws Exception {
+
+        fakeProduct.setName("Get Id Product");
         productRepository.save(fakeProduct);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/{id}", 1L))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/{id}", fakeProduct.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("new product"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("new category"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(10.0));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Get Id Product"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("RF"));
     }
 
     @Test
     @DisplayName("ProductController - PUT - /api/v1/fresh-products/{id}")
     public void testUpdateProduct() throws Exception {
+        fakeProduct.setName("PUT product");
         productRepository.save(fakeProduct);
 
         Product updatedProduct = new Product();
         updatedProduct.setName("updated product");
-        updatedProduct.setCategory("updated category");
+        updatedProduct.setCategory("FS");
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -86,13 +87,14 @@ public class ProductControllerTests {
         Assertions.assertFalse(productDeleted.isEmpty());
 
         Assertions.assertEquals("updated product", productDeleted.get().getName());
-        Assertions.assertEquals("updated category", productDeleted.get().getCategory());
+        Assertions.assertEquals("FS", productDeleted.get().getCategory());
     }
 
     @Test
     @DisplayName("ProductController - GET - /api/v1/fresh-products")
     public void testFindAll() throws Exception {
         List<Product> response = new ArrayList<>();
+        fakeProduct.setName("GET ALL product");
         response.add(fakeProduct);
 
         productRepository.save(fakeProduct);
@@ -106,6 +108,7 @@ public class ProductControllerTests {
     @Test
     @DisplayName("ProductController - DELETE - /api/v1/fresh-products/{id}")
     public void testDeleteProduct() throws Exception {
+        fakeProduct.setName("DELETE product");
         productRepository.save(fakeProduct);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/{id}", 1L))
