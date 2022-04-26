@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,6 +96,40 @@ public class BatchServiceTests {
         NotFoundException thrown = Assertions.assertThrows(
                 NotFoundException.class,
                 () ->  batchService.findById(1L)
+        );
+
+        Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
+    }
+
+    @Test
+    @DisplayName("Given an existing Batch, when call updateBatch, then should update all properties")
+    public void updateExistingBatch() throws NotFoundException {
+        Batch batch = new Batch();
+        Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
+
+        batch.setSection_id(1L);
+        batch.setSeller_id(2L);
+        batch.setPrice(BigDecimal.valueOf(33.0));
+        batch.setOrder_number(2);
+        batch.setBatch_number(2);
+        batch.setQuantity(250);
+        batch.setManufacturing_datetime(LocalDate.parse("2022-01-01"));
+        batch.setDue_date(LocalDate.parse("2022-05-02"));
+
+        batchService.updateBatch(1L, batch);
+
+        Mockito.verify(batchRepository, Mockito.times(1)).save(batch);
+    }
+
+    @Test
+    @DisplayName("Given a non existing batch, when call updateBatch, then throws an NotFoundException(\"Lote não encontrado\");")
+    public void throwsWhenUpdateNonExistingBatch() {
+        Batch updatedBatch = new Batch();
+        Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.empty());
+
+        NotFoundException thrown = Assertions.assertThrows(
+                NotFoundException.class,
+                () ->  batchService.updateBatch(1L, updatedBatch)
         );
 
         Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
