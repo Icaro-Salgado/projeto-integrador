@@ -85,11 +85,9 @@ public class InboundOrderControllerTests {
     @Test
     public void TestIfInboundOrderIsUpdated() throws Exception {
         // SETUP
-        Section mockSection = SectionServiceTestUtils.getMockSection();
-        sectionRepository.save(mockSection);
+        Section mockSection = integrationTestUtils.createSection();
 
-
-        Product productMock = new Product(1L, "teste", "teste", null);
+        Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
         productRepository.save(productMock);
 
         CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
@@ -101,7 +99,7 @@ public class InboundOrderControllerTests {
                 .builder()
                 .orderNumber(1)
                 .batches(List.of(batchMock))
-                .sectionCode(1)
+                .sectionCode(mockSection.getId())
                 .warehouseCode(1L)
                 .build();
 
