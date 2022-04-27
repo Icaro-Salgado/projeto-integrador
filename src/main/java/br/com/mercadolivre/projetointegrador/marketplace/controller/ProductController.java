@@ -67,8 +67,9 @@ public class ProductController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Product>> ListProducts (
-            @RequestParam(required = false) String querytype) throws InvalidCategoryException, NotFoundException {
-        List<Product> products = productService.findAll(querytype);
+            @RequestParam(required = false) String category
+    ) throws InvalidCategoryException, NotFoundException {
+        List<Product> products = productService.findAll(category);
         return ResponseEntity.ok(products);
     }
 
@@ -94,5 +95,18 @@ public class ProductController {
         URI uri = uriBuilder.path("/api/v1/fresh-products/orders/{id}").buildAndExpand(purchaseOrder.getId()).toUri();
 
         return ResponseEntity.created(uri).body(totalPrice);
+    }
+
+    @GetMapping("/orders/{buyerId}")
+    public ResponseEntity<Cart> showOrder(@PathVariable Long buyerId) throws JsonProcessingException, NotFoundException {
+        return ResponseEntity.ok(cartService.getCart(buyerId));
+    }
+
+    @PutMapping("/orders/{buyerId}")
+    public ResponseEntity<Cart> updateOrderStatus(
+            @PathVariable Long buyerId,
+            @RequestParam String status
+    ) throws JsonProcessingException, NotFoundException {
+        return ResponseEntity.ok(cartService.changeStatus(buyerId ,status));
     }
 }

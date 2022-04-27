@@ -18,4 +18,8 @@ public class RedisRepository implements CacheRepository<String, String> {
         jedis.set(key, value);
     }
 
+    public void setEx(String key, Long ttl, String value) {
+        jedis.setex(key, ttl, value);
+    }
+
 }

@@ -5,6 +5,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.exception.InvalidCatego
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -15,7 +16,7 @@ public class ControllerAdvice {
         return ResponseEntity.notFound().build();
     }
 
-    @ExceptionHandler(value = {InvalidCategoryException.class, ProductAlreadyExists.class})
+    @ExceptionHandler(value = {InvalidCategoryException.class, ProductAlreadyExists.class, MissingServletRequestParameterException.class})
     public ResponseEntity<ErrorDTO> badRequestParams(Exception e) {
         ErrorDTO error = new ErrorDTO();
         error.setError("Parâmetros inválidos.");

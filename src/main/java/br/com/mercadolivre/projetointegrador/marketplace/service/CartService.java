@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.marketplace.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dto.CartProductDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,12 +22,15 @@ public class CartService {
         cart.setTotalPrice(totalPrice(cart));
         String cartAsString = objectMapper.writeValueAsString(cart);
 
-        redisRepository.set(id.toString(), cartAsString);
+        redisRepository.setEx(id.toString(), 3600L, cartAsString);
         return cart;
     }
 
-    public Cart getCart(Long id) throws JsonProcessingException {
+    public Cart getCart(Long id) throws JsonProcessingException, NotFoundException {
         String cartAsString = redisRepository.get(id.toString());
+        if (cartAsString == null) {
+            throw new NotFoundException("Pedido de compra não encontrado.");
+        }
         return objectMapper.readValue(cartAsString, Cart.class);
     }
 
@@ -38,5 +42,13 @@ public class CartService {
             total = total.add(price);
         }
         return total;
+    }
+
+    public Cart changeStatus(Long id, String status) throws JsonProcessingException, NotFoundException {
+        Cart cart = getCart(id);
+        cart.setStatusCode(status);
+
+        updateCart(id, cart);
+        return cart;
     }
 }
