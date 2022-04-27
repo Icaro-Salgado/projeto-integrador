@@ -5,7 +5,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = BatchMapper.class)
 public interface InboundOrderMapper {
 
     InboundOrderMapper INSTANCE = Mappers.getMapper(InboundOrderMapper.class);

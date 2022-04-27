@@ -52,8 +52,6 @@ public class InboundOrderControllerTests {
 
         Section mockSection = integrationTestUtils.createSection();
 
-
-
         Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
         productRepository.save(productMock);
 

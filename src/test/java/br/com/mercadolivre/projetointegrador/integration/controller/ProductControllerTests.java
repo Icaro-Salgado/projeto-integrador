@@ -107,12 +107,12 @@ public class ProductControllerTests {
     @Test
     @DisplayName("ProductController - DELETE - /api/v1/fresh-products/{id}")
     public void testDeleteProduct() throws Exception {
-        productRepository.save(fakeProduct);
+        Product newProduct = productRepository.save(fakeProduct);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/{id}", 1L))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/{id}", newProduct.getId()))
             .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        Optional<Product> productDeleted = productRepository.findById(1L);
+        Optional<Product> productDeleted = productRepository.findById(newProduct.getId());
         Assertions.assertTrue(productDeleted.isEmpty());
     }
 

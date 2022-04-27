@@ -33,8 +33,6 @@ public class WarehouseService {
     }
 
     public List<Batch> saveBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
-
-
         //TODO: validar inboundOrder
 
         List<Batch> addedBatches = new ArrayList<>();
