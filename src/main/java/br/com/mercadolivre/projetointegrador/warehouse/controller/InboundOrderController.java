@@ -28,11 +28,9 @@ public class InboundOrderController {
     public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(@RequestBody InboundOrderDTO dto) throws NotFoundException {
         InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
 
-        // TODO: Quando o serivce retornar o tipo correto, fazer a conversão
-        //      TODO: List<Object> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
-        List<Batch> savedBatchesTemporary = new ArrayList<>();
+        List<Batch> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
 
-        return assembler.toCreatedResponse(savedBatchesTemporary);
+        return assembler.toCreatedResponse(savedBatches);
     }
 
 
