@@ -48,16 +48,16 @@ public class ProductService {
         productRepository.save(oldProduct);
     }
 
-    public List<Product> findAll(String querytype) throws InvalidCategoryException, NotFoundException {
-        if (querytype == null) {
+    public List<Product> findAll(String category) throws InvalidCategoryException, NotFoundException {
+        if (category == null) {
             return findAll();
         }
 
-        if (!CategoryEnum.contains(querytype)) {
+        if (!CategoryEnum.contains(category)) {
             throw new InvalidCategoryException("Categoria inválida.");
         }
 
-        List<Product> products = productRepository.findAllByCategory(querytype);
+        List<Product> products = productRepository.findAllByCategory(category);
         if (products.size() == 0) {
             throw new NotFoundException("Nenhum produto cadastrado");
         }
@@ -65,7 +65,6 @@ public class ProductService {
     }
 
     public List<Product> findAll() {
-
         return productRepository.findAll();
     }
 
