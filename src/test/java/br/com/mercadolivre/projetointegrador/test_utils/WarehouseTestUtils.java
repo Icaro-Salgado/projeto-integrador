@@ -10,6 +10,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class WarehouseTestUtils {
@@ -19,11 +20,15 @@ public class WarehouseTestUtils {
 
         Product product = new Product(1l,"alface", CategoryEnum.FS,null);
 
-        Batch batch1 = new Batch(1l, product, 2l, 3l,new BigDecimal(30.0),
-                12345,250422,4, null, null,null);
+        LocalDate localDate = LocalDate.now();
+        Date date =  new Date();
 
-        Batch batch2 = new Batch(2l, product, 3l, 4l,new BigDecimal(36.0),
-                12346,250423,5, null, null,null);
+
+        Batch batch1 = new Batch(1l, product, 2l, 3l,new BigDecimal(30.0),
+                12345,250422,4, localDate, localDate,localDate);
+
+        Batch batch2 = new Batch(2l, product, 2l, 4l,new BigDecimal(36.0),
+                12346,250423,5, localDate, localDate,localDate);
 
         batches.add(batch1);
         batches.add(batch2);
@@ -31,32 +36,12 @@ public class WarehouseTestUtils {
         return batches;
     }
 
-    public static Batch getBatch1(){
-
-        Product product = new Product(1l,"alface",CategoryEnum.FS,null);
-
-        Batch batch1 = new Batch(1l, product, 2l, 3l,new BigDecimal(30.0),
-                12345,250422,4, null, null,null);
-
-        return batch1;
-    }
-
-    public static Batch getBatch2(){
-
-        Product product = new Product(1l,"alface",CategoryEnum.FS,null);
-
-        Batch batch2 = new Batch(2l, product, 3l, 4l,new BigDecimal(36.0),
-                12346,250423,5, null, null,null);
-
-        return batch2;
-    }
-
     public static Section getSection(){
         return Section.builder().id(1l).build();
     }
 
     public static InboundOrder getInboundOrder(){
-        return InboundOrder.builder().orderNumber(12345).warehouseCode(6l).sectionCode(7l).batches(getBatch()).build();
+        return InboundOrder.builder().orderNumber(12345).warehouseCode(6l).sectionCode(2l).batches(getBatch()).build();
     }
 
 }

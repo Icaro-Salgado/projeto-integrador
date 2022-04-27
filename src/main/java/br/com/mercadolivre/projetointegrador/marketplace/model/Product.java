@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.marketplace.model;
 
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
+
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -13,7 +14,7 @@ import java.util.Date;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@Data
 public class Product {
 
     @Id
