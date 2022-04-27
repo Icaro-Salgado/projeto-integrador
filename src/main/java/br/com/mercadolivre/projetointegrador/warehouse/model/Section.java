@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.model;
 
+import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,8 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@Setter
+@Getter @Setter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Section {
@@ -23,8 +23,9 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String warehouse; // TODO: change to entity
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id")
+    private Warehouse warehouse;
 
     @Column
     private String manager; // TODO: change to entity
@@ -41,7 +42,7 @@ public class Section {
     private Integer capacity;
 
     @Column
-    private String product_category;
+    private CategoryEnum product_category;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)

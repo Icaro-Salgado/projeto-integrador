@@ -1,17 +1,18 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateSectionPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.service.SectionService;
 import br.com.mercadolivre.projetointegrador.warehouse.view.SectionView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,4 +29,12 @@ public class SectionController {
 
         return assembler.toResponse(section);
     }
+
+    @PostMapping
+    public ResponseEntity<SectionResponseDTO> createSection(@RequestBody @Valid CreateSectionPayloadDTO payload){
+        Section created = sectionService.createSection(payload);
+
+        return assembler.toResponse(created);
+    }
+
 }

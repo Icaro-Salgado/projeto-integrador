@@ -3,8 +3,10 @@ package br.com.mercadolivre.projetointegrador.warehouse.service;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.service.BatchService;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,16 @@ import java.util.Optional;
 public class WarehouseService {
 
     private final SectionRepository sectionRepository;
+    private final WarehouseRepository warehouseRepository;
     private final BatchService batchService;
+
+    public Warehouse createWarehouse(Warehouse warehouse){
+        return warehouseRepository.save(warehouse);
+    }
+
+    public Warehouse findWarehouse(final Long id){
+        return warehouseRepository.findById(id).orElseThrow(() -> new WarehouseNotFoundException("Warehouse não encontrada."));
+    }
 
     public List<Batch> saveBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
 

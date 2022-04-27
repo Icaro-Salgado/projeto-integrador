@@ -19,7 +19,4 @@ public class Warehouse {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
     private Location location;
-
-    //@OneToMany
-    private Long section;
 }
