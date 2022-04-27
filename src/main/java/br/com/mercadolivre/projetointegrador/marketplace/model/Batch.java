@@ -7,11 +7,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class Batch {
 
     @Id
@@ -48,4 +49,6 @@ public class Batch {
 
     @Column
     private LocalDate created_at;
+
+
 }
