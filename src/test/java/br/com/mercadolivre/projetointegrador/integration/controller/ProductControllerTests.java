@@ -1,9 +1,20 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 
+import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Manager;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.ManagerRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootTest
@@ -31,6 +43,10 @@ public class ProductControllerTests {
     @Autowired
     private ProductRepository productRepository;
 
+
+    @Autowired
+    private IntegrationTestUtils integrationTestUtils;
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     Product fakeProduct;
@@ -39,17 +55,18 @@ public class ProductControllerTests {
     public void beforeEach() {
         fakeProduct = new Product();
         fakeProduct.setName("new product");
-        fakeProduct.setCategory("new category");
+        fakeProduct.setCategory("FS");
     }
 
     @Test
     @DisplayName("ProductController - POST - /api/v1/fresh-products")
     public void testCreateProduct() throws Exception {
-
+        Product newProduct = fakeProduct;
+        newProduct.setName(fakeProduct.getName().concat("new product"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(fakeProduct))
+                        .content(objectMapper.writeValueAsString(newProduct))
                 )
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
@@ -63,8 +80,7 @@ public class ProductControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/{id}", 1L))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("new product"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("new category"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(10.0));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("FS"));
     }
 
     @Test
@@ -74,7 +90,7 @@ public class ProductControllerTests {
 
         Product updatedProduct = new Product();
         updatedProduct.setName("updated product");
-        updatedProduct.setCategory("updated category");
+        updatedProduct.setCategory("RF");
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +102,7 @@ public class ProductControllerTests {
         Assertions.assertFalse(productDeleted.isEmpty());
 
         Assertions.assertEquals("updated product", productDeleted.get().getName());
-        Assertions.assertEquals("updated category", productDeleted.get().getCategory());
+        Assertions.assertEquals("RF", productDeleted.get().getCategory());
     }
 
     @Test
@@ -113,6 +129,20 @@ public class ProductControllerTests {
 
         Optional<Product> productDeleted = productRepository.findById(1L);
         Assertions.assertTrue(productDeleted.isEmpty());
+    }
+
+    @Test
+    @DisplayName("ProductController - GET - /api/v1/fresh-products/list")
+    public void testListProducts() throws Exception {
+        Map<String, Object> mockMap = integrationTestUtils.generateFullScenario();
+
+        Product product = (Product) mockMap.get("product");
+
+        mockMvc.perform(MockMvcRequestBuilders.
+                get("/api/v1/fresh-products/list?querytype=" + product.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty()).andReturn();
     }
 
 }

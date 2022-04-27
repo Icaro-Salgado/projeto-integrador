@@ -3,6 +3,7 @@ package br.com.mercadolivre.projetointegrador.marketplace.dto;
 
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 public class CreateOrUpdateBatchDTO {
 
     private Product product;
-    private Long section_id;
+    private Section section;
     private Long seller_id;
     private BigDecimal price;
     private Integer order_number;
@@ -28,7 +29,7 @@ public class CreateOrUpdateBatchDTO {
     public Batch mountBatch() {
         Batch batch = new Batch();
         batch.setProduct(product);
-        batch.setSection_id(section_id);
+        batch.setSection(section);
         batch.setSeller_id(seller_id);
         batch.setPrice(price);
         batch.setOrder_number(order_number);

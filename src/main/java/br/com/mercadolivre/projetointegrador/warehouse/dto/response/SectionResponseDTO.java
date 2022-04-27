@@ -1,5 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.response;
 
+import br.com.mercadolivre.projetointegrador.warehouse.model.Manager;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.view.SectionView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
@@ -21,10 +23,10 @@ public class SectionResponseDTO {
     private Long id;
 
     @JsonView(SectionView.Detail.class)
-    private String warehouse; // TODO: change to entity
+    private Warehouse warehouse;
 
     @JsonView(SectionView.Detail.class)
-    private String manager; // TODO: change to entity
+    private Manager manager; // TODO: change to entity
 
     @JsonView(SectionView.Detail.class)
     private BigDecimal maximumTemperature;

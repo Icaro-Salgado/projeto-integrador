@@ -1,7 +1,11 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.test_utils.SectionServiceTestUtils;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.ManagerRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -23,11 +27,14 @@ public class SectionIntegrationTests {
     @Autowired
     private SectionRepository sectionRepository;
 
+    @Autowired
+    private SectionServiceTestUtils sectionServiceTestUtils;
+
     private final String SECTION_URL = "/api/v1/section";
 
     @BeforeAll
     public void beforeAll(){
-        sectionRepository.save(SectionServiceTestUtils.getMockSection());
+        sectionRepository.save(sectionServiceTestUtils.getIntegrationMockSection());
     }
 
     @Test

@@ -23,11 +23,13 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String warehouse; // TODO: change to entity
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id", nullable = false)
+    private Warehouse warehouse;
 
-    @Column
-    private String manager; // TODO: change to entity
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private Manager manager;
 
     @Column(nullable = false, name = "maximum_temperature")
     @Digits(integer = 3, fraction = 2)
