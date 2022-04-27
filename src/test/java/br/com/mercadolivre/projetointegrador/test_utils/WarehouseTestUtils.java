@@ -16,14 +16,13 @@ public class WarehouseTestUtils {
     public static List<Batch> getBatch(){
         List<Batch> batches = new ArrayList<>();
 
-        LocalDate localDate = LocalDate.now();
-        Product product = new Product(1l,"alface","verdura",localDate);
+        Product product = new Product(1l,"alface","verdura",null);
 
         Batch batch1 = new Batch(1l, product, 2l, 3l,new BigDecimal(30.0),
-                12345,250422,4, localDate, localDate,localDate);
+                12345,250422,4, null, null,null);
 
         Batch batch2 = new Batch(2l, product, 3l, 4l,new BigDecimal(36.0),
-                12346,250423,5, localDate, localDate,localDate);
+                12346,250423,5, null, null,null);
 
         batches.add(batch1);
         batches.add(batch2);
@@ -33,22 +32,20 @@ public class WarehouseTestUtils {
 
     public static Batch getBatch1(){
 
-        LocalDate localDate = LocalDate.now();
-        Product product = new Product(1l,"alface","verdura",localDate);
+        Product product = new Product(1l,"alface","verdura",null);
 
         Batch batch1 = new Batch(1l, product, 2l, 3l,new BigDecimal(30.0),
-                12345,250422,4, localDate, localDate,localDate);
+                12345,250422,4, null, null,null);
 
         return batch1;
     }
 
     public static Batch getBatch2(){
 
-        LocalDate localDate = LocalDate.now();
-        Product product = new Product(1l,"alface","verdura",localDate);
+        Product product = new Product(1l,"alface","verdura",null);
 
         Batch batch2 = new Batch(2l, product, 3l, 4l,new BigDecimal(36.0),
-                12346,250423,5, localDate, localDate,localDate);
+                12346,250423,5, null, null,null);
 
         return batch2;
     }

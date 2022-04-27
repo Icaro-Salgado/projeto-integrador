@@ -1,8 +1,14 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.test_utils.SectionServiceTestUtils;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,6 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
@@ -27,16 +34,34 @@ public class InboundOrderControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private SectionRepository sectionRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
     private final String INBOUND_URL = "/api/v1/inboundorder";
 
     @Test
     public void TestIfInboundOrderIsCreated() throws Exception {
 
-        InboundOrder objPayload = InboundOrder
+        Section mockSection = SectionServiceTestUtils.getMockSection();
+        sectionRepository.save(mockSection);
+
+
+        Product productMock = new Product(1L, "teste", "teste", null);
+        productRepository.save(productMock);
+
+        CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
+                .builder()
+                .product(productMock)
+                .build();
+
+        InboundOrderDTO objPayload = InboundOrderDTO
                 .builder()
                 .orderNumber(1)
-                .batches(List.of(Batch.builder().build()))
-                .sectionCode(1L)
+                .batches(List.of(batchMock))
+                .sectionCode(1)
                 .warehouseCode(1L)
                 .build();
 
@@ -48,6 +73,8 @@ public class InboundOrderControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test

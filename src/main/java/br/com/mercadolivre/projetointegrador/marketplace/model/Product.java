@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter @Setter
@@ -28,6 +29,6 @@ public class Product {
 
     @Column
     @CreatedDate
-    private LocalDate created_at;
+    private Date created_at;
 
 }

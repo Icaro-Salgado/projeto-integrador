@@ -35,13 +35,11 @@ public class InboundOrderController {
 
 
     @PutMapping
-    // TODO: EntityModel<?> -> EntityModel<SavedBatch>
-    public EntityModel<?> updateInboundOrder(@RequestBody InboundOrderDTO dto, @PathVariable String id) {
+    public ResponseEntity<List<CreatedBatchDTO>> updateInboundOrder(@RequestBody InboundOrderDTO dto) throws NotFoundException {
         InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
-        // TODO: Atualizar o InboundOrder
-        // TODO: Converter o retorno para DTO
-        // TODO: Montar o EntityModel
-        // TODO: Retornar created com a URI
-        return null;
+
+        List<Batch> updatedBatches = warehouseService.updateBatchInSection(inboundOrderToUpdate);
+
+        return assembler.toCreatedResponse(updatedBatches);
     }
 }
