@@ -16,7 +16,6 @@ public class SectionService {
         return sectionRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException("Section not found")); //TODO: replace exception
     }
 
-
     public Section findSectionByManager(Long managerId) {
         return sectionRepository.findByManagerId(managerId).orElseThrow(RuntimeException::new);
     }

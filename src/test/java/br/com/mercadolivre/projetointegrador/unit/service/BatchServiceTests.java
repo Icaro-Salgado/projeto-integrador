@@ -106,8 +106,7 @@ public class BatchServiceTests {
     public void updateExistingBatch() throws NotFoundException {
         Batch batch = new Batch();
         Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
-
-//        batch.setSection_id(1L);
+        
         batch.setSeller_id(2L);
         batch.setPrice(BigDecimal.valueOf(33.0));
         batch.setOrder_number(2);

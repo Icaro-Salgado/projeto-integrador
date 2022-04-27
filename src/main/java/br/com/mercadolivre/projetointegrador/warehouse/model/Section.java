@@ -27,9 +27,9 @@ public class Section {
     @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "manager_id")
-    private Manager manager; // TODO: change to entity
+    private Manager manager;
 
     @Column(nullable = false, name = "maximum_temperature")
     @Digits(integer = 3, fraction = 2)
