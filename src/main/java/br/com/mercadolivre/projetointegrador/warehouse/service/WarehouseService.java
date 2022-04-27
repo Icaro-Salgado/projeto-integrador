@@ -30,7 +30,7 @@ public class WarehouseService {
 
         Optional<Section> id = sectionRepository.findById(inboundOrder.getSectionCode());
 
-        if (id.isPresent()) {
+        if (id.isEmpty()) {
             return null;
         } else {
 
