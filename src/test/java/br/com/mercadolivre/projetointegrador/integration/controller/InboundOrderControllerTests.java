@@ -1,8 +1,10 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
+import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.SectionServiceTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
@@ -40,16 +42,19 @@ public class InboundOrderControllerTests {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private IntegrationTestUtils integrationTestUtils;
+
     private final String INBOUND_URL = "/api/v1/inboundorder";
 
     @Test
     public void TestIfInboundOrderIsCreated() throws Exception {
 
-        Section mockSection = SectionServiceTestUtils.getMockSection();
-        sectionRepository.save(mockSection);
+        Section mockSection = integrationTestUtils.createSection();
 
 
-        Product productMock = new Product(1L, "teste", "teste", null);
+
+        Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
         productRepository.save(productMock);
 
         CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
@@ -61,8 +66,8 @@ public class InboundOrderControllerTests {
                 .builder()
                 .orderNumber(1)
                 .batches(List.of(batchMock))
-                .sectionCode(1)
-                .warehouseCode(1L)
+                .sectionCode(mockSection.getId())
+                .warehouseCode(mockSection.getWarehouse().getId())
                 .build();
 
         String payload = new ObjectMapper().writeValueAsString(objPayload);

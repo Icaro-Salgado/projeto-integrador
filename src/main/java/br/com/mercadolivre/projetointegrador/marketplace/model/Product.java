@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.marketplace.model;
 
+import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ public class Product {
     private String name;
 
     @Column
-    private String category;
+    private CategoryEnum category;
 
     @Column
     @CreatedDate

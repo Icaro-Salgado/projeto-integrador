@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
+import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
@@ -16,7 +17,7 @@ public class WarehouseTestUtils {
     public static List<Batch> getBatch(){
         List<Batch> batches = new ArrayList<>();
 
-        Product product = new Product(1l,"alface","verdura",null);
+        Product product = new Product(1l,"alface", CategoryEnum.FS,null);
 
         Batch batch1 = new Batch(1l, product, 2l, 3l,new BigDecimal(30.0),
                 12345,250422,4, null, null,null);
@@ -32,7 +33,7 @@ public class WarehouseTestUtils {
 
     public static Batch getBatch1(){
 
-        Product product = new Product(1l,"alface","verdura",null);
+        Product product = new Product(1l,"alface",CategoryEnum.FS,null);
 
         Batch batch1 = new Batch(1l, product, 2l, 3l,new BigDecimal(30.0),
                 12345,250422,4, null, null,null);
@@ -42,7 +43,7 @@ public class WarehouseTestUtils {
 
     public static Batch getBatch2(){
 
-        Product product = new Product(1l,"alface","verdura",null);
+        Product product = new Product(1l,"alface",CategoryEnum.FS,null);
 
         Batch batch2 = new Batch(2l, product, 3l, 4l,new BigDecimal(36.0),
                 12346,250423,5, null, null,null);

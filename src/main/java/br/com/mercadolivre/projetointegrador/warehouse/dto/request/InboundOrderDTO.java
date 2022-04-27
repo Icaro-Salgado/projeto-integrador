@@ -11,7 +11,7 @@ import java.util.List;
 public class InboundOrderDTO {
     private Integer orderNumber;
     private Long warehouseCode;
-    private Integer sectionCode;
+    private Long sectionCode;
 
     // Isso vai virar uma lista de BatchDTO
     private List<CreateBatchPayloadDTO> batches;

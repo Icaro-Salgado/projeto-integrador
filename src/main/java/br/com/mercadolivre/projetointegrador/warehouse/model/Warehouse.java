@@ -1,13 +1,14 @@
 package br.com.mercadolivre.projetointegrador.warehouse.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Warehouse {
 
     @Id
