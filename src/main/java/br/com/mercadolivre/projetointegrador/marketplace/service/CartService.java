@@ -15,20 +15,19 @@ import java.math.BigDecimal;
 public class CartService {
 
     RedisRepository redisRepository;
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper;
 
     public Cart updateCart(Long id, Cart cart) throws JsonProcessingException {
         cart.setTotalPrice(totalPrice(cart));
         String cartAsString = objectMapper.writeValueAsString(cart);
-        redisRepository.set(String.valueOf(id), cartAsString);
+
+        redisRepository.set(id.toString(), cartAsString);
         return cart;
     }
 
     public Cart getCart(Long id) throws JsonProcessingException {
-        String idAsString = String.valueOf(id);
-        String cart = redisRepository.get(idAsString);
-        Cart cartAsObject = objectMapper.readValue(cart, Cart.class);
-        return cartAsObject;
+        String cartAsString = redisRepository.get(id.toString());
+        return objectMapper.readValue(cartAsString, Cart.class);
     }
 
     private BigDecimal totalPrice(Cart cart) {
