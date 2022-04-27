@@ -5,6 +5,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Manager;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
@@ -27,6 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootTest
@@ -41,17 +43,9 @@ public class ProductControllerTests {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private BatchRepository batchRepository;
 
     @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
-    private WarehouseRepository warehouseRepository;
-
-    @Autowired
-    private ManagerRepository managerRepository;
+    private IntegrationTestUtils integrationTestUtils;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -140,59 +134,9 @@ public class ProductControllerTests {
     @Test
     @DisplayName("ProductController - GET - /api/v1/fresh-products/list")
     public void testListProducts() throws Exception {
-        Product product = productRepository.save(fakeProduct);
+        Map<String, Object> mockMap = integrationTestUtils.generateFullScenario();
 
-        Manager manager = managerRepository.save(
-                new Manager()
-        );
-
-
-        Warehouse warehouse = warehouseRepository.save(
-                new Warehouse(
-                       "warehouse 01",
-                       new Location(
-                               "Brazil",
-                               "SP",
-                               "Osasco",
-                               "Bomfim",
-                               "Av. das Nações Unidas",
-                               3003,
-                               06233200
-                       )
-
-                )
-        );
-
-
-
-        Section section = sectionRepository.save(
-                new Section(
-                        null,
-                        warehouse,
-                        manager,
-                        BigDecimal.valueOf(33.33),
-                        BigDecimal.ZERO,
-                        1000,
-                        null
-                )
-        );
-
-
-        batchRepository.save(
-                new Batch(
-                        null,
-                        fakeProduct,
-                        section,
-                        1L,
-                        BigDecimal.valueOf(129.99),
-                        123,
-                        1,
-                        50,
-                        null,
-                        null,
-                        null
-                )
-        );
+        Product product = (Product) mockMap.get("product");
 
         mockMvc.perform(MockMvcRequestBuilders.
                 get("/api/v1/fresh-products/list?querytype=" + product.getId()))

@@ -4,6 +4,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundExcep
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -27,20 +28,23 @@ public class ProductsController {
 
     @GetMapping("list")
     public ResponseEntity<?> listStockProducts(
+            @RequestParam(required = false) Long product,
+            @RequestParam(required = false) SortTypeEnum sort,
             @RequestParam(required = false, name = "querytype") List<String> queries
     ) throws NotFoundException {
         // TODO: change for Authentication object from spring security
         Long managerId = 1L;
 
-        Long productId = Long.valueOf(queries.stream().filter(s -> s.matches("^[0-9]+$")).findFirst().orElse("-1"));
+//        Long productId = Long.valueOf(queries.stream().filter(s -> s.matches("^[0-9]+$")).findFirst().orElse("-1"));
 
-        if(productId < 0) {
+        if(product == null) {
             throw new IllegalArgumentException();
         }
 
-        String sortType = queries.stream().filter(sortTypes::contains).findFirst().orElse("L");
 
-        List<Batch> batchProducts = warehouseService.findProductOnManagerSection(managerId, productId, sortType);
+//        String sortType = queries.stream().filter(sortTypes::contains).findFirst().orElse("L");
+
+        List<Batch> batchProducts = warehouseService.findProductOnManagerSection(managerId, product, sort);
 
         if(batchProducts.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -51,8 +55,8 @@ public class ProductsController {
         SectionBatchesDTO response = new SectionBatchesDTO(
                 section.getWarehouse().getId().toString(),
                 section.getId(),
-                productId,
-                batchProducts.stream().map(product -> new BatchDTO(product.getBatch_number(), product.getQuantity(), product.getDue_date())).collect(Collectors.toList())
+                product,
+                batchProducts.stream().map(p -> new BatchDTO(p.getBatch_number(), p.getQuantity(), p.getDue_date())).collect(Collectors.toList())
 
         );
 

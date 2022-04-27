@@ -3,6 +3,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.service;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 
+import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 
 import br.com.mercadolivre.projetointegrador.marketplace.service.BatchService;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,16 +22,10 @@ public class WarehouseService {
     private final BatchService batchService;
 
 
-    public List<Batch> findProductOnManagerSection(Long managerId, Long productId, String sortType) throws RuntimeException, NotFoundException {
+    public List<Batch> findProductOnManagerSection(Long managerId, Long productId, SortTypeEnum sortType) throws RuntimeException, NotFoundException {
         Section managerSection = sectionService.findSectionByManager(managerId);
-        List<Batch> productBatches = batchService.findProductBatches(productId);
 
-        List<Batch> foundedProducts = productBatches
-                .stream()
-                .filter(b -> b.getSection().getId().equals(managerSection.getId()))
-                .collect(Collectors.toList());
-
-        return foundedProducts;
+        return batchService.findBatchesByProductAndSection(productId, managerSection);
     }
 
     public List<Object> saveBatchInSection(InboundOrder inboundOrder) {
