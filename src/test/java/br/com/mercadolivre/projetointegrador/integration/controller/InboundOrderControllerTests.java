@@ -1,13 +1,10 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.SectionServiceTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.dto.response.CreatedBatchDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,8 +21,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -109,11 +104,14 @@ public class InboundOrderControllerTests {
         String payload = new ObjectMapper().writeValueAsString(objPayload);
 
         // ACT AND ASSERT
-        MvcResult mvcResult = mockMvc.perform(
+        MvcResult postResult = mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(INBOUND_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
-    }
+
+        String link = JsonPath.read(postResult.getResponse().getContentAsString(), "$.[0]links[0][\"self\"]");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(link)).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();    }
 }
