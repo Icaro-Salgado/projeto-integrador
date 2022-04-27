@@ -9,3 +9,8 @@ services:
       POSTGRES_DB: melifreshtest
     ports:
       - 5433:5432
+
+  redis-tests:
+    image: redis:3.2.5-alpine
+    ports:
+      - 6380:6379
