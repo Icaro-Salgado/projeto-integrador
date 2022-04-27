@@ -33,7 +33,7 @@ public class CreateOrUpdateProductDTO {
         Product product = new Product();
         product.setName(name);
         product.setCategory(category);
-        product.setCreated_at(LocalDate.now());
+        product.setCreated_at(null);
 
         return product;
     }

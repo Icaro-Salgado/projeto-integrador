@@ -35,9 +35,10 @@ public class InboundOrderController {
 
 
     @PutMapping
-    // TODO: EntityModel<?> -> EntityModel<SavedBatch>
-    public EntityModel<?> updateInboundOrder(@RequestBody InboundOrderDTO dto, @PathVariable String id) {
+    public EntityModel<?> updateInboundOrder(@RequestBody InboundOrderDTO dto) throws NotFoundException {
         InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
+
+        warehouseService.updateBatchInSection(inboundOrderToUpdate);
         // TODO: Atualizar o InboundOrder
         // TODO: Converter o retorno para DTO
         // TODO: Montar o EntityModel
