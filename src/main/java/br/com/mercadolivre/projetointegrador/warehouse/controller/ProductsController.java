@@ -24,25 +24,18 @@ public class ProductsController {
 
     private final WarehouseService warehouseService;
 
-    private final List<String> sortTypes = List.of("L", "C", "F");
 
     @GetMapping("list")
     public ResponseEntity<?> listStockProducts(
             @RequestParam(required = false) Long product,
-            @RequestParam(required = false) SortTypeEnum sort,
-            @RequestParam(required = false, name = "querytype") List<String> queries
+            @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort
     ) throws NotFoundException {
         // TODO: change for Authentication object from spring security
         Long managerId = 1L;
 
-//        Long productId = Long.valueOf(queries.stream().filter(s -> s.matches("^[0-9]+$")).findFirst().orElse("-1"));
-
         if(product == null) {
             throw new IllegalArgumentException();
         }
-
-
-//        String sortType = queries.stream().filter(sortTypes::contains).findFirst().orElse("L");
 
         List<Batch> batchProducts = warehouseService.findProductOnManagerSection(managerId, product, sort);
 
