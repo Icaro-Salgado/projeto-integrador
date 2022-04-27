@@ -51,9 +51,9 @@ public class BatchControllerTests {
         batch.setManufacturing_datetime(LocalDate.parse("2022-01-01"));
         batch.setDue_date(LocalDate.parse("2022-05-02"));
 
-        batchRepository.save(batch);
+        Batch created = batchRepository.save(batch);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/batches/{id}", 1L))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/batches/{id}", created.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.section_id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.seller_id").value(2L))

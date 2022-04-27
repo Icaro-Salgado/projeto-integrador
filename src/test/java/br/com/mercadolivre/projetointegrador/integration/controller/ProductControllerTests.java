@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 
+import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,17 +40,18 @@ public class ProductControllerTests {
     public void beforeEach() {
         fakeProduct = new Product();
         fakeProduct.setName("new product");
-        fakeProduct.setCategory("new category");
+        fakeProduct.setCategory(CategoryEnum.FS);
     }
 
     @Test
     @DisplayName("ProductController - POST - /api/v1/fresh-products")
     public void testCreateProduct() throws Exception {
-
+        Product productToCreate = fakeProduct;
+        productToCreate.setName(productToCreate.getName().concat("new product"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(fakeProduct))
+                        .content(objectMapper.writeValueAsString(productToCreate))
                 )
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
@@ -58,35 +60,34 @@ public class ProductControllerTests {
     @Test
     @DisplayName("ProductController - GET - /api/v1/fresh-products/{id}")
     public void testFindProductById() throws Exception {
-        productRepository.save(fakeProduct);
+        Product product = productRepository.save(fakeProduct);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/{id}", 1L))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/{id}", product.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("new product"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("new category"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(10.0));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value(product.getCategory().toString()));
     }
 
     @Test
     @DisplayName("ProductController - PUT - /api/v1/fresh-products/{id}")
     public void testUpdateProduct() throws Exception {
-        productRepository.save(fakeProduct);
+        Product created = productRepository.save(fakeProduct);
 
         Product updatedProduct = new Product();
         updatedProduct.setName("updated product");
-        updatedProduct.setCategory("updated category");
+        updatedProduct.setCategory(CategoryEnum.RF);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/{id}", 1L)
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/{id}", created.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct))
         )
         .andExpect(MockMvcResultMatchers.status().isNoContent()).andReturn();
 
-        Optional<Product> productDeleted = productRepository.findById(1L);
+        Optional<Product> productDeleted = productRepository.findById(created.getId());
         Assertions.assertFalse(productDeleted.isEmpty());
 
         Assertions.assertEquals("updated product", productDeleted.get().getName());
-        Assertions.assertEquals("updated category", productDeleted.get().getCategory());
+        Assertions.assertEquals(updatedProduct.getCategory(), productDeleted.get().getCategory());
     }
 
     @Test
@@ -100,18 +101,18 @@ public class ProductControllerTests {
                         get("/api/v1/fresh-products"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(response))).andReturn();
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty()).andReturn();
     }
 
     @Test
     @DisplayName("ProductController - DELETE - /api/v1/fresh-products/{id}")
     public void testDeleteProduct() throws Exception {
-        productRepository.save(fakeProduct);
+        Product newProduct = productRepository.save(fakeProduct);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/{id}", 1L))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/{id}", newProduct.getId()))
             .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        Optional<Product> productDeleted = productRepository.findById(1L);
+        Optional<Product> productDeleted = productRepository.findById(newProduct.getId());
         Assertions.assertTrue(productDeleted.isEmpty());
     }
 

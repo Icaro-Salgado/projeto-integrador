@@ -32,7 +32,7 @@ public class CreateOrUpdateProductDTO {
 
         Product product = new Product();
         product.setName(name);
-        product.setCategory(category);
+        product.setCategory(CategoryEnum.valueOf(category));
         product.setCreated_at(null);
 
         return product;

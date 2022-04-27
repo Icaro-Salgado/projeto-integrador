@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
+import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
@@ -38,7 +39,7 @@ public class ProductServiceTests {
         newTestProduct = new Product();
         newTestProduct.setId(1L);
         newTestProduct.setName("new product");
-        newTestProduct.setCategory("new category");
+        newTestProduct.setCategory(CategoryEnum.FS);
     }
 
     @Test
@@ -81,12 +82,12 @@ public class ProductServiceTests {
 
         Product updatedProduct = new Product();
         updatedProduct.setName("novo nome");
-        updatedProduct.setCategory("nova categoria");
+        updatedProduct.setCategory(CategoryEnum.FF);
 
         Mockito.when(productRepository.findById(1L)).thenReturn(Optional.ofNullable(newTestProduct));
 
         newTestProduct.setName("novo nome");
-        newTestProduct.setCategory("nova categoria");
+        newTestProduct.setCategory(CategoryEnum.FF);
 
         Mockito.when(productRepository.save(newTestProduct)).thenReturn(newTestProduct);
         productService.updateProduct(1L, updatedProduct);

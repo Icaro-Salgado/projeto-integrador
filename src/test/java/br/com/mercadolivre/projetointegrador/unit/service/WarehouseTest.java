@@ -10,6 +10,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionReposit
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,19 +48,19 @@ public class WarehouseTest {
     @Test
     public void TestIfupdateBatchInSection() throws NotFoundException {
 
-        //List<Batch> expected = WarehouseTestUtils.getBatch();
         List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
 
         Mockito.when(sectionRepository.findById(Mockito.any()))
                 .thenReturn((Optional.of(WarehouseTestUtils.getSection())));
 
-       // Mockito.when(inboundOrder.getBatches()).thenReturn(expected);
+
 
         Mockito.doNothing().when(batchService).createBatch(Mockito.any());
 
         List<Batch> result = warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
 
-        //assertEquals(expected, result);
-        MatcherAssert.assertThat(result, CoreMatchers.is(expected));
+
+
+        assertEquals(expected, result);
     }
 }

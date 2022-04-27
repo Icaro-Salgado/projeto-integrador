@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import lombok.*;
 
 import java.util.List;
@@ -11,8 +12,6 @@ import java.util.List;
 public class InboundOrderDTO {
     private Integer orderNumber;
     private Long warehouseCode;
-    private Integer sectionCode;
-
-    // Isso vai virar uma lista de BatchDTO
+    private Long sectionCode;
     private List<CreateBatchPayloadDTO> batches;
 }
