@@ -1,9 +1,6 @@
 package br.com.mercadolivre.projetointegrador.marketplace.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.Date;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Product {
 
     @Id

@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class WarehouseTestUtils {
 
     public static List<Batch> getBatch(){
@@ -21,8 +22,13 @@ public class WarehouseTestUtils {
         Batch batch1 = new Batch(1l, product, 2l, 3l,new BigDecimal(30.0),
                 12345,250422,4, null, null,null);
 
+<<<<<<< Updated upstream
         Batch batch2 = new Batch(2l, product, 3l, 4l,new BigDecimal(36.0),
                 12346,250423,5, null, null,null);
+=======
+        Batch batch2 = new Batch(2l, product, 2l, 4l,new BigDecimal(36.0),
+                12346,250423,5, localDate, localDate,localDate);
+>>>>>>> Stashed changes
 
         batches.add(batch1);
         batches.add(batch2);
@@ -30,6 +36,7 @@ public class WarehouseTestUtils {
         return batches;
     }
 
+<<<<<<< Updated upstream
     public static Batch getBatch1(){
 
         Product product = new Product(1l,"alface","verdura",null);
@@ -50,12 +57,14 @@ public class WarehouseTestUtils {
         return batch2;
     }
 
+=======
+>>>>>>> Stashed changes
     public static Section getSection(){
         return Section.builder().id(1l).build();
     }
 
     public static InboundOrder getInboundOrder(){
-        return InboundOrder.builder().orderNumber(12345).warehouseCode(6l).sectionCode(7l).batches(getBatch()).build();
+        return InboundOrder.builder().orderNumber(12345).warehouseCode(6l).sectionCode(2l).batches(getBatch()).build();
     }
 
 }
