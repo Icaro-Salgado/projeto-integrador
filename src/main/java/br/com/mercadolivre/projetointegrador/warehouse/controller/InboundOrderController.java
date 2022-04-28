@@ -19,26 +19,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InboundOrderController {
 
-    private final WarehouseService warehouseService;
-    private final InboundOrderMapper inboundOrderMapper;
-    private final BatchAssembler assembler;
+  private final WarehouseService warehouseService;
+  private final InboundOrderMapper inboundOrderMapper;
+  private final BatchAssembler assembler;
 
-    @PostMapping
-    public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(@RequestBody InboundOrderDTO dto) throws NotFoundException {
-        InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
+  @PostMapping
+  public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(@RequestBody InboundOrderDTO dto)
+      throws NotFoundException {
+    InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
 
-        List<Batch> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
+    List<Batch> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
 
-        return assembler.toCreatedResponse(savedBatches);
-    }
+    return assembler.toCreatedResponse(savedBatches);
+  }
 
+  @PutMapping
+  public ResponseEntity<List<CreatedBatchDTO>> updateInboundOrder(@RequestBody InboundOrderDTO dto)
+      throws NotFoundException {
+    InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
 
-    @PutMapping
-    public ResponseEntity<List<CreatedBatchDTO>> updateInboundOrder(@RequestBody InboundOrderDTO dto) throws NotFoundException {
-        InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
+    List<Batch> updatedBatches = warehouseService.updateBatchInSection(inboundOrderToUpdate);
 
-        List<Batch> updatedBatches = warehouseService.updateBatchInSection(inboundOrderToUpdate);
-
-        return assembler.toCreatedResponse(updatedBatches);
-    }
+    return assembler.toCreatedResponse(updatedBatches);
+  }
 }

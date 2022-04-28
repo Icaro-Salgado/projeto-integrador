@@ -9,22 +9,26 @@ import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionReposit
 
 public class SectionCapacityValidator implements WarehouseValidator {
 
-    private final InboundOrder order;
-    private final SectionRepository sectionRepository;
+  private final InboundOrder order;
+  private final SectionRepository sectionRepository;
 
-    public SectionCapacityValidator(InboundOrder o, SectionRepository r) {
-        this.order = o;
-        this.sectionRepository = r;
-    }
+  public SectionCapacityValidator(InboundOrder o, SectionRepository r) {
+    this.order = o;
+    this.sectionRepository = r;
+  }
 
-    @Override
-    public void Validate() {
-        Section orderSection = sectionRepository.findById(order.getSectionCode()).orElseThrow(() -> new SectionNotFoundException("Section Not Found!"));
-        Integer sectionCapacity = orderSection.getCapacity();
+  @Override
+  public void Validate() {
+    Section orderSection =
+        sectionRepository
+            .findById(order.getSectionCode())
+            .orElseThrow(() -> new SectionNotFoundException("Section Not Found!"));
+    Integer sectionCapacity = orderSection.getCapacity();
 
-        Integer productsQty = order.getBatches().stream().map(Batch::getQuantity).reduce(0, Integer::sum);
+    Integer productsQty =
+        order.getBatches().stream().map(Batch::getQuantity).reduce(0, Integer::sum);
 
-        if (sectionCapacity < productsQty)
-            throw new SectionTotalCapacityException("The Section capacity has been reached!!");
-    }
+    if (sectionCapacity < productsQty)
+      throw new SectionTotalCapacityException("The Section capacity has been reached!!");
+  }
 }

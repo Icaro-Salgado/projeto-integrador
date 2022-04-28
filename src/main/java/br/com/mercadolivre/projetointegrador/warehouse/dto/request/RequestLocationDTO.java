@@ -14,30 +14,17 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class RequestLocationDTO {
 
-    @NotNull
-    @NotBlank
-    private String country;
+  @NotNull @NotBlank private String country;
 
-    @NotNull
-    @NotBlank
-    private String state;
+  @NotNull @NotBlank private String state;
 
-    @NotNull
-    @NotBlank
-    private String city;
+  @NotNull @NotBlank private String city;
 
-    @NotNull
-    @NotBlank
-    private String neighborhood;
+  @NotNull @NotBlank private String neighborhood;
 
-    @NotNull
-    @NotBlank
-    private String street;
+  @NotNull @NotBlank private String street;
 
-    @NotNull
-    private Integer number;
+  @NotNull private Integer number;
 
-    @NotNull
-    private Integer zipcode;
-
+  @NotNull private Integer zipcode;
 }
