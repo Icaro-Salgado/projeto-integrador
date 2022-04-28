@@ -8,6 +8,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
+import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,9 @@ public class WarehouseTest {
     @Mock
     private SectionRepository sectionRepository;
 
+    @Mock
+    private WarehouseValidatorExecutor warehouseValidatorExecutor;
+
     @InjectMocks
     private WarehouseService warehouseService;
 
@@ -50,12 +55,7 @@ public class WarehouseTest {
 
         List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
 
-        Mockito.when(sectionRepository.findById(Mockito.any()))
-                .thenReturn((Optional.of(WarehouseTestUtils.getSection())));
-
-
-
-        Mockito.doNothing().when(batchService).createBatch(Mockito.any());
+        Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any())).thenAnswer(i -> i.getArgument(0));
 
         List<Batch> result = warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
 

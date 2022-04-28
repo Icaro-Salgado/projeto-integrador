@@ -25,7 +25,8 @@ public class SectionRepositoryTests {
     @Test
     public void shouldReturnErrorWhenReceiveInvalidTemperature(){
         Section mockedSection = SectionServiceTestUtils.getMockSection();
-        mockedSection.setMinimumTemperature(BigDecimal.valueOf(12.333));
+        mockedSection.setId(null);
+        mockedSection.setMinimumTemperature(BigDecimal.valueOf(12.3303));
 
         Assertions.assertThrows(ConstraintViolationException.class, () -> sectionRepository.save(mockedSection));
     }

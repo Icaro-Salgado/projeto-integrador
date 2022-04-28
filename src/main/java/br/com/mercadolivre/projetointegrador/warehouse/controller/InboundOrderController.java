@@ -7,24 +7,20 @@ import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderD
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.CreatedBatchDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.InboundOrderMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
-import br.com.mercadolivre.projetointegrador.warehouse.service.SectionService;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/inboundorder")
 @RequiredArgsConstructor
 public class InboundOrderController {
-    private final WarehouseService warehouseService;
 
-    private final InboundOrderMapper inboundOrderMapper = InboundOrderMapper.INSTANCE;
+    private final WarehouseService warehouseService;
+    private final InboundOrderMapper inboundOrderMapper;
     private final BatchAssembler assembler;
 
     @PostMapping
