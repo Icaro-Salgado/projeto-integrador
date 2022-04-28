@@ -1,9 +1,9 @@
-package br.com.mercadolivre.projetointegrador.marketplace.controller.advice;
+package br.com.mercadolivre.projetointegrador.warehouse.exception.handler;
 
-import br.com.mercadolivre.projetointegrador.marketplace.exception.ErrorDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.InvalidCategoryException;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

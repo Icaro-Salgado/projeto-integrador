@@ -1,4 +1,4 @@
-package br.com.mercadolivre.projetointegrador.marketplace.enums;
+package br.com.mercadolivre.projetointegrador.warehouse.enums;
 
 public enum CategoryEnum {
   FS,

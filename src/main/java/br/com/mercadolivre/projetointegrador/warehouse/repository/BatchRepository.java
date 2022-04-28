@@ -1,6 +1,6 @@
-package br.com.mercadolivre.projetointegrador.marketplace.repository;
+package br.com.mercadolivre.projetointegrador.warehouse.repository;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

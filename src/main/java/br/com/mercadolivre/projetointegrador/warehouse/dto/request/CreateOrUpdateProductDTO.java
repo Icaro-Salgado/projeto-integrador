@@ -1,8 +1,8 @@
-package br.com.mercadolivre.projetointegrador.marketplace.dto;
+package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.InvalidCategoryException;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

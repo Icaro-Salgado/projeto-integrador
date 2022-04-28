@@ -1,9 +1,9 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

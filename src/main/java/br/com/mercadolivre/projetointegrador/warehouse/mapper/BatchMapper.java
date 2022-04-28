@@ -1,6 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.mapper;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.CreatedBatchDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

@@ -1,6 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service.validators;
 
-import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionNotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionTotalCapacityException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;

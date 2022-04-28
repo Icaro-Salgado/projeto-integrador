@@ -1,4 +1,4 @@
-package br.com.mercadolivre.projetointegrador.marketplace.model;
+package br.com.mercadolivre.projetointegrador.warehouse.model;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

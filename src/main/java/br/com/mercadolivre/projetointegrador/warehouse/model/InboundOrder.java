@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.model;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import lombok.Builder;
 import lombok.Data;
 

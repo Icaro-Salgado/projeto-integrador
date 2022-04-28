@@ -1,9 +1,8 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
-import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
-import br.com.mercadolivre.projetointegrador.marketplace.service.BatchService;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;

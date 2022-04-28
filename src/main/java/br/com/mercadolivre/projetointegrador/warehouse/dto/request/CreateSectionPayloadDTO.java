@@ -1,6 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
