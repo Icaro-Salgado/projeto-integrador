@@ -20,44 +20,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WarehouseService {
 
-    private final WarehouseRepository warehouseRepository;
-    private final BatchService batchService;
-    private final BatchRepository batchRepository;
-    private final WarehouseValidatorExecutor warehouseValidatorExecutor;
+  private final WarehouseRepository warehouseRepository;
+  private final BatchService batchService;
+  private final BatchRepository batchRepository;
+  private final WarehouseValidatorExecutor warehouseValidatorExecutor;
 
-    public Warehouse createWarehouse(Warehouse warehouse){
-        return warehouseRepository.save(warehouse);
+  public Warehouse createWarehouse(Warehouse warehouse) {
+    return warehouseRepository.save(warehouse);
+  }
+
+  public Warehouse findWarehouse(final Long id) {
+    return warehouseRepository
+        .findById(id)
+        .orElseThrow(() -> new WarehouseNotFoundException("Warehouse não encontrada."));
+  }
+
+  public List<Batch> saveBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
+
+    warehouseValidatorExecutor.executeValidators(
+        inboundOrder, List.of(new BatchDuplicatedValidator(inboundOrder, batchRepository)));
+
+    List<Batch> addedBatches = new ArrayList<>();
+
+    for (Batch batch : inboundOrder.getBatches()) {
+      addedBatches.add(batch);
+      batchService.createBatch(batch);
     }
 
-    public Warehouse findWarehouse(final Long id){
-        return warehouseRepository.findById(id).orElseThrow(() -> new WarehouseNotFoundException("Warehouse não encontrada."));
+    return addedBatches;
+  }
+
+  public List<Batch> updateBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
+    warehouseValidatorExecutor.executeValidators(inboundOrder);
+    List<Batch> addedBatches = new ArrayList<>();
+
+    for (Batch batch : inboundOrder.getBatches()) {
+      addedBatches.add(batchService.updateBatchByBatchNumber(batch));
     }
-
-    public List<Batch> saveBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
-
-        warehouseValidatorExecutor.executeValidators(inboundOrder, List.of(
-            new BatchDuplicatedValidator(inboundOrder, batchRepository)
-        )
-        );
-
-        List<Batch> addedBatches = new ArrayList<>();
-
-        for (Batch batch : inboundOrder.getBatches()) {
-                addedBatches.add(batch);
-                batchService.createBatch(batch);
-        }
-
-        return addedBatches;
-    }
-
-    public List<Batch> updateBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
-        warehouseValidatorExecutor.executeValidators(inboundOrder);
-        List<Batch> addedBatches = new ArrayList<>();
-
-        for (Batch batch : inboundOrder.getBatches()) {
-                addedBatches.add(batchService.updateBatchByBatchNumber(batch));
-        }
-        return addedBatches;
-
-    }
+    return addedBatches;
+  }
 }

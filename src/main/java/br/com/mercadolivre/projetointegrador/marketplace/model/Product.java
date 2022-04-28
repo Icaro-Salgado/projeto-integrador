@@ -9,25 +9,21 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column
-    private String name;
+  @Column private String name;
 
-    @Column
-    private CategoryEnum category;
+  @Column private CategoryEnum category;
 
-    @Column
-    @CreatedDate
-    private Date created_at;
-
+  @Column @CreatedDate private Date created_at;
 }

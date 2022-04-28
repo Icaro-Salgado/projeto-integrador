@@ -7,5 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface LocationMapper {
 
-    Location mapLocation(RequestLocationDTO dto);
+  Location mapLocation(RequestLocationDTO dto);
 }
