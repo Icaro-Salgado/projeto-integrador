@@ -39,9 +39,6 @@ public class WarehouseTest {
 
         List<Batch> expected = WarehouseTestUtils.getBatch();
 
-        Mockito.when(sectionRepository.findById(Mockito.any()))
-                .thenReturn((Optional.of(WarehouseTestUtils.getSection())));
-
         Mockito.doNothing().when(batchService).createBatch(Mockito.any());
 
         List<Batch> result = warehouseService.saveBatchInSection(WarehouseTestUtils.getInboundOrder());
@@ -52,15 +49,11 @@ public class WarehouseTest {
     public void TestIfupdateBatchInSection() throws NotFoundException {
 
 
-        List<Batch> expected = WarehouseTestUtils.getBatch();
+        List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
 
-        Mockito.when(sectionRepository.findById(Mockito.any()))
-                .thenReturn((Optional.of(WarehouseTestUtils.getSection())));
-
-        Mockito.doNothing().when(batchService).createBatch(Mockito.any());
+        Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any())).thenAnswer(i -> i.getArgument(0));
 
         List<Batch> result = warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
-
 
         assertEquals(expected, result);
     }
