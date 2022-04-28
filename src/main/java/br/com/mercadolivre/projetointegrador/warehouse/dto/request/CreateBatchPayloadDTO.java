@@ -3,6 +3,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class CreateBatchPayloadDTO {
 
+    @NotNull
     private Long product_id;
     private Long seller_id;
     private BigDecimal price;

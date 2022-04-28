@@ -28,7 +28,7 @@ public class SectionAndProductMatchValidator implements WarehouseValidator{
         List<Batch> invalidProduct = order.getBatches().stream().filter(p -> !p.getProduct().getCategory().equals(orderSection.getProduct_category())).collect(Collectors.toList());
         if(!invalidProduct.isEmpty()) {
             String invalidCategories = invalidProduct.stream().map(b -> b.getProduct().getCategory().toString()).collect(Collectors.joining());
-            throw new SectionDoesNotMatchWithProductException("A seção aceita a categoria  " + orderSection.getProduct_category() + " mas foram encontrados as seguintes categorias" + invalidCategories);
+            throw new SectionDoesNotMatchWithProductException("A seção aceita a categoria  " + orderSection.getProduct_category() + " mas foram encontrados as seguintes categorias " + invalidCategories);
         }
 
 
