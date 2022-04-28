@@ -1,21 +1,28 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service.validators;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionNotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionTotalCapacityException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 
+import java.util.stream.Collectors;
+
 public class SectionCapacityValidator implements WarehouseValidator {
 
   private final InboundOrder order;
   private final SectionRepository sectionRepository;
+    private final BatchRepository batchRepository;
 
-  public SectionCapacityValidator(InboundOrder o, SectionRepository r) {
-    this.order = o;
-    this.sectionRepository = r;
-  }
+    public SectionCapacityValidator(
+            InboundOrder inboundOrder,
+            SectionRepository sectionRepository,
+            BatchRepository batchRepository) {
+        this.order = inboundOrder;
+        this.sectionRepository = sectionRepository;
+        this.batchRepository = batchRepository;
+    }
 
   @Override
   public void Validate() {
@@ -25,8 +32,12 @@ public class SectionCapacityValidator implements WarehouseValidator {
             .orElseThrow(() -> new SectionNotFoundException("Setor não encontrado!"));
     Integer sectionCapacity = orderSection.getCapacity();
 
-    Integer productsQty =
-        order.getBatches().stream().map(Batch::getQuantity).reduce(0, Integer::sum);
+    // To check the capacity, we need to find all batches that have been registered in a given section
+    Integer batchesQty = batchRepository.findAll()
+            .stream()
+            .filter(batch -> batch.getSection_id().equals(orderSection.getId()))
+            .collect(Collectors.toList())
+            .size();
 
     if (sectionCapacity < productsQty)
       throw new SectionTotalCapacityException("A capacidade do setor foi atingida!");

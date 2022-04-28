@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service.validators;
 
+import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
@@ -17,6 +18,9 @@ public class WarehouseValidatorExecutor {
 
   public void executeValidators(InboundOrder inboundOrder) {
     List<WarehouseValidator> validators = buildValidators(inboundOrder);
+    
+    @Autowired
+    private BatchRepository batchRepository;
 
     validators.forEach(WarehouseValidator::Validate);
   }
@@ -33,7 +37,7 @@ public class WarehouseValidatorExecutor {
     return List.of(
         new SectionExistsValidator(inboundOrder.getSectionCode(), sectionRepository),
         new WarehouseExistsValidator(inboundOrder.getWarehouseCode(), warehouseRepository),
-        new SectionCapacityValidator(inboundOrder, sectionRepository),
+        new SectionCapacityValidator(inboundOrder, sectionRepository, batchRepository),
         new SectionAndProductMatchValidator(inboundOrder, sectionRepository));
   }
 }
