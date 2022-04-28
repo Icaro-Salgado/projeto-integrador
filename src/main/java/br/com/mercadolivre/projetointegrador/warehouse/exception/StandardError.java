@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +12,7 @@ import java.time.Instant;
 @NoArgsConstructor
 public class StandardError implements Serializable {
 
-    private Instant timestamp;
-    private Integer status;
-    private String error,message,path;
-
+  private Instant timestamp;
+  private Integer status;
+  private String error, message, path;
 }

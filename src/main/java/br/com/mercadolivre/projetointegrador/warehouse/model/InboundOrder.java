@@ -10,9 +10,9 @@ import java.util.List;
 @Builder
 public class InboundOrder {
 
-    private Integer orderNumber;
-    private Long warehouseCode;
-    private Long sectionCode;
+  private Integer orderNumber;
+  private Long warehouseCode;
+  private Long sectionCode;
 
-    private List<Batch> batches;
+  private List<Batch> batches;
 }

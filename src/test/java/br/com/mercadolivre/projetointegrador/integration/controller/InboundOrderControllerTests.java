@@ -6,12 +6,10 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.SectionServiceTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
@@ -36,145 +34,134 @@ import java.util.List;
 @ActiveProfiles(profiles = "test")
 public class InboundOrderControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+  private final String INBOUND_URL = "/api/v1/inboundorder";
+  @Autowired private MockMvc mockMvc;
+  @Autowired private ProductRepository productRepository;
+  @Autowired private BatchRepository batchRepository;
+  @Autowired private IntegrationTestUtils integrationTestUtils;
 
-    @Autowired
-    private ProductRepository productRepository;
+  @Test
+  public void TestIfInboundOrderIsCreated() throws Exception {
 
-    @Autowired
-    private BatchRepository batchRepository;
+    Section mockSection = integrationTestUtils.createSection();
 
-    @Autowired
-    private IntegrationTestUtils integrationTestUtils;
+    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
+    productRepository.save(productMock);
 
-    private final String INBOUND_URL = "/api/v1/inboundorder";
+    CreateBatchPayloadDTO batchMock =
+        CreateBatchPayloadDTO.builder().quantity(2).product_id(1L).build();
 
-    @Test
-    public void TestIfInboundOrderIsCreated() throws Exception {
+    InboundOrderDTO objPayload =
+        InboundOrderDTO.builder()
+            .orderNumber(1)
+            .batches(List.of(batchMock))
+            .sectionCode(mockSection.getId())
+            .warehouseCode(mockSection.getWarehouse().getId())
+            .build();
 
-        Section mockSection = integrationTestUtils.createSection();
+    String payload = new ObjectMapper().writeValueAsString(objPayload);
 
-        Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
-        productRepository.save(productMock);
+    // ACT AND ASSERT
+    MvcResult postResult =
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders.post(INBOUND_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(payload))
+            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andReturn();
 
-        CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
-                .builder()
-                .quantity(2)
-                .product_id(1L)
-                .build();
+    String link =
+        JsonPath.read(postResult.getResponse().getContentAsString(), "$.[0]links[0][\"self\"]");
 
-        InboundOrderDTO objPayload = InboundOrderDTO
-                .builder()
-                .orderNumber(1)
-                .batches(List.of(batchMock))
-                .sectionCode(mockSection.getId())
-                .warehouseCode(mockSection.getWarehouse().getId())
-                .build();
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(link))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andReturn();
+  }
 
-        String payload = new ObjectMapper().writeValueAsString(objPayload);
+  @Test
+  public void TestIfDuplicatedInboundOrderIsCreated() throws Exception {
+    Section mockSection = integrationTestUtils.createSection();
 
-        // ACT AND ASSERT
-        MvcResult postResult = mockMvc.perform(
-                MockMvcRequestBuilders
-                        .post(INBOUND_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(payload))
-                .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
+    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
+    productRepository.save(productMock);
 
-        String link = JsonPath.read(postResult.getResponse().getContentAsString(), "$.[0]links[0][\"self\"]");
+    Batch mockedBatch = WarehouseTestUtils.getBatch1();
+    mockedBatch.setSection_id(mockSection.getId());
+    mockedBatch.setPrice(BigDecimal.valueOf(11.99));
 
-        mockMvc.perform(MockMvcRequestBuilders.get(link)).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-    }
+    Batch saved = batchRepository.save(mockedBatch);
 
-    @Test
-    public void TestIfDuplicatedInboundOrderIsCreated() throws Exception {
-        Section mockSection = integrationTestUtils.createSection();
+    CreateBatchPayloadDTO batchMock =
+        CreateBatchPayloadDTO.builder()
+            .batch_number(saved.getBatchNumber())
+            .product_id(saved.getProduct().getId())
+            .seller_id(saved.getSeller_id())
+            .quantity(2)
+            .build();
 
-        Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
-        productRepository.save(productMock);
+    InboundOrderDTO objPayload =
+        InboundOrderDTO.builder()
+            .orderNumber(1)
+            .batches(List.of(batchMock))
+            .sectionCode(saved.getSection_id())
+            .warehouseCode(mockSection.getWarehouse().getId())
+            .build();
 
-        Batch mockedBatch = WarehouseTestUtils.getBatch1();
-        mockedBatch.setSection_id(mockSection.getId());
-        mockedBatch.setPrice(BigDecimal.valueOf(11.99));
+    String payload = new ObjectMapper().writeValueAsString(objPayload);
 
-        Batch saved = batchRepository.save(mockedBatch);
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(INBOUND_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+        .andExpect(MockMvcResultMatchers.status().isConflict())
+        .andReturn();
+  }
 
-        CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
-                .builder()
-                .batch_number(saved.getBatchNumber())
-                .product_id(saved.getProduct().getId())
-                .seller_id(saved.getSeller_id())
-                .quantity(2)
-                .build();
+  @Test
+  public void TestIfInboundOrderIsUpdated() throws Exception {
+    // SETUP
+    Section mockSection = integrationTestUtils.createSection();
 
+    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
+    productRepository.save(productMock);
 
+    Batch mockedBatch = WarehouseTestUtils.getBatch1();
+    mockedBatch.setSection_id(mockSection.getId());
+    mockedBatch.setPrice(BigDecimal.valueOf(11.99));
 
-        InboundOrderDTO objPayload = InboundOrderDTO
-                .builder()
-                .orderNumber(1)
-                .batches(List.of(batchMock))
-                .sectionCode(saved.getSection_id())
-                .warehouseCode(mockSection.getWarehouse().getId())
-                .build();
+    Batch saved = batchRepository.save(mockedBatch);
 
-        String payload = new ObjectMapper().writeValueAsString(objPayload);
+    CreateBatchPayloadDTO batchMock =
+        CreateBatchPayloadDTO.builder()
+            .quantity(2)
+            .price(BigDecimal.valueOf(112.99))
+            .batch_number(saved.getBatchNumber())
+            .product_id(1L)
+            .build();
 
-        mockMvc.perform(
-                MockMvcRequestBuilders
-                        .post(INBOUND_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(payload))
-                .andExpect(MockMvcResultMatchers.status().isConflict()).andReturn();
+    InboundOrderDTO objPayload =
+        InboundOrderDTO.builder()
+            .orderNumber(1)
+            .batches(List.of(batchMock))
+            .sectionCode(saved.getSection_id())
+            .warehouseCode(mockSection.getWarehouse().getId())
+            .build();
 
+    String payload = new ObjectMapper().writeValueAsString(objPayload);
 
-    }
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.put(INBOUND_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+        .andExpect(MockMvcResultMatchers.status().isCreated())
+        .andReturn();
 
-    @Test
-    public void TestIfInboundOrderIsUpdated() throws Exception {
-        // SETUP
-        Section mockSection = integrationTestUtils.createSection();
+    Batch result = batchRepository.findById(saved.getId()).orElse(new Batch());
 
-        Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
-        productRepository.save(productMock);
-
-        Batch mockedBatch = WarehouseTestUtils.getBatch1();
-        mockedBatch.setSection_id(mockSection.getId());
-        mockedBatch.setPrice(BigDecimal.valueOf(11.99));
-
-        Batch saved = batchRepository.save(mockedBatch);
-
-        CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
-                .builder()
-                .quantity(2)
-                .price(BigDecimal.valueOf(112.99))
-                .batch_number(saved.getBatchNumber())
-                .product_id(1L)
-                .build();
-
-
-
-        InboundOrderDTO objPayload = InboundOrderDTO
-                .builder()
-                .orderNumber(1)
-                .batches(List.of(batchMock))
-                .sectionCode(saved.getSection_id())
-                .warehouseCode(mockSection.getWarehouse().getId())
-                .build();
-
-        String payload = new ObjectMapper().writeValueAsString(objPayload);
-
-        mockMvc.perform(
-                MockMvcRequestBuilders
-                        .put(INBOUND_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(payload))
-                .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
-
-
-        Batch result = batchRepository.findById(saved.getId()).orElse(new Batch());
-
-        Assertions.assertEquals(batchMock.getPrice(), result.getPrice());
-
-    }
+    Assertions.assertEquals(batchMock.getPrice(), result.getPrice());
+  }
 }

@@ -8,8 +8,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper(uses = LocationMapper.class)
 public interface WarehouseMapper {
 
-    WarehouseMapper INSTANCE = Mappers.getMapper(WarehouseMapper.class);
+  WarehouseMapper INSTANCE = Mappers.getMapper(WarehouseMapper.class);
 
-    Warehouse createDtoToModel(CreateWarehousePayloadDTO dto);
-
+  Warehouse createDtoToModel(CreateWarehousePayloadDTO dto);
 }

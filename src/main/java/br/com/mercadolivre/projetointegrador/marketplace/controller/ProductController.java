@@ -20,52 +20,54 @@ import java.util.List;
 @RequestMapping("/api/v1/fresh-products")
 public class ProductController {
 
-    ProductService productService;
+  ProductService productService;
 
-    @PostMapping
-    public ResponseEntity<Void> createProduct(
-            @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
-            UriComponentsBuilder uriBuilder
-    ) throws InvalidCategoryException, ProductAlreadyExists {
-        Product product = createOrUpdateProductDTO.mountProduct();
-        productService.createProduct(product);
+  @PostMapping
+  public ResponseEntity<Void> createProduct(
+      @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
+      UriComponentsBuilder uriBuilder)
+      throws InvalidCategoryException, ProductAlreadyExists {
+    Product product = createOrUpdateProductDTO.mountProduct();
+    productService.createProduct(product);
 
-        URI uri = uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
+    URI uri =
+        uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
 
-        return ResponseEntity.created(uri).build();
-    }
+    return ResponseEntity.created(uri).build();
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProduct(
-            @PathVariable Long id,
-            @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
-            UriComponentsBuilder uriBuilder
-  ) throws NotFoundException, InvalidCategoryException {
+  @PutMapping("/{id}")
+  public ResponseEntity<Void> updateProduct(
+      @PathVariable Long id,
+      @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
+      UriComponentsBuilder uriBuilder)
+      throws NotFoundException, InvalidCategoryException {
 
-        Product product = createOrUpdateProductDTO.mountProduct();
-        productService.updateProduct(id, product);
+    Product product = createOrUpdateProductDTO.mountProduct();
+    productService.updateProduct(id, product);
 
-        URI uri = uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
+    URI uri =
+        uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
 
-        return ResponseEntity.noContent().location(uri).build();
-    }
+    return ResponseEntity.noContent().location(uri).build();
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Long id) throws NotFoundException {
-        Product product = productService.findById(id);
+  @GetMapping("/{id}")
+  public ResponseEntity<Product> getById(@PathVariable Long id) throws NotFoundException {
+    Product product = productService.findById(id);
 
-        return ResponseEntity.ok(product);
-    }
+    return ResponseEntity.ok(product);
+  }
 
-    @GetMapping
-    public ResponseEntity<List<Product>> getAll() {
-        List<Product> products = productService.findAll();
-        return ResponseEntity.ok(products);
-    }
+  @GetMapping
+  public ResponseEntity<List<Product>> getAll() {
+    List<Product> products = productService.findAll();
+    return ResponseEntity.ok(products);
+  }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> exclude(@PathVariable Long id) throws NotFoundException {
-       productService.delete(id);
-       return ResponseEntity.noContent().build();
-    }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> exclude(@PathVariable Long id) throws NotFoundException {
+    productService.delete(id);
+    return ResponseEntity.noContent().build();
+  }
 }

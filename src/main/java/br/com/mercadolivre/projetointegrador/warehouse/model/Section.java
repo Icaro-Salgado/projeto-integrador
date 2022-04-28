@@ -14,38 +14,36 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Section {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "warehouse_id")
-    private Warehouse warehouse;
+  @ManyToOne
+  @JoinColumn(name = "warehouse_id")
+  private Warehouse warehouse;
 
-    @Column
-    private String manager; // TODO: change to entity
+  @Column private String manager; // TODO: change to entity
 
-    @Column(nullable = false, name = "maximum_temperature")
-    @Digits(integer = 3, fraction = 2)
-    private BigDecimal maximumTemperature;
+  @Column(nullable = false, name = "maximum_temperature")
+  @Digits(integer = 3, fraction = 2)
+  private BigDecimal maximumTemperature;
 
-    @Column(nullable = false, name = "minimum_temperature")
-    @Digits(integer = 3, fraction = 2)
-    private BigDecimal minimumTemperature;
+  @Column(nullable = false, name = "minimum_temperature")
+  @Digits(integer = 3, fraction = 2)
+  private BigDecimal minimumTemperature;
 
-    @Column(nullable = false)
-    private Integer capacity;
+  @Column(nullable = false)
+  private Integer capacity;
 
-    @Column
-    private CategoryEnum product_category;
+  @Column private CategoryEnum product_category;
 
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
+  @CreatedDate
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date createdAt;
 }

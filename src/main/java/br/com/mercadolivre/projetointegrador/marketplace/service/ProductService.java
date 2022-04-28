@@ -13,46 +13,46 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductService {
 
-    ProductRepository productRepository;
+  ProductRepository productRepository;
 
-    public void createProduct(Product product) throws ProductAlreadyExists {
-        Product existingProduct = findByName(product.getName());
-        if (existingProduct != null) {
-            throw new ProductAlreadyExists("Produto com o nome informado já cadastrado.");
-        }
-        productRepository.save(product);
+  public void createProduct(Product product) throws ProductAlreadyExists {
+    Product existingProduct = findByName(product.getName());
+    if (existingProduct != null) {
+      throw new ProductAlreadyExists("Produto com o nome informado já cadastrado.");
+    }
+    productRepository.save(product);
+  }
+
+  public Product findById(Long id) throws NotFoundException {
+    Product product = productRepository.findById(id).orElse(null);
+
+    if (product == null) {
+      throw new NotFoundException("Produto não encontrado.");
     }
 
-    public Product findById(Long id) throws NotFoundException {
-        Product product = productRepository.findById(id).orElse(null);
+    return product;
+  }
 
-        if (product == null) {
-            throw new NotFoundException("Produto não encontrado.");
-        }
+  public Product findByName(String name) {
+    return productRepository.findByName(name);
+  }
 
-        return product;
-    }
+  public void updateProduct(Long id, Product updatedProduct) throws NotFoundException {
+    Product oldProduct = findById(id);
 
-    public Product findByName(String name) {
-        return productRepository.findByName(name);
-    }
+    oldProduct.setCategory(updatedProduct.getCategory());
+    oldProduct.setName(updatedProduct.getName());
 
-    public void updateProduct(Long id, Product updatedProduct) throws NotFoundException {
-        Product oldProduct = findById(id);
+    productRepository.save(oldProduct);
+  }
 
-        oldProduct.setCategory(updatedProduct.getCategory());
-        oldProduct.setName(updatedProduct.getName());
+  public List<Product> findAll() {
+    return productRepository.findAll();
+  }
 
-        productRepository.save(oldProduct);
-    }
+  public void delete(Long id) throws NotFoundException {
+    Product product = findById(id);
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
-
-    public void delete(Long id) throws NotFoundException {
-        Product product = findById(id);
-
-        productRepository.delete(product);
-    }
+    productRepository.delete(product);
+  }
 }

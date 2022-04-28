@@ -41,7 +41,7 @@ jobs:
       - name: Google Java Formatter
         uses: axel-op/googlejavaformat-action@v3
         with:
-          args: "--skip-sorting-imports --replace"
+          args: "--skip-sorting-imports --replace --aosp"
           commitMessage: "These files where formatted by Google Java Formatter"
 
       - name: Build
