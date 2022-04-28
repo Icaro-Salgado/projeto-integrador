@@ -76,10 +76,75 @@ curl -X POST http://localhost:8080/api/v1/inboundorder -H "Content-Type: applica
         "due_date": "2022-06-01"        
       }    
     ]
-}",
+}',
 ```
 
 #### Observações
 Para testar você precisa ter
 - Ter a batch já cadastrada na base 
 - Estar logado com um usuário que tem permissão de escrita na _Warehouse_
+
+
+## ENDPOINTS AUXILIARES CRIADOS
+
+### <span style="color:blue">(PUT)</span> /api/v1/warehouse
+
+#### Para testar
+
+```shell
+curl -X POST http://localhost:8080/api/v1/warehouse -H "Content-Type: application/json" -d '{
+{
+  "name": "warehouse 1",
+  "location": {
+    "country": "Brazil",
+    "state": "SP",
+    "city": "Osasco",
+    "neighborhood": "Bomfim",
+    "street": "Av. das Nações Unidas",
+    "number": 3003,
+    "zipcode": 6233200
+  }
+}',
+```
+#### Observações
+Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você deve ter um _Warehouse_ e uma _Section_
+
+### <span style="color:blue">(PUT)</span> /api/v1/section
+
+#### Para testar
+
+```shell
+curl -X POST http://localhost:8080/api/v1/section -H "Content-Type: application/json" -d '{
+{
+  "warehouseId": 1,
+  "managerId": 1,
+  "minimumTemperature": 12.22,
+  "maximumTemperature": 20.00,
+  "capacity": 1000,
+  "productCategory": "FS"
+}'
+```
+#### Observações
+Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você deve ter um _Warehouse_ e uma _Section_
+
+### <span style="color:blue">(PUT)</span> /api/v1/fresh-products
+
+#### Para testar
+
+```shell
+curl -X POST http://localhost:8080/api/v1/fresh-products -H "Content-Type: application/json" -d '{
+{
+    "name":  "Alface",
+    "category": "FF"
+}'
+```
+#### Observações
+Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você deve ter um product anexado
+
+## FEATURES EXTRAS IMPLEMENTADAS
+
+- CI no GitHub
+    - Roda os testes e verifica se todos estão passando
+    - Verifica se a formatação do código está de acordo com o padrão do  [google-java-format](https://github.com/google/google-java-format)
+  
+- Arquivos para subir um container no docker para o banco da aplicação e de testes
