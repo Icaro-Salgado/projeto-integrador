@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.marketplace.model;
 
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
+
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

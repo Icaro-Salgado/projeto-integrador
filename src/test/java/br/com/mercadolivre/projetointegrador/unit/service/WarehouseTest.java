@@ -21,9 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class WarehouseTest {
 
-//    @Mock
-//    private InboundOrder inboundOrder;
-
     @Mock
     private BatchService batchService;
 
@@ -36,18 +33,31 @@ public class WarehouseTest {
     @InjectMocks
     private WarehouseService warehouseService;
 
-//    TODO: TestIfSaveBatchInSection
-//    @Test
-//    public void TestIfSaveBatchInSection() {
-//
-//    }
+
+    @Test
+    public void TestIfSaveBatchInSection() throws NotFoundException {
+
+        List<Batch> expected = WarehouseTestUtils.getBatch();
+
+        Mockito.when(sectionRepository.findById(Mockito.any()))
+                .thenReturn((Optional.of(WarehouseTestUtils.getSection())));
+
+        Mockito.doNothing().when(batchService).createBatch(Mockito.any());
+
+        List<Batch> result = warehouseService.saveBatchInSection(WarehouseTestUtils.getInboundOrder());
+        assertEquals(expected, result);
+    }
 
     @Test
     public void TestIfupdateBatchInSection() throws NotFoundException {
 
-        List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
 
-        Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any())).thenAnswer(i -> i.getArgument(0));
+        List<Batch> expected = WarehouseTestUtils.getBatch();
+
+        Mockito.when(sectionRepository.findById(Mockito.any()))
+                .thenReturn((Optional.of(WarehouseTestUtils.getSection())));
+
+        Mockito.doNothing().when(batchService).createBatch(Mockito.any());
 
         List<Batch> result = warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
 
