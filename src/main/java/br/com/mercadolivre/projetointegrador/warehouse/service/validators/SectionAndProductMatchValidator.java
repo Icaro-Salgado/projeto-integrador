@@ -31,7 +31,7 @@ public class SectionAndProductMatchValidator implements WarehouseValidator {
       String invalidCategories =
           invalidProduct.stream()
               .map(b -> b.getProduct().getCategory().toString())
-              .collect(Collectors.joining());
+              .collect(Collectors.joining(" "));
       throw new SectionDoesNotMatchWithProductException(
           "A seção aceita a categoria  "
               + orderSection.getProduct_category()

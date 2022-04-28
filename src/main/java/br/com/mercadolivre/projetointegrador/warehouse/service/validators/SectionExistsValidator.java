@@ -20,6 +20,6 @@ public class SectionExistsValidator implements WarehouseValidator {
   public void Validate() {
     Optional<Section> sectionRegistered = sectionRepository.findById(sectionId);
 
-    if (sectionRegistered.isEmpty()) throw new SectionNotFoundException("Section Not Found!");
+    if (sectionRegistered.isEmpty()) throw new SectionNotFoundException("Setor não encontrado!");
   }
 }

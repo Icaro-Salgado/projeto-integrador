@@ -11,19 +11,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ControllerAdvice {
+
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<ErrorDTO> notFoundHandler(Exception e) {
+    ErrorDTO error = new ErrorDTO();
+    error.setError("Não encontrado");
+    error.setMessage(e.getMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+  }
+
   @ExceptionHandler(value = {InvalidCategoryException.class, ProductAlreadyExists.class})
   public ResponseEntity<ErrorDTO> badRequestParams(Exception e) {
     ErrorDTO error = new ErrorDTO();
     error.setError("Parâmetros inválidos.");
     error.setMessage(e.getMessage());
     return ResponseEntity.badRequest().body(error);
-  }
-
-  @ExceptionHandler(value = NotFoundException.class)
-  public ResponseEntity<ErrorDTO> notFoundHandler(NotFoundException e) {
-    ErrorDTO error = new ErrorDTO();
-    error.setError("Objeto não encontrado.");
-    error.setMessage(e.getMessage());
-    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
 }

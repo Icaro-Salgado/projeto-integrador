@@ -24,7 +24,7 @@ public class SectionErrorHandler {
 
     err.setTimestamp(Instant.now());
     err.setStatus(notFound.value());
-    err.setError("Section not found");
+    err.setError("Setor não encontrado");
     err.setMessage(e.getMessage());
     err.setPath(request.getRequestURI());
     return ResponseEntity.status(notFound).body(err);
@@ -38,7 +38,7 @@ public class SectionErrorHandler {
 
     err.setTimestamp(Instant.now());
     err.setStatus(status.value());
-    err.setError("Section Capacity is already Full");
+    err.setError("A capacidade do setor já foi atingida");
     err.setMessage(e.getMessage());
     err.setPath(request.getRequestURI());
     return ResponseEntity.status(status).body(err);
@@ -53,7 +53,7 @@ public class SectionErrorHandler {
 
     err.setTimestamp(Instant.now());
     err.setStatus(status.value());
-    err.setError("Section does not match with product category");
+    err.setError("O setor não corresponde à categoria do produto");
     err.setMessage(e.getMessage());
     err.setPath(request.getRequestURI());
     return ResponseEntity.status(status).body(err);
