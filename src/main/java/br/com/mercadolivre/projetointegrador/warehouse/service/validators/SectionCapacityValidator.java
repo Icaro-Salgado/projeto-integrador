@@ -23,7 +23,6 @@ public class SectionCapacityValidator implements WarehouseValidator{
         Integer sectionCapacity = orderSection.getCapacity();
 
         Integer productsQty = order.getBatches().stream().map(Batch::getQuantity).reduce(0, Integer::sum);
-        Integer batchesQty = order.getBatches().size();
 
         if(sectionCapacity < productsQty) throw new SectionTotalCapacityException("The Section capacity has been reached!!");
     }

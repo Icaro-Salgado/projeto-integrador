@@ -1,26 +1,25 @@
 package br.com.mercadolivre.projetointegrador.unit.validators;
 
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
-import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionDoesNotMatchWithProductException;
-import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionNotFoundException;
-import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionTotalCapacityException;
-import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.*;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.service.validators.SectionAndProductMatchValidator;
-import br.com.mercadolivre.projetointegrador.warehouse.service.validators.SectionCapacityValidator;
-import br.com.mercadolivre.projetointegrador.warehouse.service.validators.SectionExistsValidator;
-import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseExistsValidator;
+import br.com.mercadolivre.projetointegrador.warehouse.service.validators.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,6 +33,9 @@ public class ValidatorsTest {
 
     @Mock
     private SectionRepository sectionRepository;
+
+    @Mock
+    private BatchRepository batchRepository;
 
 
     @Test
@@ -102,6 +104,26 @@ public class ValidatorsTest {
         InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
         SectionAndProductMatchValidator validator = new SectionAndProductMatchValidator(inboundOrder, sectionRepository);
+
+        assertDoesNotThrow(validator::Validate);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenHasDuplicatedBatch(){
+        Mockito.when(batchRepository.findAllByBatchNumberIn(Mockito.any())).thenReturn(List.of(new Batch()));
+        InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
+
+        BatchDuplicatedValidator validator = new BatchDuplicatedValidator(inboundOrder, batchRepository);
+
+        assertThrows(BatchAlreadyExists.class, validator::Validate);
+    }
+
+    @Test
+    public void shouldNotThrowExceptionWhenNotFindDuplicatedBatch(){
+        Mockito.when(batchRepository.findAllByBatchNumberIn(Mockito.any())).thenReturn(Collections.emptyList());
+        InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
+
+        BatchDuplicatedValidator validator = new BatchDuplicatedValidator(inboundOrder, batchRepository);
 
         assertDoesNotThrow(validator::Validate);
     }

@@ -2,28 +2,27 @@ package br.com.mercadolivre.projetointegrador.warehouse.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.service.BatchService;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.service.validators.BatchDuplicatedValidator;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class WarehouseService {
 
-    private final SectionRepository sectionRepository;
     private final WarehouseRepository warehouseRepository;
     private final BatchService batchService;
+    private final BatchRepository batchRepository;
     private final WarehouseValidatorExecutor warehouseValidatorExecutor;
 
     public Warehouse createWarehouse(Warehouse warehouse){
@@ -35,7 +34,11 @@ public class WarehouseService {
     }
 
     public List<Batch> saveBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
-        warehouseValidatorExecutor.executeValidators(inboundOrder);
+
+        warehouseValidatorExecutor.executeValidators(inboundOrder, List.of(
+            new BatchDuplicatedValidator(inboundOrder, batchRepository)
+        )
+        );
 
         List<Batch> addedBatches = new ArrayList<>();
 
@@ -52,9 +55,7 @@ public class WarehouseService {
         List<Batch> addedBatches = new ArrayList<>();
 
         for (Batch batch : inboundOrder.getBatches()) {
-
-                addedBatches.add(batch);
-                batchService.updateBatchByBatchNumber(batch);
+                addedBatches.add(batchService.updateBatchByBatchNumber(batch));
         }
         return addedBatches;
 

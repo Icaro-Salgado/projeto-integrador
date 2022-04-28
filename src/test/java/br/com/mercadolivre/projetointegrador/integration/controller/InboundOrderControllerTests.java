@@ -88,6 +88,49 @@ public class InboundOrderControllerTests {
     }
 
     @Test
+    public void TestIfDuplicatedInboundOrderIsCreated() throws Exception {
+        Section mockSection = integrationTestUtils.createSection();
+
+        Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
+        productRepository.save(productMock);
+
+        Batch mockedBatch = WarehouseTestUtils.getBatch1();
+        mockedBatch.setSection_id(mockSection.getId());
+        mockedBatch.setPrice(BigDecimal.valueOf(11.99));
+
+        Batch saved = batchRepository.save(mockedBatch);
+
+        CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
+                .builder()
+                .batch_number(saved.getBatchNumber())
+                .product_id(saved.getProduct().getId())
+                .seller_id(saved.getSeller_id())
+                .quantity(2)
+                .build();
+
+
+
+        InboundOrderDTO objPayload = InboundOrderDTO
+                .builder()
+                .orderNumber(1)
+                .batches(List.of(batchMock))
+                .sectionCode(saved.getSection_id())
+                .warehouseCode(mockSection.getWarehouse().getId())
+                .build();
+
+        String payload = new ObjectMapper().writeValueAsString(objPayload);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post(INBOUND_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(MockMvcResultMatchers.status().isConflict()).andReturn();
+
+
+    }
+
+    @Test
     public void TestIfInboundOrderIsUpdated() throws Exception {
         // SETUP
         Section mockSection = integrationTestUtils.createSection();

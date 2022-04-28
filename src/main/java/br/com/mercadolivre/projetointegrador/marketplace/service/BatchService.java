@@ -40,14 +40,13 @@ public class BatchService {
         batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
     }
 
-    public void updateBatchByBatchNumber(Batch updatedBatch){
+    public Batch updateBatchByBatchNumber(Batch updatedBatch){
         Integer batchNumber = updatedBatch.getBatchNumber();
         Batch batch = batchRepository
                 .findByBatchNumber(batchNumber)
                 .orElseThrow(() -> new NotFoundException("Lote com o número " + batchNumber + " não foi encontrado"));
 
-        batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
-
+        return batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
     }
 
     public void delete(Long id) throws NotFoundException {
