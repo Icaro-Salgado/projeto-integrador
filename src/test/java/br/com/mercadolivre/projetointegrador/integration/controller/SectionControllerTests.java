@@ -32,11 +32,9 @@ public class SectionControllerTests {
   @Autowired private MockMvc mockMvc;
   @Autowired private IntegrationTestUtils integrationTestUtils;
 
-
-    @Test
-    public void shouldReturnObjectContainingSection() throws Exception {
-        Section section = integrationTestUtils.createSection();
-
+  @Test
+  public void shouldReturnObjectContainingSection() throws Exception {
+    Section section = integrationTestUtils.createSection();
 
     mockMvc
         .perform(MockMvcRequestBuilders.get(SECTION_URL.concat("/{id}"), section.getId()))

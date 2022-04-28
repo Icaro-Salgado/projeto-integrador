@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AppUserMapper {
 
-    AppUserMapper INSTANCE = Mappers.getMapper(AppUserMapper.class);
+  AppUserMapper INSTANCE = Mappers.getMapper(AppUserMapper.class);
 
-    AppUser toModel(RegisterDTO newUser);
+  AppUser toModel(RegisterDTO newUser);
 }

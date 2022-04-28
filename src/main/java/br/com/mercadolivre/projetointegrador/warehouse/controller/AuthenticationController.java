@@ -25,30 +25,30 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
-    private final AuthenticationService authService;
+  private final AuthenticationManager authenticationManager;
+  private final TokenService tokenService;
+  private final AuthenticationService authService;
 
+  @PostMapping
+  public ResponseEntity<?> login(@RequestBody @Valid LoginDTO loginDTO) {
+    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+        new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
 
-    @PostMapping
-    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO loginDTO){
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
+    Authentication authentication =
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+    String token = tokenService.generateToken(authentication);
 
-        String token = tokenService.generateToken(authentication);
+    return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token).body(token);
+  }
 
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token).body(token);
+  @PostMapping("/register")
+  public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO registerDTO) {
+    AppUser created = authService.registerUser(AppUserMapper.INSTANCE.toModel(registerDTO));
 
+    if (created == null) {
+      return ResponseEntity.badRequest().build();
     }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO registerDTO){
-        AppUser created = authService.registerUser(AppUserMapper.INSTANCE.toModel(registerDTO));
-
-        if(created == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
 }

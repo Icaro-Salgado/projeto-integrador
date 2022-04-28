@@ -15,23 +15,23 @@ import java.util.Optional;
 @Service
 public class AuthenticationService implements UserDetailsService {
 
-    private final AppUserRepository appUserRepository;
-    private final PasswordEncoder passwordEncoder;
+  private final AppUserRepository appUserRepository;
+  private final PasswordEncoder passwordEncoder;
 
-    public AppUser registerUser(AppUser user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+  public AppUser registerUser(AppUser user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return appUserRepository.save(user);
+    return appUserRepository.save(user);
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    Optional<AppUser> userOptional = appUserRepository.findByEmail(username);
+
+    if (userOptional.isPresent()) {
+      return userOptional.get();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AppUser> userOptional = appUserRepository.findByEmail(username);
-
-        if(userOptional.isPresent()) {
-            return userOptional.get();
-        }
-
-        throw new UsernameNotFoundException("User not found");
-    }
+    throw new UsernameNotFoundException("User not found");
+  }
 }

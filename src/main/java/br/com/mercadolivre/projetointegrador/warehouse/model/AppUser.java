@@ -10,58 +10,59 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class AppUser implements UserDetails{
+public class AppUser implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = false, unique = true)
-    private String userName;
+  @Column(nullable = false, unique = true)
+  private String userName;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false)
-    @JsonIgnore
-    private String password;
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @Column(nullable = false)
+  @JsonIgnore
+  private String password;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
-    }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return new ArrayList<>();
+  }
 
-    @Override
-    public String getUsername() {
-        return this.getEmail();
-    }
+  @Override
+  public String getUsername() {
+    return this.getEmail();
+  }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }

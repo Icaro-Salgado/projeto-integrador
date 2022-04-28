@@ -25,25 +25,26 @@ public class InboundOrderController {
   private final InboundOrderMapper inboundOrderMapper;
   private final BatchAssembler assembler;
 
-    @PostMapping
-    public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(@RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
-        AppUser requestUser = (AppUser) authentication.getPrincipal();
-        InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
-        inboundOrderToSave.setManagerId(requestUser.getId());
+  @PostMapping
+  public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(
+      @RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
+    AppUser requestUser = (AppUser) authentication.getPrincipal();
+    InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
+    inboundOrderToSave.setManagerId(requestUser.getId());
 
-        List<Batch> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
+    List<Batch> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
 
-        return assembler.toCreatedResponse(savedBatches);
+    return assembler.toCreatedResponse(savedBatches);
   }
 
+  @PutMapping
+  public ResponseEntity<List<CreatedBatchDTO>> updateInboundOrder(
+      @RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
+    InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
+    AppUser requestUser = (AppUser) authentication.getPrincipal();
+    inboundOrderToUpdate.setManagerId(requestUser.getId());
+    List<Batch> updatedBatches = warehouseService.updateBatchInSection(inboundOrderToUpdate);
 
-    @PutMapping
-    public ResponseEntity<List<CreatedBatchDTO>> updateInboundOrder(@RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
-        InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
-        AppUser requestUser = (AppUser) authentication.getPrincipal();
-        inboundOrderToUpdate.setManagerId(requestUser.getId());
-        List<Batch> updatedBatches = warehouseService.updateBatchInSection(inboundOrderToUpdate);
-
-        return assembler.toCreatedResponse(updatedBatches);
+    return assembler.toCreatedResponse(updatedBatches);
   }
 }

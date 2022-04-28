@@ -19,40 +19,41 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private final TokenService tokenService;
-    private final AppUserRepository repository;
+  private final TokenService tokenService;
+  private final AppUserRepository repository;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = getTokenFromHeader(request);
-        String idFromToken = tokenService.isTokenValid(token);
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    String token = getTokenFromHeader(request);
+    String idFromToken = tokenService.isTokenValid(token);
 
-        if(idFromToken!= null) {
-            this.authenticate(Long.valueOf(idFromToken));
-        }
-
-
-        filterChain.doFilter(request, response);
+    if (idFromToken != null) {
+      this.authenticate(Long.valueOf(idFromToken));
     }
 
-    private String getTokenFromHeader(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
+    filterChain.doFilter(request, response);
+  }
 
-        if(token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
-            return "";
-        }
+  private String getTokenFromHeader(HttpServletRequest request) {
+    String token = request.getHeader("Authorization");
 
-        return token.replace( "Bearer ", "");
+    if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
+      return "";
     }
 
-    private void authenticate(Long userId){
-        Optional<AppUser> userOptional =repository.findById(userId);
+    return token.replace("Bearer ", "");
+  }
 
-        if(userOptional.isPresent()){
-            AppUser user = userOptional.get();
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+  private void authenticate(Long userId) {
+    Optional<AppUser> userOptional = repository.findById(userId);
 
-        }
+    if (userOptional.isPresent()) {
+      AppUser user = userOptional.get();
+      UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+          new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+      SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
     }
+  }
 }
