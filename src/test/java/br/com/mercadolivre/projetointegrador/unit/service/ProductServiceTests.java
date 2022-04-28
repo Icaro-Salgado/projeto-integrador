@@ -51,7 +51,8 @@ public class ProductServiceTests {
 
   @Test
   @DisplayName(
-      "Given an existing product, when call find method with id from that product, then return this one")
+      "Given an existing product, when call find method with id from that product, then return this"
+          + " one")
   public void shouldReturnProductById() throws NotFoundException {
 
     Mockito.when(productRepository.findById(Mockito.anyLong()))
@@ -75,7 +76,8 @@ public class ProductServiceTests {
 
   @Test
   @DisplayName(
-      "Given an valid id and valid updated information, when call updateProduct, then updateProduct must be called once.")
+      "Given an valid id and valid updated information, when call updateProduct, then updateProduct"
+          + " must be called once.")
   public void shouldUpdateProduct() throws NotFoundException {
 
     Product updatedProduct = new Product();

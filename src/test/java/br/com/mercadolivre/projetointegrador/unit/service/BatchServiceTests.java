@@ -33,7 +33,8 @@ public class BatchServiceTests {
 
   @Test
   @DisplayName(
-      "Given a valid batch with existing product, when call createBatch, then batchRepository.save should be called once;")
+      "Given a valid batch with existing product, when call createBatch, then batchRepository.save"
+          + " should be called once;")
   public void createBatchSuccessfully() throws NotFoundException, ProductAlreadyExists {
     Product product = new Product();
     product.setId(1L);
@@ -49,7 +50,8 @@ public class BatchServiceTests {
 
   @Test
   @DisplayName(
-      "Given a batch with non existing product, when call createBatch, then throws an NotFoundException(\"Produto não encontrado.\");")
+      "Given a batch with non existing product, when call createBatch, then throws an"
+          + " NotFoundException(\"Produto não encontrado.\");")
   public void failsToCreateBatchWithNonExistingProduct() {
     Product product = new Product();
     product.setId(1L);
@@ -67,7 +69,8 @@ public class BatchServiceTests {
 
   @Test
   @DisplayName(
-      "Given a list of batches containing 3 batches, when call findAll, then should return size equals 3")
+      "Given a list of batches containing 3 batches, when call findAll, then should return size"
+          + " equals 3")
   public void listAllExistingBatches() {
     List<Batch> batches = List.of(new Batch(), new Batch(), new Batch());
 
@@ -91,7 +94,8 @@ public class BatchServiceTests {
 
   @Test
   @DisplayName(
-      "Given an ID to non existing batch, when call findById, then throws an NotFoundException(\"Lote não encontrado\");")
+      "Given an ID to non existing batch, when call findById, then throws an"
+          + " NotFoundException(\"Lote não encontrado\");")
   public void throwsToNonExistingBatch() {
     Mockito.when(batchRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
@@ -123,7 +127,8 @@ public class BatchServiceTests {
 
   @Test
   @DisplayName(
-      "Given a non existing batch, when call updateBatch, then throws an NotFoundException(\"Lote não encontrado\");")
+      "Given a non existing batch, when call updateBatch, then throws an NotFoundException(\"Lote"
+          + " não encontrado\");")
   public void throwsWhenUpdateNonExistingBatch() {
     Batch updatedBatch = new Batch();
     Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.empty());
@@ -137,7 +142,8 @@ public class BatchServiceTests {
 
   @Test
   @DisplayName(
-      "Given a existing batch, when call deleteBatch, then should call batchRepository.delete once with this batch")
+      "Given a existing batch, when call deleteBatch, then should call batchRepository.delete once"
+          + " with this batch")
   public void deleteBatchById() throws NotFoundException {
     Batch batch = new Batch();
     Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
@@ -149,7 +155,8 @@ public class BatchServiceTests {
 
   @Test
   @DisplayName(
-      "Given a non existing batch, when call deleteBatch, then throws an NotFoundException(\"Lote não encontrado\");")
+      "Given a non existing batch, when call deleteBatch, then throws an NotFoundException(\"Lote"
+          + " não encontrado\");")
   public void throwsWhenDeleteNonExistingBatch() {
     Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.empty());
 
