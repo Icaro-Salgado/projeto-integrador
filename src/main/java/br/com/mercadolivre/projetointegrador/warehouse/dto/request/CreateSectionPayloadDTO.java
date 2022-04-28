@@ -8,12 +8,12 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class CreateSectionPayloadDTO {
 
     @NotNull

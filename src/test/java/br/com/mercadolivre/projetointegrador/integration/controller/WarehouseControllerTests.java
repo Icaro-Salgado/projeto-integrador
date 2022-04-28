@@ -20,12 +20,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ActiveProfiles(profiles = "test")
 public class WarehouseControllerTests {
 
+    private final String SECTION_URL = "/api/v1/warehouse";
+    ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
-    ObjectMapper objectMapper = new ObjectMapper();
-
-    private final String SECTION_URL = "/api/v1/warehouse";
 
     @Test
     public void shouldCreateNewWarehouse() throws Exception {

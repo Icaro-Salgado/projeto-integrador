@@ -9,7 +9,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 public class RequestLocationDTO {
 

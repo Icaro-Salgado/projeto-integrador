@@ -15,13 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.math.BigDecimal;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTests {
@@ -70,7 +67,7 @@ public class ProductServiceTests {
 
         Exception thrown = Assertions.assertThrows(
                 NotFoundException.class,
-                () ->  productService.findById(10L)
+                () -> productService.findById(10L)
         );
 
         Assertions.assertEquals("Produto não encontrado.", thrown.getMessage());
@@ -109,7 +106,7 @@ public class ProductServiceTests {
 
         Exception thrown = Assertions.assertThrows(
                 NotFoundException.class,
-                () ->  productService.delete(2L)
+                () -> productService.delete(2L)
         );
 
         Assertions.assertEquals("Produto não encontrado.", thrown.getMessage());

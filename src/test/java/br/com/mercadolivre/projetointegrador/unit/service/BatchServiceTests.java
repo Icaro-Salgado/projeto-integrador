@@ -59,7 +59,7 @@ public class BatchServiceTests {
 
         NotFoundException thrown = Assertions.assertThrows(
                 NotFoundException.class,
-                () ->  batchService.createBatch(batch)
+                () -> batchService.createBatch(batch)
         );
 
         Assertions.assertEquals("Produto não encontrado.", thrown.getMessage());
@@ -95,7 +95,7 @@ public class BatchServiceTests {
 
         NotFoundException thrown = Assertions.assertThrows(
                 NotFoundException.class,
-                () ->  batchService.findById(1L)
+                () -> batchService.findById(1L)
         );
 
         Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
@@ -129,7 +129,7 @@ public class BatchServiceTests {
 
         NotFoundException thrown = Assertions.assertThrows(
                 NotFoundException.class,
-                () ->  batchService.updateBatch(1L, updatedBatch)
+                () -> batchService.updateBatch(1L, updatedBatch)
         );
 
         Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
@@ -153,7 +153,7 @@ public class BatchServiceTests {
 
         NotFoundException thrown = Assertions.assertThrows(
                 NotFoundException.class,
-                () ->  batchService.delete(1L)
+                () -> batchService.delete(1L)
         );
 
         Assertions.assertEquals("Lote não encontrado", thrown.getMessage());

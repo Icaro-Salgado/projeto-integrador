@@ -2,7 +2,6 @@ package br.com.mercadolivre.projetointegrador.warehouse.mapper;
 
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.service.ProductService;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
@@ -19,7 +18,7 @@ public class InboundOrderMapper {
     @Autowired
     private ProductService productService;
 
-    public InboundOrder toModel(InboundOrderDTO inboundOrderDTO){
+    public InboundOrder toModel(InboundOrderDTO inboundOrderDTO) {
         List<CreateBatchPayloadDTO> batchPayloadDTOS = inboundOrderDTO.getBatches();
 
         List<Batch> batchList = batchPayloadDTOS.stream().map(dtoBatch -> {

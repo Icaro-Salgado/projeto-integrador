@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class BatchDuplicatedValidator implements WarehouseValidator{
+public class BatchDuplicatedValidator implements WarehouseValidator {
 
     private final InboundOrder inboundOrder;
     private final BatchRepository batchRepository;
-
 
 
     @Override
@@ -22,7 +21,7 @@ public class BatchDuplicatedValidator implements WarehouseValidator{
         List<Integer> batchesId = inboundOrder.getBatches().stream().map(Batch::getBatchNumber).collect(Collectors.toList());
         List<Batch> foundBatch = batchRepository.findAllByBatchNumberIn(batchesId);
 
-        if(!foundBatch.isEmpty()){
+        if (!foundBatch.isEmpty()) {
             List<Integer> numbersFound = foundBatch.stream().map(Batch::getBatchNumber).collect(Collectors.toList());
             String duplicatedNumbers = batchesId.stream().filter(numbersFound::contains).map(Object::toString).collect(Collectors.joining());
 

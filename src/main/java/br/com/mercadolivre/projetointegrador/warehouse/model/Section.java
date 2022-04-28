@@ -14,7 +14,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Section {

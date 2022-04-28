@@ -25,26 +25,26 @@ public class WarehouseService {
     private final BatchRepository batchRepository;
     private final WarehouseValidatorExecutor warehouseValidatorExecutor;
 
-    public Warehouse createWarehouse(Warehouse warehouse){
+    public Warehouse createWarehouse(Warehouse warehouse) {
         return warehouseRepository.save(warehouse);
     }
 
-    public Warehouse findWarehouse(final Long id){
+    public Warehouse findWarehouse(final Long id) {
         return warehouseRepository.findById(id).orElseThrow(() -> new WarehouseNotFoundException("Warehouse não encontrada."));
     }
 
     public List<Batch> saveBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
 
         warehouseValidatorExecutor.executeValidators(inboundOrder, List.of(
-            new BatchDuplicatedValidator(inboundOrder, batchRepository)
-        )
+                new BatchDuplicatedValidator(inboundOrder, batchRepository)
+                )
         );
 
         List<Batch> addedBatches = new ArrayList<>();
 
         for (Batch batch : inboundOrder.getBatches()) {
-                addedBatches.add(batch);
-                batchService.createBatch(batch);
+            addedBatches.add(batch);
+            batchService.createBatch(batch);
         }
 
         return addedBatches;
@@ -55,7 +55,7 @@ public class WarehouseService {
         List<Batch> addedBatches = new ArrayList<>();
 
         for (Batch batch : inboundOrder.getBatches()) {
-                addedBatches.add(batchService.updateBatchByBatchNumber(batch));
+            addedBatches.add(batchService.updateBatchByBatchNumber(batch));
         }
         return addedBatches;
 

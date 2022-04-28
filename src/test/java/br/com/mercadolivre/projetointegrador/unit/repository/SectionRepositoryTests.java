@@ -23,7 +23,7 @@ public class SectionRepositoryTests {
     private SectionRepository sectionRepository;
 
     @Test
-    public void shouldReturnErrorWhenReceiveInvalidTemperature(){
+    public void shouldReturnErrorWhenReceiveInvalidTemperature() {
         Section mockedSection = SectionServiceTestUtils.getMockSection();
         mockedSection.setId(null);
         mockedSection.setMinimumTemperature(BigDecimal.valueOf(12.3303));
