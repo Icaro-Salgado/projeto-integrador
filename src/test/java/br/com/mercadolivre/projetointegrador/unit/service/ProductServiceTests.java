@@ -71,7 +71,7 @@ public class ProductServiceTests {
     Exception thrown =
         Assertions.assertThrows(NotFoundException.class, () -> productService.findById(10L));
 
-    Assertions.assertEquals("Produto "+ 10 + " não encontrado.", thrown.getMessage());
+    Assertions.assertEquals("Produto " + 10 + " não encontrado.", thrown.getMessage());
   }
 
   @Test
