@@ -1,11 +1,11 @@
-package br.com.mercadolivre.projetointegrador.marketplace.controller;
+package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
-import br.com.mercadolivre.projetointegrador.marketplace.dto.CreateOrUpdateProductDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.InvalidCategoryException;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
-import br.com.mercadolivre.projetointegrador.marketplace.service.ProductService;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateOrUpdateProductDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

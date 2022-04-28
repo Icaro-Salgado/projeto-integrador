@@ -1,8 +1,8 @@
 package br.com.mercadolivre.projetointegrador.unit.validators;
 
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.*;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;

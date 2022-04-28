@@ -1,4 +1,4 @@
-package br.com.mercadolivre.projetointegrador.marketplace.exception;
+package br.com.mercadolivre.projetointegrador.warehouse.exception.db;
 
 public class NotFoundException extends RuntimeException {
 

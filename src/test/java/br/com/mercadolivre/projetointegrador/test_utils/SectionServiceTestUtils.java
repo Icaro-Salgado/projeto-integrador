@@ -1,6 +1,6 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 

@@ -1,11 +1,11 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
-import br.com.mercadolivre.projetointegrador.marketplace.exception.ProductAlreadyExists;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
-import br.com.mercadolivre.projetointegrador.marketplace.service.ProductService;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

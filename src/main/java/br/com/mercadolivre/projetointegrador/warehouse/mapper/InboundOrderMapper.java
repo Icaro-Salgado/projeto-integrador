@@ -1,8 +1,8 @@
 package br.com.mercadolivre.projetointegrador.warehouse.mapper;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
-import br.com.mercadolivre.projetointegrador.marketplace.service.ProductService;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;

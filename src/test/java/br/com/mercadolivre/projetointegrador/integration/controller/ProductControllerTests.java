@@ -1,9 +1,9 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;

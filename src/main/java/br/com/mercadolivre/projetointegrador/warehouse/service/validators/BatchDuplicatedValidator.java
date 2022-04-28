@@ -1,7 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service.validators;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.BatchAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import lombok.RequiredArgsConstructor;

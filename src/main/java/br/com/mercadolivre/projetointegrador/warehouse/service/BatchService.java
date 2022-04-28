@@ -1,8 +1,8 @@
-package br.com.mercadolivre.projetointegrador.marketplace.service;
+package br.com.mercadolivre.projetointegrador.warehouse.service;
 
-import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
