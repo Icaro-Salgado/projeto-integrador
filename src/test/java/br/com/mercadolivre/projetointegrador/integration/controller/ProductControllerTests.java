@@ -2,19 +2,28 @@ package br.com.mercadolivre.projetointegrador.integration.controller;
 
 
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
+import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
+import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +33,7 @@ import java.util.Optional;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
+@WithMockUser
 public class ProductControllerTests {
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -32,6 +42,12 @@ public class ProductControllerTests {
     private MockMvc mockMvc;
     @Autowired
     private ProductRepository productRepository;
+
+
+    @Autowired
+    private BatchRepository batchRepository;
+    @Autowired
+    private IntegrationTestUtils integrationTestUtils;
 
     @BeforeEach
     public void beforeEach() {

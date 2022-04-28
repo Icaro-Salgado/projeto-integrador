@@ -38,8 +38,10 @@ public class InboundOrderController {
 
 
     @PutMapping
-    public ResponseEntity<List<CreatedBatchDTO>> updateInboundOrder(@RequestBody InboundOrderDTO dto) throws NotFoundException {
+    public ResponseEntity<List<CreatedBatchDTO>> updateInboundOrder(@RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
         InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
+        AppUser requestUser = (AppUser) authentication.getPrincipal();
+        inboundOrderToUpdate.setManagerId(requestUser.getId());
 
         List<Batch> updatedBatches = warehouseService.updateBatchInSection(inboundOrderToUpdate);
 

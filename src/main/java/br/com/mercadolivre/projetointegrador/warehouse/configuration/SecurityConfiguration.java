@@ -27,6 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final AuthenticationService authenticationService;
     private final TokenService tokenService;
     private final AppUserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -39,6 +40,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.inMemoryAuthentication().passwordEncoder(passwordEncoder)
+                .withUser("springTest")
+                .password(passwordEncoder.encode("usertest"))
+                .roles("USER");
     }
 
     @Override
