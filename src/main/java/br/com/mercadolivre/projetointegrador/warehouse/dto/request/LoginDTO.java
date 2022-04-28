@@ -12,7 +12,7 @@ public class LoginDTO {
 
     @NotNull
     @NotBlank
-    private final String user;
+    private final String email;
 
     @NotNull
     @NotBlank
