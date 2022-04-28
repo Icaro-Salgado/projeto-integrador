@@ -22,50 +22,46 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WithMockUser
 public class WarehouseControllerTests {
 
-    private final String SECTION_URL = "/api/v1/warehouse";
-    ObjectMapper objectMapper = new ObjectMapper();
-    @Autowired
-    private MockMvc mockMvc;
+  private final String SECTION_URL = "/api/v1/warehouse";
+  ObjectMapper objectMapper = new ObjectMapper();
+  @Autowired private MockMvc mockMvc;
 
-    @Test
-    public void shouldCreateNewWarehouse() throws Exception {
-        CreateWarehousePayloadDTO payloadDTO = new CreateWarehousePayloadDTO(
-                "Warehouse test",
-                new RequestLocationDTO(
-                        "Brazil",
-                        "SP",
-                        "Osasco",
-                        "Bomfim",
-                        "Av. das Nações Unidas",
-                        3003,
-                        6233200
-                )
-        );
+  @Test
+  public void shouldCreateNewWarehouse() throws Exception {
+    CreateWarehousePayloadDTO payloadDTO =
+        new CreateWarehousePayloadDTO(
+            "Warehouse test",
+            new RequestLocationDTO(
+                "Brazil", "SP", "Osasco", "Bomfim", "Av. das Nações Unidas", 3003, 6233200));
 
-        mockMvc.perform(MockMvcRequestBuilders.post(SECTION_URL)
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(SECTION_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(payloadDTO))
-        ).andExpect(MockMvcResultMatchers.status().isCreated());
-    }
+                .content(objectMapper.writeValueAsString(payloadDTO)))
+        .andExpect(MockMvcResultMatchers.status().isCreated());
+  }
 
-    @Test
-    public void shouldReturn4XXWhenReceiveInvalidValue() throws Exception {
-        CreateWarehousePayloadDTO payloadDTO = new CreateWarehousePayloadDTO(
-                "Warehouse test",
-                RequestLocationDTO.builder()
-                        .country("Brazil")
-                        .state("SP")
-                        .city("Osasco")
-                        .neighborhood("Bomfim")
-                        .street("Av. das Nações Unidas")
-                        .number(3003)
-                        .build()
-        );
+  @Test
+  public void shouldReturn4XXWhenReceiveInvalidValue() throws Exception {
+    CreateWarehousePayloadDTO payloadDTO =
+        new CreateWarehousePayloadDTO(
+            "Warehouse test",
+            RequestLocationDTO.builder()
+                .country("Brazil")
+                .state("SP")
+                .city("Osasco")
+                .neighborhood("Bomfim")
+                .street("Av. das Nações Unidas")
+                .number(3003)
+                .build());
 
-        mockMvc.perform(MockMvcRequestBuilders.post(SECTION_URL)
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(SECTION_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(payloadDTO))
-        ).andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
-    }
+                .content(objectMapper.writeValueAsString(payloadDTO)))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+  }
 }

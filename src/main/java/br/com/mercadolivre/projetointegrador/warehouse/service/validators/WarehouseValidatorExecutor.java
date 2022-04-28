@@ -11,18 +11,15 @@ import java.util.List;
 @Component
 public class WarehouseValidatorExecutor {
 
-    @Autowired
-    private SectionRepository sectionRepository;
+  @Autowired private SectionRepository sectionRepository;
 
-    @Autowired
-    private WarehouseRepository warehouseRepository;
+  @Autowired private WarehouseRepository warehouseRepository;
 
+  public void executeValidators(InboundOrder inboundOrder) {
+    List<WarehouseValidator> validators = buildValidators(inboundOrder);
 
-    public void executeValidators(InboundOrder inboundOrder) {
-        List<WarehouseValidator> validators = buildValidators(inboundOrder);
-
-        validators.forEach(WarehouseValidator::Validate);
-    }
+    validators.forEach(WarehouseValidator::Validate);
+  }
 
     public void executeValidators(InboundOrder inboundOrder, List<WarehouseValidator> additionalValidators) {
         List<WarehouseValidator> validators = new java.util.ArrayList<>(buildValidators(inboundOrder));

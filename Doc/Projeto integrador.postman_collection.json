@@ -1,163 +1,163 @@
 {
-	"info": {
-		"_postman_id": "96f37bbe-f110-4882-bcc0-5ed6318f327c",
-		"name": "Projeto integrador",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "List batch products",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
-			"name": "Create warehouse",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"warehouse 1\",\n    \"location\": {\n        \"country\": \"Brazil\",\n        \"state\": \"SP\",\n        \"city\": \"Osasco\",\n        \"neighborhood\": \"Bomfim\",\n        \"street\": \"Av. das Nações Unidas\",\n        \"number\": 3003,\n        \"zipcode\": 6233200\n    }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/v1/warehouse",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"warehouse"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create section",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"warehouseId\": 1,\n    \"managerId\": 1,\n    \"minimumTemperature\": 12.22,\n    \"maximumTemperature\": 20.00,\n    \"capacity\": 1000,\n    \"productCategory\": \"FS\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/v1/section",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"section"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create product",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\":  \"Alface\",\n    \"category\": \"FF\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/v1/fresh-products",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"fresh-products"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update inboudOrder",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderNumber\": 999,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 888,\n            \"quantity\": 2000,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/v1/inboundorder",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"inboundorder"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create inboudOrder",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderNumber\": 999,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 2,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 12,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/v1/inboundorder",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"inboundorder"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "96f37bbe-f110-4882-bcc0-5ed6318f327c",
+    "name": "Projeto integrador",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List batch products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": null
+      },
+      "response": []
+    },
+    {
+      "name": "Create warehouse",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"warehouse 1\",\n    \"location\": {\n        \"country\": \"Brazil\",\n        \"state\": \"SP\",\n        \"city\": \"Osasco\",\n        \"neighborhood\": \"Bomfim\",\n        \"street\": \"Av. das Nações Unidas\",\n        \"number\": 3003,\n        \"zipcode\": 6233200\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/v1/warehouse",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "warehouse"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create section",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"warehouseId\": 1,\n    \"managerId\": 1,\n    \"minimumTemperature\": 12.22,\n    \"maximumTemperature\": 20.00,\n    \"capacity\": 1000,\n    \"productCategory\": \"FS\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/v1/section",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "section"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create product",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\":  \"Alface\",\n    \"category\": \"FF\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/v1/fresh-products",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "fresh-products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update inboudOrder",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"orderNumber\": 999,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 888,\n            \"quantity\": 2000,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/v1/inboundorder",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "inboundorder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create inboudOrder",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"orderNumber\": 999,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 2,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 12,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/v1/inboundorder",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "inboundorder"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }

@@ -19,12 +19,14 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/warehouse")
 public class WarehouseController {
 
-    private final WarehouseService warehouseService;
+  private final WarehouseService warehouseService;
 
-    @PostMapping
-    public ResponseEntity<?> createWarehouse(@RequestBody @Valid CreateWarehousePayloadDTO payloadDTO) {
-        Warehouse created = warehouseService.createWarehouse(WarehouseMapper.INSTANCE.createDtoToModel(payloadDTO));
+  @PostMapping
+  public ResponseEntity<?> createWarehouse(
+      @RequestBody @Valid CreateWarehousePayloadDTO payloadDTO) {
+    Warehouse created =
+        warehouseService.createWarehouse(WarehouseMapper.INSTANCE.createDtoToModel(payloadDTO));
 
-        return new ResponseEntity<>(created.getId(), HttpStatus.CREATED);
-    }
+    return new ResponseEntity<>(created.getId(), HttpStatus.CREATED);
+  }
 }

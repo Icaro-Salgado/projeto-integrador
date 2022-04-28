@@ -36,7 +36,6 @@ import java.util.List;
 @ContextConfiguration
 @WithMockCustomUser
 public class InboundOrderControllerTests {
-
     private final String INBOUND_URL = "/api/v1/inboundorder";
     @Autowired
     private MockMvc mockMvc;

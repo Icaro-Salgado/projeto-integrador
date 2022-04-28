@@ -21,37 +21,36 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class WarehouseTest {
 
-//    @Mock
-//    private InboundOrder inboundOrder;
+  @Mock private BatchService batchService;
 
-    @Mock
-    private BatchService batchService;
+  @Mock private SectionRepository sectionRepository;
 
-    @Mock
-    private SectionRepository sectionRepository;
+  @Mock private WarehouseValidatorExecutor warehouseValidatorExecutor;
 
-    @Mock
-    private WarehouseValidatorExecutor warehouseValidatorExecutor;
+  @InjectMocks private WarehouseService warehouseService;
 
-    @InjectMocks
-    private WarehouseService warehouseService;
+  @Test
+  public void TestIfSaveBatchInSection() throws NotFoundException {
 
-//    TODO: TestIfSaveBatchInSection
-//    @Test
-//    public void TestIfSaveBatchInSection() {
-//
-//    }
+    List<Batch> expected = WarehouseTestUtils.getBatch();
 
-    @Test
-    public void TestIfupdateBatchInSection() throws NotFoundException {
+    Mockito.doNothing().when(batchService).createBatch(Mockito.any());
 
-        List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
+    List<Batch> result = warehouseService.saveBatchInSection(WarehouseTestUtils.getInboundOrder());
+    assertEquals(expected, result);
+  }
 
-        Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any())).thenAnswer(i -> i.getArgument(0));
+  @Test
+  public void TestIfupdateBatchInSection() throws NotFoundException {
 
-        List<Batch> result = warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
+    List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
 
+    Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any()))
+        .thenAnswer(i -> i.getArgument(0));
 
-        assertEquals(expected, result);
-    }
+    List<Batch> result =
+        warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
+
+    assertEquals(expected, result);
+  }
 }

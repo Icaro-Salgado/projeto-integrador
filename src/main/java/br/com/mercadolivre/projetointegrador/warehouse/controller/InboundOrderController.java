@@ -21,9 +21,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InboundOrderController {
 
-    private final WarehouseService warehouseService;
-    private final InboundOrderMapper inboundOrderMapper;
-    private final BatchAssembler assembler;
+  private final WarehouseService warehouseService;
+  private final InboundOrderMapper inboundOrderMapper;
+  private final BatchAssembler assembler;
 
     @PostMapping
     public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(@RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
@@ -34,7 +34,7 @@ public class InboundOrderController {
         List<Batch> savedBatches = warehouseService.saveBatchInSection(inboundOrderToSave);
 
         return assembler.toCreatedResponse(savedBatches);
-    }
+  }
 
 
     @PutMapping
@@ -42,9 +42,8 @@ public class InboundOrderController {
         InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
         AppUser requestUser = (AppUser) authentication.getPrincipal();
         inboundOrderToUpdate.setManagerId(requestUser.getId());
-
         List<Batch> updatedBatches = warehouseService.updateBatchInSection(inboundOrderToUpdate);
 
         return assembler.toCreatedResponse(updatedBatches);
-    }
+  }
 }

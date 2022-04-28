@@ -15,5 +15,5 @@ public class InboundOrder {
     private Long sectionCode;
     private Long managerId;
 
-    private List<Batch> batches;
+  private List<Batch> batches;
 }
