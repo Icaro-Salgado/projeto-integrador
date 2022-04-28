@@ -58,7 +58,7 @@ Para testar você precisa ter
 #### Para testar
 
 ```shell
-curl -X POST http://localhost:8080/api/v1/inboundorder -H "Content-Type: application/json" -d '{
+curl -X PUT http://localhost:8080/api/v1/inboundorder -H "Content-Type: application/json" -d '{
   "orderNumber": 999,
   "warehouseCode": 1,
   "sectionCode": 1,    
@@ -85,7 +85,7 @@ Para testar você precisa ter
 
 ## ENDPOINTS AUXILIARES CRIADOS
 
-### <span style="color:blue">(PUT)</span> /api/v1/warehouse
+### <span style="color:blue">(POST)</span> /api/v1/warehouse
 
 #### Para testar
 
@@ -106,7 +106,7 @@ curl -X POST http://localhost:8080/api/v1/warehouse -H "Content-Type: applicatio
 #### Observações
 Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você deve ter um _Warehouse_ e uma _Section_
 
-### <span style="color:blue">(PUT)</span> /api/v1/section
+### <span style="color:blue">(POST)</span> /api/v1/section
 
 #### Para testar
 
@@ -123,7 +123,7 @@ curl -X POST http://localhost:8080/api/v1/section -H "Content-Type: application/
 #### Observações
 Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você deve ter um _Warehouse_ e uma _Section_
 
-### <span style="color:blue">(PUT)</span> /api/v1/fresh-products
+### <span style="color:blue">(POST)</span> /api/v1/fresh-products
 
 #### Para testar
 
