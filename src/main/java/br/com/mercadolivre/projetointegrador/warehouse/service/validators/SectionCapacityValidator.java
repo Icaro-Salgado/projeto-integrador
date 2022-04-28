@@ -40,6 +40,8 @@ public class SectionCapacityValidator implements WarehouseValidator {
             .size();
 
     if (sectionCapacity < batchesQty + order.getBatches().size())
-      throw new SectionTotalCapacityException("A capacidade do setor foi atingida!");
+      throw new SectionTotalCapacityException("A capacidade do setor foi atingida! A ordem de registro contem " +
+              order.getBatches().size() +  " lotes, mas o setor comporta apenas " + (sectionCapacity - batchesQty) +
+              " novos lotes");
   }
 }
