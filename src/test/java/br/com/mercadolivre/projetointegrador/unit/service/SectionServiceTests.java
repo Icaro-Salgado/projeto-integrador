@@ -20,24 +20,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class SectionServiceTests {
 
-  @Mock private SectionRepository sectionRepository;
+    @Mock private SectionRepository sectionRepository;
 
-  @InjectMocks private SectionService service;
+    @InjectMocks private SectionService service;
 
-  @Test
-  public void shouldReturnSectionById() {
-    Section expected = SectionServiceTestUtils.getMockSection();
-    Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.of(expected));
+    @Test
+    public void shouldReturnSectionById() {
+        Section expected = SectionServiceTestUtils.getMockSection();
+        Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.of(expected));
 
-    Section result = service.findSectionById(1L);
+        Section result = service.findSectionById(1L);
 
-    assertEquals(expected, result);
-  }
+        assertEquals(expected, result);
+    }
 
-  @Test
-  public void shouldThrowErrorWhenNotFoundById() {
-    Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+    @Test
+    public void shouldThrowErrorWhenNotFoundById() {
+        Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
-    assertThrows(PropertyNotFoundException.class, () -> service.findSectionById(2L));
-  }
+        assertThrows(PropertyNotFoundException.class, () -> service.findSectionById(2L));
+    }
 }

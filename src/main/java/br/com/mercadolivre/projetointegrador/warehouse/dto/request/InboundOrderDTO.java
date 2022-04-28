@@ -10,8 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InboundOrderDTO {
-  private Integer orderNumber;
-  private Long warehouseCode;
-  private Long sectionCode;
-  private List<CreateBatchPayloadDTO> batches;
+    private Integer orderNumber;
+    private Long warehouseCode;
+    private Long sectionCode;
+    private List<CreateBatchPayloadDTO> batches;
 }

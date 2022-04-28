@@ -12,30 +12,32 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SectionService {
 
-  private final SectionRepository sectionRepository;
+    private final SectionRepository sectionRepository;
 
-  private final WarehouseService warehouseService;
+    private final WarehouseService warehouseService;
 
-  public Section findSectionById(Long id) {
-    return sectionRepository
-        .findById(id)
-        .orElseThrow(
-            () -> new PropertyNotFoundException("Section not found")); // TODO: replace exception
-  }
+    public Section findSectionById(Long id) {
+        return sectionRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new PropertyNotFoundException(
+                                        "Section not found")); // TODO: replace exception
+    }
 
-  public Section createSection(CreateSectionPayloadDTO payload) {
-    Warehouse warehouse = warehouseService.findWarehouse(payload.getWarehouseId());
+    public Section createSection(CreateSectionPayloadDTO payload) {
+        Warehouse warehouse = warehouseService.findWarehouse(payload.getWarehouseId());
 
-    Section newSection =
-        Section.builder()
-            .warehouse(warehouse)
-            .manager(payload.getManagerId().toString())
-            .minimumTemperature(payload.getMinimumTemperature())
-            .maximumTemperature(payload.getMaximumTemperature())
-            .product_category(payload.getProductCategory())
-            .capacity(payload.getCapacity())
-            .build();
+        Section newSection =
+                Section.builder()
+                        .warehouse(warehouse)
+                        .manager(payload.getManagerId().toString())
+                        .minimumTemperature(payload.getMinimumTemperature())
+                        .maximumTemperature(payload.getMaximumTemperature())
+                        .product_category(payload.getProductCategory())
+                        .capacity(payload.getCapacity())
+                        .build();
 
-    return sectionRepository.save(newSection);
-  }
+        return sectionRepository.save(newSection);
+    }
 }

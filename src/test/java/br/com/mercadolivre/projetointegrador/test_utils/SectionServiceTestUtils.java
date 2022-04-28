@@ -9,19 +9,19 @@ import java.util.Calendar;
 
 public class SectionServiceTestUtils {
 
-  public static Section getMockSection() {
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(2022, Calendar.JANUARY, 1);
+    public static Section getMockSection() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2022, Calendar.JANUARY, 1);
 
-    return Section.builder()
-        .id(1L)
-        .warehouse(new Warehouse())
-        .manager("m1")
-        .maximumTemperature(BigDecimal.valueOf(25.33))
-        .minimumTemperature(BigDecimal.valueOf(15.33))
-        .product_category(CategoryEnum.FS)
-        .capacity(100)
-        .createdAt(calendar.getTime())
-        .build();
-  }
+        return Section.builder()
+                .id(1L)
+                .warehouse(new Warehouse())
+                .manager("m1")
+                .maximumTemperature(BigDecimal.valueOf(25.33))
+                .minimumTemperature(BigDecimal.valueOf(15.33))
+                .product_category(CategoryEnum.FS)
+                .capacity(100)
+                .createdAt(calendar.getTime())
+                .build();
+    }
 }

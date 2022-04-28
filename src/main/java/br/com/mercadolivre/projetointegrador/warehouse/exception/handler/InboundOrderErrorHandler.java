@@ -13,18 +13,18 @@ import java.time.Instant;
 @RestControllerAdvice
 public class InboundOrderErrorHandler {
 
-  @ExceptionHandler(value = BatchAlreadyExists.class)
-  public ResponseEntity<StandardError> handleDuplicatedBatch(
-      BatchAlreadyExists ex, HttpServletRequest request) {
-    StandardError err = new StandardError();
-    HttpStatus notModified = HttpStatus.CONFLICT;
+    @ExceptionHandler(value = BatchAlreadyExists.class)
+    public ResponseEntity<StandardError> handleDuplicatedBatch(
+            BatchAlreadyExists ex, HttpServletRequest request) {
+        StandardError err = new StandardError();
+        HttpStatus notModified = HttpStatus.CONFLICT;
 
-    err.setTimestamp(Instant.now());
-    err.setStatus(notModified.value());
-    err.setError(err.getError());
-    err.setMessage(ex.getMessage());
-    err.setPath(request.getRequestURI());
+        err.setTimestamp(Instant.now());
+        err.setStatus(notModified.value());
+        err.setError(err.getError());
+        err.setMessage(ex.getMessage());
+        err.setPath(request.getRequestURI());
 
-    return ResponseEntity.status(notModified).body(err);
-  }
+        return ResponseEntity.status(notModified).body(err);
+    }
 }

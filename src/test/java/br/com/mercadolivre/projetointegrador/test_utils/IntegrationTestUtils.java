@@ -14,34 +14,40 @@ import java.math.BigDecimal;
 @Component
 public class IntegrationTestUtils {
 
-  @Autowired private WarehouseRepository warehouseRepository;
+    @Autowired private WarehouseRepository warehouseRepository;
 
-  @Autowired private SectionRepository sectionRepository;
+    @Autowired private SectionRepository sectionRepository;
 
-  public Warehouse createWarehouse() {
-    Warehouse warehouse =
-        Warehouse.builder()
-            .name("Mocked warehouse")
-            .location(
-                new Location(
-                    "Brazil", "SP", "Osasco", "Bomfim", "Av. das Nações Unidas", 3003, 6233200))
-            .build();
+    public Warehouse createWarehouse() {
+        Warehouse warehouse =
+                Warehouse.builder()
+                        .name("Mocked warehouse")
+                        .location(
+                                new Location(
+                                        "Brazil",
+                                        "SP",
+                                        "Osasco",
+                                        "Bomfim",
+                                        "Av. das Nações Unidas",
+                                        3003,
+                                        6233200))
+                        .build();
 
-    return warehouseRepository.save(warehouse);
-  }
+        return warehouseRepository.save(warehouse);
+    }
 
-  public Section createSection() {
-    Warehouse warehouse = createWarehouse();
+    public Section createSection() {
+        Warehouse warehouse = createWarehouse();
 
-    return sectionRepository.save(
-        new Section(
-            null,
-            warehouse,
-            "m1",
-            BigDecimal.valueOf(33.33),
-            BigDecimal.ZERO,
-            1000,
-            CategoryEnum.FS,
-            null));
-  }
+        return sectionRepository.save(
+                new Section(
+                        null,
+                        warehouse,
+                        "m1",
+                        BigDecimal.valueOf(33.33),
+                        BigDecimal.ZERO,
+                        1000,
+                        CategoryEnum.FS,
+                        null));
+    }
 }

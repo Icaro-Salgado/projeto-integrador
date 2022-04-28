@@ -7,7 +7,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface BatchMapper {
-  BatchMapper INSTANCE = Mappers.getMapper(BatchMapper.class);
+    BatchMapper INSTANCE = Mappers.getMapper(BatchMapper.class);
 
-  CreatedBatchDTO toCreatedDTO(Batch batch);
+    CreatedBatchDTO toCreatedDTO(Batch batch);
 }

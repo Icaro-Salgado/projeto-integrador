@@ -18,14 +18,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class SectionAssembler {
 
-  public ResponseEntity<SectionResponseDTO> toResponse(Section entity, HttpStatus status) {
-    SectionResponseDTO dto = SectionMapper.INSTANCE.toDto(entity);
+    public ResponseEntity<SectionResponseDTO> toResponse(Section entity, HttpStatus status) {
+        SectionResponseDTO dto = SectionMapper.INSTANCE.toDto(entity);
 
-    Links links =
-        Links.of(linkTo(methodOn(SectionController.class).findById(entity.getId())).withSelfRel());
+        Links links =
+                Links.of(
+                        linkTo(methodOn(SectionController.class).findById(entity.getId()))
+                                .withSelfRel());
 
-    dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
+        dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 
-    return new ResponseEntity<>(dto, status);
-  }
+        return new ResponseEntity<>(dto, status);
+    }
 }

@@ -13,46 +13,46 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductService {
 
-  ProductRepository productRepository;
+    ProductRepository productRepository;
 
-  public void createProduct(Product product) throws ProductAlreadyExists {
-    Product existingProduct = findByName(product.getName());
-    if (existingProduct != null) {
-      throw new ProductAlreadyExists("Produto com o nome informado já cadastrado.");
-    }
-    productRepository.save(product);
-  }
-
-  public Product findById(Long id) throws NotFoundException {
-    Product product = productRepository.findById(id).orElse(null);
-
-    if (product == null) {
-      throw new NotFoundException("Produto não encontrado.");
+    public void createProduct(Product product) throws ProductAlreadyExists {
+        Product existingProduct = findByName(product.getName());
+        if (existingProduct != null) {
+            throw new ProductAlreadyExists("Produto com o nome informado já cadastrado.");
+        }
+        productRepository.save(product);
     }
 
-    return product;
-  }
+    public Product findById(Long id) throws NotFoundException {
+        Product product = productRepository.findById(id).orElse(null);
 
-  public Product findByName(String name) {
-    return productRepository.findByName(name);
-  }
+        if (product == null) {
+            throw new NotFoundException("Produto não encontrado.");
+        }
 
-  public void updateProduct(Long id, Product updatedProduct) throws NotFoundException {
-    Product oldProduct = findById(id);
+        return product;
+    }
 
-    oldProduct.setCategory(updatedProduct.getCategory());
-    oldProduct.setName(updatedProduct.getName());
+    public Product findByName(String name) {
+        return productRepository.findByName(name);
+    }
 
-    productRepository.save(oldProduct);
-  }
+    public void updateProduct(Long id, Product updatedProduct) throws NotFoundException {
+        Product oldProduct = findById(id);
 
-  public List<Product> findAll() {
-    return productRepository.findAll();
-  }
+        oldProduct.setCategory(updatedProduct.getCategory());
+        oldProduct.setName(updatedProduct.getName());
 
-  public void delete(Long id) throws NotFoundException {
-    Product product = findById(id);
+        productRepository.save(oldProduct);
+    }
 
-    productRepository.delete(product);
-  }
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    public void delete(Long id) throws NotFoundException {
+        Product product = findById(id);
+
+        productRepository.delete(product);
+    }
 }

@@ -25,60 +25,57 @@ import java.math.BigDecimal;
 @ActiveProfiles(profiles = "test")
 public class SectionControllerTests {
 
-  private final String SECTION_URL = "/api/v1/section";
-  ObjectMapper objectMapper = new ObjectMapper();
-  @Autowired private MockMvc mockMvc;
-  @Autowired private IntegrationTestUtils integrationTestUtils;
+    private final String SECTION_URL = "/api/v1/section";
+    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired private MockMvc mockMvc;
+    @Autowired private IntegrationTestUtils integrationTestUtils;
 
-  @Test
-  public void shouldReturnObjectContainingSection() throws Exception {
-    Section section = integrationTestUtils.createSection();
+    @Test
+    public void shouldReturnObjectContainingSection() throws Exception {
+        Section section = integrationTestUtils.createSection();
 
-    mockMvc
-        .perform(MockMvcRequestBuilders.get(SECTION_URL.concat("/{id}"), section.getId()))
-        .andExpect(MockMvcResultMatchers.status().isOk());
-  }
+        mockMvc.perform(MockMvcRequestBuilders.get(SECTION_URL.concat("/{id}"), section.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 
-  @Test
-  public void shouldCreateNewSection() throws Exception {
-    Warehouse warehouse = integrationTestUtils.createWarehouse();
+    @Test
+    public void shouldCreateNewSection() throws Exception {
+        Warehouse warehouse = integrationTestUtils.createWarehouse();
 
-    CreateSectionPayloadDTO payloadDTO =
-        new CreateSectionPayloadDTO(
-            warehouse.getId(),
-            1L,
-            BigDecimal.valueOf(12.22),
-            BigDecimal.valueOf(20.18),
-            1000,
-            CategoryEnum.FS);
+        CreateSectionPayloadDTO payloadDTO =
+                new CreateSectionPayloadDTO(
+                        warehouse.getId(),
+                        1L,
+                        BigDecimal.valueOf(12.22),
+                        BigDecimal.valueOf(20.18),
+                        1000,
+                        CategoryEnum.FS);
 
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.post(SECTION_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(payloadDTO)))
-        .andExpect(MockMvcResultMatchers.status().isCreated());
-  }
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post(SECTION_URL)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(payloadDTO)))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
 
-  @Test
-  public void shouldReturn4XXWhenReceiveInvalidValue() throws Exception {
-    Warehouse warehouse = integrationTestUtils.createWarehouse();
+    @Test
+    public void shouldReturn4XXWhenReceiveInvalidValue() throws Exception {
+        Warehouse warehouse = integrationTestUtils.createWarehouse();
 
-    CreateSectionPayloadDTO payloadDTO =
-        new CreateSectionPayloadDTO(
-            warehouse.getId(),
-            1L,
-            BigDecimal.valueOf(12.223),
-            BigDecimal.valueOf(20.18),
-            1000,
-            CategoryEnum.FS);
+        CreateSectionPayloadDTO payloadDTO =
+                new CreateSectionPayloadDTO(
+                        warehouse.getId(),
+                        1L,
+                        BigDecimal.valueOf(12.223),
+                        BigDecimal.valueOf(20.18),
+                        1000,
+                        CategoryEnum.FS);
 
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.post(SECTION_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(payloadDTO)))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.minimumTemperature").isNotEmpty());
-  }
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post(SECTION_URL)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(payloadDTO)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.minimumTemperature").isNotEmpty());
+    }
 }

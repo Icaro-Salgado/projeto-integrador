@@ -15,36 +15,38 @@ import java.util.stream.Collectors;
 @Component
 public class InboundOrderMapper {
 
-  @Autowired private ProductService productService;
+    @Autowired private ProductService productService;
 
-  public InboundOrder toModel(InboundOrderDTO inboundOrderDTO) {
-    List<CreateBatchPayloadDTO> batchPayloadDTOS = inboundOrderDTO.getBatches();
+    public InboundOrder toModel(InboundOrderDTO inboundOrderDTO) {
+        List<CreateBatchPayloadDTO> batchPayloadDTOS = inboundOrderDTO.getBatches();
 
-    List<Batch> batchList =
-        batchPayloadDTOS.stream()
-            .map(
-                dtoBatch -> {
-                  Product product = productService.findById(dtoBatch.getProduct_id());
+        List<Batch> batchList =
+                batchPayloadDTOS.stream()
+                        .map(
+                                dtoBatch -> {
+                                    Product product =
+                                            productService.findById(dtoBatch.getProduct_id());
 
-                  return Batch.builder()
-                      .product(product)
-                      .section_id(inboundOrderDTO.getSectionCode())
-                      .seller_id(dtoBatch.getSeller_id())
-                      .price(dtoBatch.getPrice())
-                      .order_number(inboundOrderDTO.getOrderNumber())
-                      .batchNumber(dtoBatch.getBatch_number())
-                      .quantity(dtoBatch.getQuantity())
-                      .manufacturing_datetime(dtoBatch.getManufacturing_datetime())
-                      .due_date(dtoBatch.getDue_date())
-                      .build();
-                })
-            .collect(Collectors.toList());
+                                    return Batch.builder()
+                                            .product(product)
+                                            .section_id(inboundOrderDTO.getSectionCode())
+                                            .seller_id(dtoBatch.getSeller_id())
+                                            .price(dtoBatch.getPrice())
+                                            .order_number(inboundOrderDTO.getOrderNumber())
+                                            .batchNumber(dtoBatch.getBatch_number())
+                                            .quantity(dtoBatch.getQuantity())
+                                            .manufacturing_datetime(
+                                                    dtoBatch.getManufacturing_datetime())
+                                            .due_date(dtoBatch.getDue_date())
+                                            .build();
+                                })
+                        .collect(Collectors.toList());
 
-    return InboundOrder.builder()
-        .orderNumber(inboundOrderDTO.getOrderNumber())
-        .warehouseCode(inboundOrderDTO.getWarehouseCode())
-        .sectionCode(inboundOrderDTO.getSectionCode())
-        .batches(batchList)
-        .build();
-  }
+        return InboundOrder.builder()
+                .orderNumber(inboundOrderDTO.getOrderNumber())
+                .warehouseCode(inboundOrderDTO.getWarehouseCode())
+                .sectionCode(inboundOrderDTO.getSectionCode())
+                .batches(batchList)
+                .build();
+    }
 }

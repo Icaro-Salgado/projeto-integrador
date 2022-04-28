@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ErrorDTO {
 
-  private String error;
-  private String message;
+    private String error;
+    private String message;
 }

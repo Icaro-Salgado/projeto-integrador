@@ -13,63 +13,65 @@ import java.util.Optional;
 @AllArgsConstructor
 public class BatchService {
 
-  BatchRepository batchRepository;
-  ProductService productService;
+    BatchRepository batchRepository;
+    ProductService productService;
 
-  public void createBatch(Batch batch) throws NotFoundException {
-    productService.findById(batch.getProduct().getId());
+    public void createBatch(Batch batch) throws NotFoundException {
+        productService.findById(batch.getProduct().getId());
 
-    batchRepository.save(batch);
-  }
-
-  public List<Batch> findAll() {
-    return batchRepository.findAll();
-  }
-
-  public Batch findById(Long id) throws NotFoundException {
-    Optional<Batch> optionalBatch = batchRepository.findById(id);
-    if (optionalBatch.isEmpty()) {
-      throw new NotFoundException("Lote não encontrado");
+        batchRepository.save(batch);
     }
-    return optionalBatch.get();
-  }
 
-  public void updateBatch(Long id, Batch updatedBatch) throws NotFoundException {
-    Batch batch = findById(id);
-    batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
-  }
+    public List<Batch> findAll() {
+        return batchRepository.findAll();
+    }
 
-  public Batch updateBatchByBatchNumber(Batch updatedBatch) {
-    Integer batchNumber = updatedBatch.getBatchNumber();
-    Batch batch =
-        batchRepository
-            .findByBatchNumber(batchNumber)
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        "Lote com o número " + batchNumber + " não foi encontrado"));
+    public Batch findById(Long id) throws NotFoundException {
+        Optional<Batch> optionalBatch = batchRepository.findById(id);
+        if (optionalBatch.isEmpty()) {
+            throw new NotFoundException("Lote não encontrado");
+        }
+        return optionalBatch.get();
+    }
 
-    return batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
-  }
+    public void updateBatch(Long id, Batch updatedBatch) throws NotFoundException {
+        Batch batch = findById(id);
+        batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
+    }
 
-  public void delete(Long id) throws NotFoundException {
-    Batch batch = findById(id);
+    public Batch updateBatchByBatchNumber(Batch updatedBatch) {
+        Integer batchNumber = updatedBatch.getBatchNumber();
+        Batch batch =
+                batchRepository
+                        .findByBatchNumber(batchNumber)
+                        .orElseThrow(
+                                () ->
+                                        new NotFoundException(
+                                                "Lote com o número "
+                                                        + batchNumber
+                                                        + " não foi encontrado"));
 
-    batchRepository.delete(batch);
-  }
+        return batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
+    }
 
-  private Batch buildUpdatedBatch(Batch batch, Batch updatedBatch) {
+    public void delete(Long id) throws NotFoundException {
+        Batch batch = findById(id);
 
-    batch.setBatchNumber(updatedBatch.getBatchNumber());
-    batch.setPrice(updatedBatch.getPrice());
-    batch.setDue_date(updatedBatch.getDue_date());
-    batch.setManufacturing_datetime(updatedBatch.getManufacturing_datetime());
-    batch.setProduct(updatedBatch.getProduct());
-    batch.setOrder_number(updatedBatch.getOrder_number());
-    batch.setSection_id(updatedBatch.getSection_id());
-    batch.setSeller_id(updatedBatch.getSeller_id());
-    batch.setQuantity(updatedBatch.getQuantity());
+        batchRepository.delete(batch);
+    }
 
-    return batch;
-  }
+    private Batch buildUpdatedBatch(Batch batch, Batch updatedBatch) {
+
+        batch.setBatchNumber(updatedBatch.getBatchNumber());
+        batch.setPrice(updatedBatch.getPrice());
+        batch.setDue_date(updatedBatch.getDue_date());
+        batch.setManufacturing_datetime(updatedBatch.getManufacturing_datetime());
+        batch.setProduct(updatedBatch.getProduct());
+        batch.setOrder_number(updatedBatch.getOrder_number());
+        batch.setSection_id(updatedBatch.getSection_id());
+        batch.setSeller_id(updatedBatch.getSeller_id());
+        batch.setQuantity(updatedBatch.getQuantity());
+
+        return batch;
+    }
 }

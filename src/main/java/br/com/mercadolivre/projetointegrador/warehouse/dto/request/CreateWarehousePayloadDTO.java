@@ -13,6 +13,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class CreateWarehousePayloadDTO {
 
-  @NotNull @NotBlank private String name;
-  @Valid private RequestLocationDTO location;
+    @NotNull @NotBlank private String name;
+    @Valid private RequestLocationDTO location;
 }

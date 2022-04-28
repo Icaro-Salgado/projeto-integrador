@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface SectionMapper {
 
-  SectionMapper INSTANCE = Mappers.getMapper(SectionMapper.class);
+    SectionMapper INSTANCE = Mappers.getMapper(SectionMapper.class);
 
-  SectionResponseDTO toDto(Section section);
+    SectionResponseDTO toDto(Section section);
 }

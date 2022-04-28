@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class BatchController {
 
-  BatchService batchService;
+    BatchService batchService;
 
-  @GetMapping("/api/v1/batches/{id}")
-  public ResponseEntity<Batch> findBatchById(@PathVariable Long id) throws NotFoundException {
-    return ResponseEntity.ok(batchService.findById(id));
-  }
+    @GetMapping("/api/v1/batches/{id}")
+    public ResponseEntity<Batch> findBatchById(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(batchService.findById(id));
+    }
 }
