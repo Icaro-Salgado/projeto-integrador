@@ -39,7 +39,7 @@ public class SectionCapacityValidator implements WarehouseValidator {
             .collect(Collectors.toList())
             .size();
 
-    if (sectionCapacity < productsQty)
+    if (sectionCapacity < batchesQty + order.getBatches().size())
       throw new SectionTotalCapacityException("A capacidade do setor foi atingida!");
   }
 }

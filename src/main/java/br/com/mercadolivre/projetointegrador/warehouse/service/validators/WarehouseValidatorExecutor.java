@@ -16,11 +16,10 @@ public class WarehouseValidatorExecutor {
 
   @Autowired private WarehouseRepository warehouseRepository;
 
+  @Autowired private BatchRepository batchRepository;
+
   public void executeValidators(InboundOrder inboundOrder) {
     List<WarehouseValidator> validators = buildValidators(inboundOrder);
-    
-    @Autowired
-    private BatchRepository batchRepository;
 
     validators.forEach(WarehouseValidator::Validate);
   }
