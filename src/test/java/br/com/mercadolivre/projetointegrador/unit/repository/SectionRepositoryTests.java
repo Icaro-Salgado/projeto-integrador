@@ -21,15 +21,15 @@ import java.math.BigDecimal;
 @ActiveProfiles(profiles = "test")
 public class SectionRepositoryTests {
 
-    @Autowired
-    private SectionRepository sectionRepository;
+  @Autowired private SectionRepository sectionRepository;
 
-    @Test
-    public void shouldReturnErrorWhenReceiveInvalidTemperature() {
-        Section mockedSection = SectionServiceTestUtils.getMockSection();
-        mockedSection.setId(null);
-        mockedSection.setMinimumTemperature(BigDecimal.valueOf(12.3303));
+  @Test
+  public void shouldReturnErrorWhenReceiveInvalidTemperature() {
+    Section mockedSection = SectionServiceTestUtils.getMockSection();
+    mockedSection.setId(null);
+    mockedSection.setMinimumTemperature(BigDecimal.valueOf(12.3303));
 
-        Assertions.assertThrows(ConstraintViolationException.class, () -> sectionRepository.save(mockedSection));
-    }
+    Assertions.assertThrows(
+        ConstraintViolationException.class, () -> sectionRepository.save(mockedSection));
+  }
 }

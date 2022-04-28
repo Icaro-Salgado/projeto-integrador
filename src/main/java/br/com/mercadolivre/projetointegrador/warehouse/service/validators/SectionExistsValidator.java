@@ -6,22 +6,20 @@ import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionReposit
 
 import java.util.Optional;
 
-
 public class SectionExistsValidator implements WarehouseValidator {
 
-    private final Long sectionId;
-    private final SectionRepository sectionRepository;
+  private final Long sectionId;
+  private final SectionRepository sectionRepository;
 
-    public SectionExistsValidator(Long s, SectionRepository r) {
-        this.sectionId = s;
-        this.sectionRepository = r;
-    }
+  public SectionExistsValidator(Long s, SectionRepository r) {
+    this.sectionId = s;
+    this.sectionRepository = r;
+  }
 
+  @Override
+  public void Validate() {
+    Optional<Section> sectionRegistered = sectionRepository.findById(sectionId);
 
-    @Override
-    public void Validate() {
-        Optional<Section> sectionRegistered = sectionRepository.findById(sectionId);
-
-        if (sectionRegistered.isEmpty()) throw new SectionNotFoundException("Section Not Found!");
-    }
+    if (sectionRegistered.isEmpty()) throw new SectionNotFoundException("Section Not Found!");
+  }
 }

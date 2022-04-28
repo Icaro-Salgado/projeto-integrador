@@ -21,40 +21,36 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class WarehouseTest {
 
-    @Mock
-    private BatchService batchService;
+  @Mock private BatchService batchService;
 
-    @Mock
-    private SectionRepository sectionRepository;
+  @Mock private SectionRepository sectionRepository;
 
-    @Mock
-    private WarehouseValidatorExecutor warehouseValidatorExecutor;
+  @Mock private WarehouseValidatorExecutor warehouseValidatorExecutor;
 
-    @InjectMocks
-    private WarehouseService warehouseService;
+  @InjectMocks private WarehouseService warehouseService;
 
+  @Test
+  public void TestIfSaveBatchInSection() throws NotFoundException {
 
-    @Test
-    public void TestIfSaveBatchInSection() throws NotFoundException {
+    List<Batch> expected = WarehouseTestUtils.getBatch();
 
-        List<Batch> expected = WarehouseTestUtils.getBatch();
+    Mockito.doNothing().when(batchService).createBatch(Mockito.any());
 
-        Mockito.doNothing().when(batchService).createBatch(Mockito.any());
+    List<Batch> result = warehouseService.saveBatchInSection(WarehouseTestUtils.getInboundOrder());
+    assertEquals(expected, result);
+  }
 
-        List<Batch> result = warehouseService.saveBatchInSection(WarehouseTestUtils.getInboundOrder());
-        assertEquals(expected, result);
-    }
+  @Test
+  public void TestIfupdateBatchInSection() throws NotFoundException {
 
-    @Test
-    public void TestIfupdateBatchInSection() throws NotFoundException {
+    List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
 
+    Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any()))
+        .thenAnswer(i -> i.getArgument(0));
 
-        List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
+    List<Batch> result =
+        warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
 
-        Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any())).thenAnswer(i -> i.getArgument(0));
-
-        List<Batch> result = warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
-
-        assertEquals(expected, result);
-    }
+    assertEquals(expected, result);
+  }
 }

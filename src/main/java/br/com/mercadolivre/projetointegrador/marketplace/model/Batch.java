@@ -9,7 +9,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueBatchAndSeller", columnNames = {"seller_id", "batchNumber"})})
+@Table(
+    uniqueConstraints = {
+      @UniqueConstraint(
+          name = "UniqueBatchAndSeller",
+          columnNames = {"seller_id", "batchNumber"})
+    })
 @Getter
 @Setter
 @Builder
@@ -20,41 +25,29 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 public class Batch {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+  @ManyToOne
+  @JoinColumn(name = "product_id", nullable = false)
+  private Product product;
 
-    @Column
-    private Long section_id;
+  @Column private Long section_id;
 
-    @Column
-    private Long seller_id;
+  @Column private Long seller_id;
 
-    @Column
-    private BigDecimal price;
+  @Column private BigDecimal price;
 
-    @Column
-    private Integer order_number;
+  @Column private Integer order_number;
 
-    @Column
-    private Integer batchNumber;
+  @Column private Integer batchNumber;
 
-    @Column
-    private Integer quantity;
+  @Column private Integer quantity;
 
-    @Column
-    private LocalDate manufacturing_datetime;
+  @Column private LocalDate manufacturing_datetime;
 
-    @Column
-    private LocalDate due_date;
+  @Column private LocalDate due_date;
 
-    @Column
-    @CreatedDate
-    private LocalDate created_at;
-
-
+  @Column @CreatedDate private LocalDate created_at;
 }

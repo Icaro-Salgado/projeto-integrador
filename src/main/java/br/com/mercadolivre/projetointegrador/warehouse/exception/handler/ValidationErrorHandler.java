@@ -15,17 +15,17 @@ import java.util.Map;
 @ControllerAdvice
 public class ValidationErrorHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleError(MethodArgumentNotValidException ex) {
-        List<ObjectError> errorsMessages = ex.getBindingResult().getAllErrors();
-        Map<String, String> errors = new HashMap<>();
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<Map<String, String>> handleError(MethodArgumentNotValidException ex) {
+    List<ObjectError> errorsMessages = ex.getBindingResult().getAllErrors();
+    Map<String, String> errors = new HashMap<>();
 
-        errorsMessages.forEach(err -> {
-            String fieldName = ((FieldError) err).getField();
-            errors.put(fieldName, err.getDefaultMessage());
+    errorsMessages.forEach(
+        err -> {
+          String fieldName = ((FieldError) err).getField();
+          errors.put(fieldName, err.getDefaultMessage());
         });
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-
-    }
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
 }

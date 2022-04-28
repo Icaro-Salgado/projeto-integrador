@@ -12,24 +12,23 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class CreateOrUpdateProductDTO {
 
-    @NotEmpty(message = "nome do produto é obrigatório.")
-    private String name;
+  @NotEmpty(message = "nome do produto é obrigatório.")
+  private String name;
 
-    private String category;
+  private String category;
 
-    public Product mountProduct() throws InvalidCategoryException {
-        boolean validCategory = CategoryEnum.contains(category);
+  public Product mountProduct() throws InvalidCategoryException {
+    boolean validCategory = CategoryEnum.contains(category);
 
-        if (!validCategory) {
-            throw new InvalidCategoryException("Verifique a categoria informada.");
-        }
-
-        Product product = new Product();
-        product.setName(name);
-        product.setCategory(CategoryEnum.valueOf(category));
-        product.setCreated_at(null);
-
-        return product;
+    if (!validCategory) {
+      throw new InvalidCategoryException("Verifique a categoria informada.");
     }
 
+    Product product = new Product();
+    product.setName(name);
+    product.setCategory(CategoryEnum.valueOf(category));
+    product.setCreated_at(null);
+
+    return product;
+  }
 }

@@ -8,7 +8,8 @@ import java.util.stream.Collectors;
 
 public class ResponseUtils {
 
-    public static Map<String, String> parseLinksToMap(Links links) {
-        return links.stream().collect(Collectors.toMap((link) -> link.getRel().toString(), Link::getHref));
-    }
+  public static Map<String, String> parseLinksToMap(Links links) {
+    return links.stream()
+        .collect(Collectors.toMap((link) -> link.getRel().toString(), Link::getHref));
+  }
 }

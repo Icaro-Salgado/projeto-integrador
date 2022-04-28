@@ -13,15 +13,16 @@ import java.time.Instant;
 @ControllerAdvice
 public class WarehouseErrorHandler {
 
-    @ExceptionHandler(value = WarehouseNotFoundException.class)
-    protected ResponseEntity<StandardError> handleWarehouseNotFoundException(WarehouseNotFoundException e, HttpServletRequest request) {
-        StandardError err = new StandardError();
+  @ExceptionHandler(value = WarehouseNotFoundException.class)
+  protected ResponseEntity<StandardError> handleWarehouseNotFoundException(
+      WarehouseNotFoundException e, HttpServletRequest request) {
+    StandardError err = new StandardError();
 
-        err.setTimestamp(Instant.now());
-        err.setStatus(HttpStatus.NOT_FOUND.value());
-        err.setError("Warehouse not found");
-        err.setMessage(e.getMessage());
-        err.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
-    }
+    err.setTimestamp(Instant.now());
+    err.setStatus(HttpStatus.NOT_FOUND.value());
+    err.setError("Warehouse not found");
+    err.setMessage(e.getMessage());
+    err.setPath(request.getRequestURI());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+  }
 }
