@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.exception.handler;
 
-import br.com.mercadolivre.projetointegrador.warehouse.exception.StandardError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -17,7 +16,7 @@ import java.util.Map;
 public class ValidationErrorHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleError(MethodArgumentNotValidException ex){
+    public ResponseEntity<Map<String, String>> handleError(MethodArgumentNotValidException ex) {
         List<ObjectError> errorsMessages = ex.getBindingResult().getAllErrors();
         Map<String, String> errors = new HashMap<>();
 

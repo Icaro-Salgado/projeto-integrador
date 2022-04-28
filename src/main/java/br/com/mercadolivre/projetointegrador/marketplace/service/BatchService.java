@@ -3,7 +3,6 @@ package br.com.mercadolivre.projetointegrador.marketplace.service;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +36,27 @@ public class BatchService {
 
     public void updateBatch(Long id, Batch updatedBatch) throws NotFoundException {
         Batch batch = findById(id);
+        batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
+    }
 
-        batch.setBatch_number(updatedBatch.getBatch_number());
+    public Batch updateBatchByBatchNumber(Batch updatedBatch) {
+        Integer batchNumber = updatedBatch.getBatchNumber();
+        Batch batch = batchRepository
+                .findByBatchNumber(batchNumber)
+                .orElseThrow(() -> new NotFoundException("Lote com o número " + batchNumber + " não foi encontrado"));
+
+        return batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
+    }
+
+    public void delete(Long id) throws NotFoundException {
+        Batch batch = findById(id);
+
+        batchRepository.delete(batch);
+    }
+
+    private Batch buildUpdatedBatch(Batch batch, Batch updatedBatch) {
+
+        batch.setBatchNumber(updatedBatch.getBatchNumber());
         batch.setPrice(updatedBatch.getPrice());
         batch.setDue_date(updatedBatch.getDue_date());
         batch.setManufacturing_datetime(updatedBatch.getManufacturing_datetime());
@@ -48,12 +66,6 @@ public class BatchService {
         batch.setSeller_id(updatedBatch.getSeller_id());
         batch.setQuantity(updatedBatch.getQuantity());
 
-        batchRepository.save(batch);
-    }
-
-    public void delete(Long id) throws NotFoundException {
-        Batch batch = findById(id);
-
-        batchRepository.delete(batch);
+        return batch;
     }
 }

@@ -1,11 +1,11 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import lombok.*;
 
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

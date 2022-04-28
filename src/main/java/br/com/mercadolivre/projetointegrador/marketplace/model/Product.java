@@ -4,17 +4,18 @@ import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@EqualsAndHashCode
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
 
     @Id

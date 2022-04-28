@@ -6,7 +6,6 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +20,7 @@ public class IntegrationTestUtils {
     @Autowired
     private SectionRepository sectionRepository;
 
-    public Warehouse createWarehouse(){
+    public Warehouse createWarehouse() {
         Warehouse warehouse = Warehouse.builder()
                 .name("Mocked warehouse")
                 .location(
@@ -39,7 +38,7 @@ public class IntegrationTestUtils {
         return warehouseRepository.save(warehouse);
     }
 
-    public Section createSection(){
+    public Section createSection() {
         Warehouse warehouse = createWarehouse();
 
         return sectionRepository.save(

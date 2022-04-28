@@ -16,7 +16,7 @@ import java.time.Instant;
 public class SectionErrorHandler {
 
     @ExceptionHandler(value = SectionNotFoundException.class)
-    protected ResponseEntity<StandardError> handleSectionNotFoundException(SectionNotFoundException e, HttpServletRequest request){
+    protected ResponseEntity<StandardError> handleSectionNotFoundException(SectionNotFoundException e, HttpServletRequest request) {
 
         StandardError err = new StandardError();
         HttpStatus notFound = HttpStatus.NOT_FOUND;
@@ -30,30 +30,30 @@ public class SectionErrorHandler {
     }
 
     @ExceptionHandler(value = SectionTotalCapacityException.class)
-    protected ResponseEntity<StandardError> handleSectionTotalCapacityException(SectionTotalCapacityException e, HttpServletRequest request){
+    protected ResponseEntity<StandardError> handleSectionTotalCapacityException(SectionTotalCapacityException e, HttpServletRequest request) {
         StandardError err = new StandardError();
-        HttpStatus notModified= HttpStatus.NOT_MODIFIED;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
 
         err.setTimestamp(Instant.now());
-        err.setStatus(notModified.value());
+        err.setStatus(status.value());
         err.setError("Section Capacity is already Full");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
-        return ResponseEntity.status(notModified).body(err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(value = SectionDoesNotMatchWithProductException.class)
-    protected ResponseEntity<StandardError> handleSectionDoesNotMatchWithProductException(SectionDoesNotMatchWithProductException e, HttpServletRequest request){
+    protected ResponseEntity<StandardError> handleSectionDoesNotMatchWithProductException(SectionDoesNotMatchWithProductException e, HttpServletRequest request) {
 
         StandardError err = new StandardError();
-        HttpStatus notModified= HttpStatus.NOT_MODIFIED;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
 
         err.setTimestamp(Instant.now());
-        err.setStatus(notModified.value());
+        err.setStatus(status.value());
         err.setError("Section does not match with product category");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
-        return ResponseEntity.status(notModified).body(err);
+        return ResponseEntity.status(status).body(err);
     }
 
 

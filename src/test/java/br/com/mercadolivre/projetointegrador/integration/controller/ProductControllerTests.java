@@ -15,9 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootTest
@@ -26,15 +26,12 @@ import java.util.Optional;
 @ActiveProfiles(profiles = "test")
 public class ProductControllerTests {
 
+    ObjectMapper objectMapper = new ObjectMapper();
+    Product fakeProduct;
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ProductRepository productRepository;
-
-    ObjectMapper objectMapper = new ObjectMapper();
-
-    Product fakeProduct;
 
     @BeforeEach
     public void beforeEach() {
@@ -50,10 +47,43 @@ public class ProductControllerTests {
         productToCreate.setName(productToCreate.getName().concat("new product"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(productToCreate))
-                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productToCreate))
+        )
                 .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+    }
+
+    @Test
+    @DisplayName("ProductController - POST - /api/v1/fresh-products")
+    public void testCreateProductWithDuplicatedName() throws Exception {
+        Product productToCreate = fakeProduct;
+        productToCreate.setName(productToCreate.getName().concat("duplicated"));
+        productRepository.save(productToCreate);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productToCreate))
+        )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").isNotEmpty())
+                .andReturn();
+    }
+
+    @Test
+    @DisplayName("ProductController - POST - /api/v1/fresh-products")
+    public void testCreateProductWithInvalidCategory() throws Exception {
+        Map<String, Object> productMap = Map.of(
+                "name", "mocked product",
+                "category", "invalid"
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productMap))
+        )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").isNotEmpty())
                 .andReturn();
     }
 
@@ -81,7 +111,7 @@ public class ProductControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct))
         )
-        .andExpect(MockMvcResultMatchers.status().isNoContent()).andReturn();
+                .andExpect(MockMvcResultMatchers.status().isNoContent()).andReturn();
 
         Optional<Product> productDeleted = productRepository.findById(created.getId());
         Assertions.assertFalse(productDeleted.isEmpty());
@@ -98,7 +128,7 @@ public class ProductControllerTests {
 
         productRepository.save(fakeProduct);
         mockMvc.perform(MockMvcRequestBuilders.
-                        get("/api/v1/fresh-products"))
+                get("/api/v1/fresh-products"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty()).andReturn();
@@ -110,7 +140,7 @@ public class ProductControllerTests {
         Product newProduct = productRepository.save(fakeProduct);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/{id}", newProduct.getId()))
-            .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         Optional<Product> productDeleted = productRepository.findById(newProduct.getId());
         Assertions.assertTrue(productDeleted.isEmpty());

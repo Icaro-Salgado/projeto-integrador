@@ -12,9 +12,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class SectionServiceTests {
@@ -27,7 +28,7 @@ public class SectionServiceTests {
 
 
     @Test
-    public void shouldReturnSectionById(){
+    public void shouldReturnSectionById() {
         Section expected = SectionServiceTestUtils.getMockSection();
         Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.of(expected));
 
@@ -38,7 +39,7 @@ public class SectionServiceTests {
     }
 
     @Test
-    public void shouldThrowErrorWhenNotFoundById(){
+    public void shouldThrowErrorWhenNotFoundById() {
         Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.empty());
 
         assertThrows(PropertyNotFoundException.class, () -> service.findSectionById(2L));
