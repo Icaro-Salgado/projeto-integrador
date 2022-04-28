@@ -46,7 +46,7 @@ curl -X POST http://localhost:8080/api/v1/inboundorder -H "Content-Type: applica
         "due_date": "2022-06-01"        
       }    
     ]
-}",
+}'
 ```
 #### Observações 
 Para testar você precisa ter
@@ -76,7 +76,7 @@ curl -X POST http://localhost:8080/api/v1/inboundorder -H "Content-Type: applica
         "due_date": "2022-06-01"        
       }    
     ]
-}',
+}'
 ```
 
 #### Observações
@@ -104,7 +104,7 @@ curl -X POST http://localhost:8080/api/v1/warehouse -H "Content-Type: applicatio
     "number": 3003,
     "zipcode": 6233200
   }
-}',
+}'
 ```
 #### Observações
 Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você deve ter um _Warehouse_ e uma _Section_
