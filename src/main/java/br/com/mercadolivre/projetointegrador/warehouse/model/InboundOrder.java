@@ -13,6 +13,7 @@ public class InboundOrder {
     private Integer orderNumber;
     private Long warehouseCode;
     private Long sectionCode;
+    private Long managerId;
 
     private List<Batch> batches;
 }

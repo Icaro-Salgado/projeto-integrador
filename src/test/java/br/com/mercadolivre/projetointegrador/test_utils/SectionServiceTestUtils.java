@@ -17,7 +17,7 @@ public class SectionServiceTestUtils {
                 .builder()
                 .id(1L)
                 .warehouse(new Warehouse())
-                .manager("m1")
+                .managerId(1L)
                 .maximumTemperature(BigDecimal.valueOf(25.33))
                 .minimumTemperature(BigDecimal.valueOf(15.33))
                 .product_category(CategoryEnum.FS)

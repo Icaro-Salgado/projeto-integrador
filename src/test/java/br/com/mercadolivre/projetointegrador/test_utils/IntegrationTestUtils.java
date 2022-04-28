@@ -45,7 +45,7 @@ public class IntegrationTestUtils {
                 new Section(
                         null,
                         warehouse,
-                        "m1",
+                        1L,
                         BigDecimal.valueOf(33.33),
                         BigDecimal.ZERO,
                         1000,

@@ -29,7 +29,7 @@ public class Section {
     private Warehouse warehouse;
 
     @Column
-    private String manager; // TODO: change to entity
+    private Long managerId; // TODO: change to entity
 
     @Column(nullable = false, name = "maximum_temperature")
     @Digits(integer = 3, fraction = 2)

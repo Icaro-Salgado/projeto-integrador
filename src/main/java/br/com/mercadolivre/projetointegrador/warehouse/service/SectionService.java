@@ -25,7 +25,7 @@ public class SectionService {
 
         Section newSection = Section.builder()
                 .warehouse(warehouse)
-                .manager(payload.getManagerId().toString())
+                .managerId(payload.getManagerId())
                 .minimumTemperature(payload.getMinimumTemperature())
                 .maximumTemperature(payload.getMaximumTemperature())
                 .product_category(payload.getProductCategory())
