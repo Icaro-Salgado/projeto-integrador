@@ -20,7 +20,7 @@ public class WarehouseErrorHandler {
 
     err.setTimestamp(Instant.now());
     err.setStatus(HttpStatus.NOT_FOUND.value());
-    err.setError("Warehouse not found");
+    err.setError("Armazém não encontrado");
     err.setMessage(e.getMessage());
     err.setPath(request.getRequestURI());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);

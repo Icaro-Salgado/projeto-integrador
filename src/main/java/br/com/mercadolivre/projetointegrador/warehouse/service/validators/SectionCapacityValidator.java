@@ -22,13 +22,13 @@ public class SectionCapacityValidator implements WarehouseValidator {
     Section orderSection =
         sectionRepository
             .findById(order.getSectionCode())
-            .orElseThrow(() -> new SectionNotFoundException("Section Not Found!"));
+            .orElseThrow(() -> new SectionNotFoundException("Setor não encontrado!"));
     Integer sectionCapacity = orderSection.getCapacity();
 
     Integer productsQty =
         order.getBatches().stream().map(Batch::getQuantity).reduce(0, Integer::sum);
 
     if (sectionCapacity < productsQty)
-      throw new SectionTotalCapacityException("The Section capacity has been reached!!");
+      throw new SectionTotalCapacityException("A capacidade do setor foi atingida!");
   }
 }
