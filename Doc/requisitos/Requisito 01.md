@@ -30,7 +30,6 @@
 
 ```shell
 curl -X POST http://localhost:8080/api/v1/inboundorder -H "Content-Type: application/json" -d '{
-{
   "orderNumber": 999,
   "warehouseCode": 1,
   "sectionCode": 1,    
@@ -60,7 +59,6 @@ Para testar você precisa ter
 
 ```shell
 curl -X POST http://localhost:8080/api/v1/inboundorder -H "Content-Type: application/json" -d '{
-{
   "orderNumber": 999,
   "warehouseCode": 1,
   "sectionCode": 1,    
@@ -93,7 +91,6 @@ Para testar você precisa ter
 
 ```shell
 curl -X POST http://localhost:8080/api/v1/warehouse -H "Content-Type: application/json" -d '{
-{
   "name": "warehouse 1",
   "location": {
     "country": "Brazil",
@@ -115,7 +112,6 @@ Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você
 
 ```shell
 curl -X POST http://localhost:8080/api/v1/section -H "Content-Type: application/json" -d '{
-{
   "warehouseId": 1,
   "managerId": 1,
   "minimumTemperature": 12.22,
@@ -133,7 +129,6 @@ Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você
 
 ```shell
 curl -X POST http://localhost:8080/api/v1/fresh-products -H "Content-Type: application/json" -d '{
-{
     "name":  "Alface",
     "category": "FF"
 }'
