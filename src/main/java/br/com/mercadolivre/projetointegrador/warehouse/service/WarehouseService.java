@@ -35,19 +35,13 @@ public class WarehouseService {
     }
 
     public List<Batch> saveBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
-        //TODO: validar inboundOrder
+        warehouseValidatorExecutor.executeValidators(inboundOrder);
 
         List<Batch> addedBatches = new ArrayList<>();
 
-        // TODO: isso tem que ser alguma das validações do validador
-        Optional<Section> id = sectionRepository.findById(inboundOrder.getSectionCode());
-
-        if (id.isPresent()) {
-            for (Batch batch : inboundOrder.getBatches()) {
-                batch.setSection_id(inboundOrder.getSectionCode());
+        for (Batch batch : inboundOrder.getBatches()) {
                 addedBatches.add(batch);
                 batchService.createBatch(batch);
-            }
         }
 
         return addedBatches;
@@ -55,20 +49,14 @@ public class WarehouseService {
 
     public List<Batch> updateBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
         warehouseValidatorExecutor.executeValidators(inboundOrder);
-
         List<Batch> addedBatches = new ArrayList<>();
 
-        Optional<Section> id = sectionRepository.findById(inboundOrder.getSectionCode());
-
-        if (id.isPresent()) {
-            for (Batch batch : inboundOrder.getBatches()) {
+        for (Batch batch : inboundOrder.getBatches()) {
 
                 addedBatches.add(batch);
-                batchService.createBatch(batch);
-            }
-            return addedBatches;
-        } else {
-            return null;
+                batchService.updateBatchByBatchNumber(batch);
         }
+        return addedBatches;
+
     }
 }

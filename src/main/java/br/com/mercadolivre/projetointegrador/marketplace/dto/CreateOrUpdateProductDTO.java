@@ -3,6 +3,7 @@ package br.com.mercadolivre.projetointegrador.marketplace.dto;
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 public class CreateOrUpdateProductDTO {
 

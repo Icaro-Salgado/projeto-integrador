@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootTest
@@ -54,6 +55,39 @@ public class ProductControllerTests {
                         .content(objectMapper.writeValueAsString(productToCreate))
                 )
                 .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+    }
+
+    @Test
+    @DisplayName("ProductController - POST - /api/v1/fresh-products")
+    public void testCreateProductWithDuplicatedName() throws Exception {
+        Product productToCreate = fakeProduct;
+        productToCreate.setName(productToCreate.getName().concat("duplicated"));
+        productRepository.save(productToCreate);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productToCreate))
+        )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").isNotEmpty())
+                .andReturn();
+    }
+
+    @Test
+    @DisplayName("ProductController - POST - /api/v1/fresh-products")
+    public void testCreateProductWithInvalidCategory() throws Exception {
+        Map<String, Object> productMap = Map.of(
+                "name", "mocked product",
+                "category", "invalid"
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productMap))
+        )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").isNotEmpty())
                 .andReturn();
     }
 

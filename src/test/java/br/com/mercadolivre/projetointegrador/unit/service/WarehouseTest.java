@@ -55,12 +55,7 @@ public class WarehouseTest {
 
         List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
 
-        Mockito.when(sectionRepository.findById(Mockito.any()))
-                .thenReturn((Optional.of(WarehouseTestUtils.getSection())));
-
-
-
-        Mockito.doNothing().when(batchService).createBatch(Mockito.any());
+        Mockito.doNothing().when(batchService).updateBatchByBatchNumber(Mockito.any());
 
         List<Batch> result = warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
 

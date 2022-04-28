@@ -111,7 +111,7 @@ public class BatchServiceTests {
         batch.setSeller_id(2L);
         batch.setPrice(BigDecimal.valueOf(33.0));
         batch.setOrder_number(2);
-        batch.setBatch_number(2);
+        batch.setBatchNumber(2);
         batch.setQuantity(250);
         batch.setManufacturing_datetime(LocalDate.parse("2022-01-01"));
         batch.setDue_date(LocalDate.parse("2022-05-02"));

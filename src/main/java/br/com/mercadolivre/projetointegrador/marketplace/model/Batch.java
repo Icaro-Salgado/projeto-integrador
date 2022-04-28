@@ -36,7 +36,7 @@ public class Batch {
     private Integer order_number;
 
     @Column
-    private Integer batch_number;
+    private Integer batchNumber;
 
     @Column
     private Integer quantity;

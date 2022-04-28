@@ -11,15 +11,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class CreateBatchPayloadDTO {
-    private Long id;
-    private Product product;
-    private Long section_id;
+
+    private Long product_id;
     private Long seller_id;
     private BigDecimal price;
-    private Integer order_number;
     private Integer batch_number;
     private Integer quantity;
     private LocalDate manufacturing_datetime;
     private LocalDate due_date;
-    private LocalDate created_at;
 }
