@@ -20,6 +20,7 @@ public class WarehouseExistsValidator implements WarehouseValidator {
   public void Validate() {
     Optional<Warehouse> warehouseRegistered = warehouseRepository.findById(warehouseId);
 
-    if (warehouseRegistered.isEmpty()) throw new WarehouseNotFoundException("Warehouse not Found!");
+    if (warehouseRegistered.isEmpty())
+      throw new WarehouseNotFoundException("Armazém não encontrado!");
   }
 }

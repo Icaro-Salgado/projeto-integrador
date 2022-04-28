@@ -71,7 +71,7 @@ public class ValidatorsTest {
     InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
     SectionCapacityValidator validator =
-        new SectionCapacityValidator(inboundOrder, sectionRepository);
+        new SectionCapacityValidator(inboundOrder, sectionRepository, batchRepository);
 
     assertThrows(SectionTotalCapacityException.class, validator::Validate);
   }
@@ -83,7 +83,7 @@ public class ValidatorsTest {
     InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
     SectionCapacityValidator validator =
-        new SectionCapacityValidator(inboundOrder, sectionRepository);
+        new SectionCapacityValidator(inboundOrder, sectionRepository, batchRepository);
 
     assertDoesNotThrow(validator::Validate);
   }
