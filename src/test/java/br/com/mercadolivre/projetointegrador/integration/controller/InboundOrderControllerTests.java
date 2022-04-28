@@ -6,7 +6,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
@@ -14,12 +14,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -30,10 +32,11 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration
+@WithMockCustomUser
 public class InboundOrderControllerTests {
-
   private final String INBOUND_URL = "/api/v1/inboundorder";
   @Autowired private MockMvc mockMvc;
   @Autowired private ProductRepository productRepository;
@@ -84,28 +87,21 @@ public class InboundOrderControllerTests {
   public void TestIfDuplicatedInboundOrderIsCreated() throws Exception {
     Section mockSection = integrationTestUtils.createSection();
 
-    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
-    productRepository.save(productMock);
-
-    Batch mockedBatch = WarehouseTestUtils.getBatch().get(0);
-    mockedBatch.setSection_id(mockSection.getId());
-    mockedBatch.setPrice(BigDecimal.valueOf(11.99));
-
-    Batch saved = batchRepository.save(mockedBatch);
+    Batch mockedBatch = integrationTestUtils.createBatch();
 
     CreateBatchPayloadDTO batchMock =
         CreateBatchPayloadDTO.builder()
-            .batch_number(saved.getBatchNumber())
-            .product_id(saved.getProduct().getId())
-            .seller_id(saved.getSeller_id())
+            .batch_number(mockedBatch.getBatchNumber())
+            .product_id(mockedBatch.getProduct().getId())
+            .seller_id(mockedBatch.getSeller_id())
             .quantity(2)
             .build();
 
     InboundOrderDTO objPayload =
         InboundOrderDTO.builder()
-            .orderNumber(1)
+            .orderNumber(11)
             .batches(List.of(batchMock))
-            .sectionCode(saved.getSection_id())
+            .sectionCode(mockedBatch.getSection_id())
             .warehouseCode(mockSection.getWarehouse().getId())
             .build();
 
@@ -125,20 +121,13 @@ public class InboundOrderControllerTests {
     // SETUP
     Section mockSection = integrationTestUtils.createSection();
 
-    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
-    productRepository.save(productMock);
-
-    Batch mockedBatch = WarehouseTestUtils.getBatch().get(0);
-    mockedBatch.setSection_id(mockSection.getId());
-    mockedBatch.setPrice(BigDecimal.valueOf(11.99));
-
-    Batch saved = batchRepository.save(mockedBatch);
+    Batch mockedBatch = integrationTestUtils.createBatch(mockSection);
 
     CreateBatchPayloadDTO batchMock =
         CreateBatchPayloadDTO.builder()
             .quantity(2)
             .price(BigDecimal.valueOf(112.99))
-            .batch_number(saved.getBatchNumber())
+            .batch_number(mockedBatch.getBatchNumber())
             .product_id(1L)
             .build();
 
@@ -146,7 +135,7 @@ public class InboundOrderControllerTests {
         InboundOrderDTO.builder()
             .orderNumber(1)
             .batches(List.of(batchMock))
-            .sectionCode(saved.getSection_id())
+            .sectionCode(mockedBatch.getSection_id())
             .warehouseCode(mockSection.getWarehouse().getId())
             .build();
 
@@ -155,12 +144,13 @@ public class InboundOrderControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.put(INBOUND_URL)
+                .header("Authorization", "sometoken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(MockMvcResultMatchers.status().isCreated())
         .andReturn();
 
-    Batch result = batchRepository.findById(saved.getId()).orElse(new Batch());
+    Batch result = batchRepository.findById(mockedBatch.getId()).orElse(new Batch());
 
     Assertions.assertEquals(batchMock.getPrice(), result.getPrice());
   }

@@ -1,6 +1,10 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
@@ -17,6 +21,10 @@ public class IntegrationTestUtils {
   @Autowired private WarehouseRepository warehouseRepository;
 
   @Autowired private SectionRepository sectionRepository;
+
+  @Autowired private ProductRepository productRepository;
+
+  @Autowired private BatchRepository batchRepository;
 
   public Warehouse createWarehouse() {
     Warehouse warehouse =
@@ -37,11 +45,46 @@ public class IntegrationTestUtils {
         new Section(
             null,
             warehouse,
-            "m1",
+            1L,
             BigDecimal.valueOf(33.33),
             BigDecimal.ZERO,
             1000,
             CategoryEnum.FS,
             null));
+  }
+
+  public Product createProduct() {
+    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
+    return productRepository.save(productMock);
+  }
+
+  public Batch createBatch() {
+    Batch batch =
+        Batch.builder()
+            .product(createProduct())
+            .section_id(createSection().getId())
+            .seller_id(1L)
+            .price(BigDecimal.TEN)
+            .order_number(123)
+            .batchNumber(9595)
+            .quantity(10)
+            .build();
+
+    return batchRepository.save(batch);
+  }
+
+  public Batch createBatch(Section section) {
+    Batch batch =
+        Batch.builder()
+            .product(createProduct())
+            .section_id(section.getId())
+            .seller_id(1L)
+            .price(BigDecimal.TEN)
+            .order_number(123)
+            .batchNumber(9595)
+            .quantity(10)
+            .build();
+
+    return batchRepository.save(batch);
   }
 }

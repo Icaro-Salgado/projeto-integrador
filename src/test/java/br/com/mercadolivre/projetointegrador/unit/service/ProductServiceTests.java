@@ -71,7 +71,7 @@ public class ProductServiceTests {
     Exception thrown =
         Assertions.assertThrows(NotFoundException.class, () -> productService.findById(10L));
 
-    Assertions.assertEquals("Produto não encontrado.", thrown.getMessage());
+    Assertions.assertEquals("Produto " + 10 + " não encontrado.", thrown.getMessage());
   }
 
   @Test
@@ -110,7 +110,7 @@ public class ProductServiceTests {
     Exception thrown =
         Assertions.assertThrows(NotFoundException.class, () -> productService.delete(2L));
 
-    Assertions.assertEquals("Produto não encontrado.", thrown.getMessage());
+    Assertions.assertEquals("Produto " + 2 + " não encontrado.", thrown.getMessage());
 
     Mockito.verify(productRepository, Mockito.times(0)).delete(Mockito.any());
   }

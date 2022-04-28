@@ -64,7 +64,7 @@ public class BatchServiceTests {
     NotFoundException thrown =
         Assertions.assertThrows(NotFoundException.class, () -> batchService.createBatch(batch));
 
-    Assertions.assertEquals("Produto não encontrado.", thrown.getMessage());
+    Assertions.assertEquals("Produto " + 1 + " não encontrado.", thrown.getMessage());
   }
 
   @Test

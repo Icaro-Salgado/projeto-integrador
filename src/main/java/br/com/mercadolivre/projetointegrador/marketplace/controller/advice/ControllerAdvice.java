@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ControllerAdvice {
+
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorDTO> notFoundHandler(Exception e) {
     ErrorDTO error = new ErrorDTO();

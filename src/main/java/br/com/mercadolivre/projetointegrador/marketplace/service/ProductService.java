@@ -27,7 +27,7 @@ public class ProductService {
     Product product = productRepository.findById(id).orElse(null);
 
     if (product == null) {
-      throw new NotFoundException("Produto não encontrado.");
+      throw new NotFoundException("Produto " + id + " não encontrado.");
     }
 
     return product;

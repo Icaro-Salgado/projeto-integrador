@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/warehouse")
+@RequestMapping("/api/v1/warehouse")
 public class WarehouseController {
 
   private final WarehouseService warehouseService;

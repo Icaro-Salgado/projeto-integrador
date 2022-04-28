@@ -37,6 +37,7 @@ public class WarehouseValidatorExecutor {
         new SectionExistsValidator(inboundOrder.getSectionCode(), sectionRepository),
         new WarehouseExistsValidator(inboundOrder.getWarehouseCode(), warehouseRepository),
         new SectionCapacityValidator(inboundOrder, sectionRepository, batchRepository),
-        new SectionAndProductMatchValidator(inboundOrder, sectionRepository));
+        new SectionAndProductMatchValidator(inboundOrder, sectionRepository),
+        new SectionManagerIdValidator(inboundOrder, sectionRepository));
   }
 }
