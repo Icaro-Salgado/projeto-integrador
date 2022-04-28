@@ -9,6 +9,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class WarehouseService {
     private final SectionRepository sectionRepository;
     private final WarehouseRepository warehouseRepository;
     private final BatchService batchService;
+    private final WarehouseValidatorExecutor warehouseValidatorExecutor;
 
     public Warehouse createWarehouse(Warehouse warehouse){
         return warehouseRepository.save(warehouse);
@@ -52,8 +54,7 @@ public class WarehouseService {
     }
 
     public List<Batch> updateBatchInSection(InboundOrder inboundOrder) throws NotFoundException {
-
-        //TODO: validar inboundOrder
+        warehouseValidatorExecutor.executeValidators(inboundOrder);
 
         List<Batch> addedBatches = new ArrayList<>();
 

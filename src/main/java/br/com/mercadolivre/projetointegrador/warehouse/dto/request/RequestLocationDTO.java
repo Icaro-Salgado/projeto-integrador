@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Getter @Setter
+@Builder
 public class RequestLocationDTO {
 
     @NotNull

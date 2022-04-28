@@ -36,9 +36,6 @@ public class InboundOrderControllerTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
@@ -56,6 +53,7 @@ public class InboundOrderControllerTests {
 
         CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
                 .builder()
+                .quantity(2)
                 .product(productMock)
                 .build();
 
@@ -92,6 +90,7 @@ public class InboundOrderControllerTests {
 
         CreateBatchPayloadDTO batchMock = CreateBatchPayloadDTO
                 .builder()
+                .quantity(2)
                 .product(productMock)
                 .build();
 
