@@ -13,16 +13,16 @@ public class SectionCapacityValidator implements WarehouseValidator {
 
   private final InboundOrder order;
   private final SectionRepository sectionRepository;
-    private final BatchRepository batchRepository;
+  private final BatchRepository batchRepository;
 
-    public SectionCapacityValidator(
-            InboundOrder inboundOrder,
-            SectionRepository sectionRepository,
-            BatchRepository batchRepository) {
-        this.order = inboundOrder;
-        this.sectionRepository = sectionRepository;
-        this.batchRepository = batchRepository;
-    }
+  public SectionCapacityValidator(
+      InboundOrder inboundOrder,
+      SectionRepository sectionRepository,
+      BatchRepository batchRepository) {
+    this.order = inboundOrder;
+    this.sectionRepository = sectionRepository;
+    this.batchRepository = batchRepository;
+  }
 
   @Override
   public void Validate() {
@@ -32,16 +32,20 @@ public class SectionCapacityValidator implements WarehouseValidator {
             .orElseThrow(() -> new SectionNotFoundException("Setor não encontrado!"));
     Integer sectionCapacity = orderSection.getCapacity();
 
-    // To check the capacity, we need to find all batches that have been registered in a given section
-    Integer batchesQty = batchRepository.findAll()
-            .stream()
+    // To check the capacity, we need to find all batches that have been registered in a given
+    // section
+    Integer batchesQty =
+        batchRepository.findAll().stream()
             .filter(batch -> batch.getSection_id().equals(orderSection.getId()))
             .collect(Collectors.toList())
             .size();
 
     if (sectionCapacity < batchesQty + order.getBatches().size())
-      throw new SectionTotalCapacityException("A capacidade do setor foi atingida! A ordem de registro contem " +
-              order.getBatches().size() +  " lotes, mas o setor comporta apenas " + (sectionCapacity - batchesQty) +
-              " novos lotes");
+      throw new SectionTotalCapacityException(
+          "A capacidade do setor foi atingida! A ordem de registro contem "
+              + order.getBatches().size()
+              + " lotes, mas o setor comporta apenas "
+              + (sectionCapacity - batchesQty)
+              + " novos lotes");
   }
 }
