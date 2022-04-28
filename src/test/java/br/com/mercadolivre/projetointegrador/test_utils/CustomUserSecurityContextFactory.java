@@ -8,25 +8,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 import java.util.Collections;
 
-public class CustomUserSecurityContextFactory implements WithSecurityContextFactory<WithMockCustomUser> {
+public class CustomUserSecurityContextFactory
+    implements WithSecurityContextFactory<WithMockCustomUser> {
 
+  @Override
+  public SecurityContext createSecurityContext(WithMockCustomUser annotation) {
+    SecurityContext context = SecurityContextHolder.createEmptyContext();
 
-    @Override
-    public SecurityContext createSecurityContext(WithMockCustomUser annotation) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
+    AppUser user = new AppUser(1L, "mock@user.com", "spring", "springUser", "");
 
-        AppUser user = new AppUser(
-                1L,
-                "mock@user.com",
-                "spring",
-                "springUser",
-                ""
-        );
+    Authentication auth =
+        new UsernamePasswordAuthenticationToken(user, "password", Collections.emptyList());
 
-        Authentication auth =
-                new UsernamePasswordAuthenticationToken(user, "password", Collections.emptyList());
-
-        context.setAuthentication(auth);
-        return context;
-    }
+    context.setAuthentication(auth);
+    return context;
+  }
 }

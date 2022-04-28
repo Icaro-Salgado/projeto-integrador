@@ -28,8 +28,7 @@ public class Section {
   @JoinColumn(name = "warehouse_id")
   private Warehouse warehouse;
 
-  @Column
-  private Long managerId; // TODO: change to entity
+  @Column private Long managerId; // TODO: change to entity
 
   @Column(nullable = false, name = "maximum_temperature")
   @Digits(integer = 3, fraction = 2)

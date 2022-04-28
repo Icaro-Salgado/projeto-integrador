@@ -10,11 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class LoginDTO {
 
-    @NotNull
-    @NotBlank
-    private final String email;
+  @NotNull @NotBlank private final String email;
 
-    @NotNull
-    @NotBlank
-    private final String password;
+  @NotNull @NotBlank private final String password;
 }

@@ -4,12 +4,11 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 
 import java.lang.annotation.*;
 
-
 @Retention(RetentionPolicy.RUNTIME)
 @WithSecurityContext(factory = CustomUserSecurityContextFactory.class)
 public @interface WithMockCustomUser {
 
-    String userName() default "springuser";
+  String userName() default "springuser";
 
-    String name() default "spring";
+  String name() default "spring";
 }

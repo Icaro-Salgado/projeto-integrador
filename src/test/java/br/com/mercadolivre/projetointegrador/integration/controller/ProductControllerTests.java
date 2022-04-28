@@ -1,15 +1,10 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
-import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,33 +28,30 @@ import java.util.Optional;
 @ActiveProfiles(profiles = "test")
 @WithMockUser
 public class ProductControllerTests {
-    ObjectMapper objectMapper = new ObjectMapper();
-    Product fakeProduct;
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ProductRepository productRepository;
+  ObjectMapper objectMapper = new ObjectMapper();
+  Product fakeProduct;
+  @Autowired private MockMvc mockMvc;
+  @Autowired private ProductRepository productRepository;
 
+  @Autowired private BatchRepository batchRepository;
+  @Autowired private IntegrationTestUtils integrationTestUtils;
 
-    @Autowired
-    private BatchRepository batchRepository;
-    @Autowired
-    private IntegrationTestUtils integrationTestUtils;
+  @BeforeEach
+  public void beforeEach() {
+    fakeProduct = new Product();
+    fakeProduct.setName("new product");
+    fakeProduct.setCategory(CategoryEnum.FS);
+  }
 
-    @BeforeEach
-    public void beforeEach() {
-        fakeProduct = new Product();
-        fakeProduct.setName("new product");
-        fakeProduct.setCategory(CategoryEnum.FS);
-    }
+  @Test
+  @DisplayName("ProductController - POST - /api/v1/fresh-products")
+  public void testCreateProduct() throws Exception {
+    Product productToCreate = fakeProduct;
+    productToCreate.setName(productToCreate.getName().concat("new product"));
 
-    @Test
-    @DisplayName("ProductController - POST - /api/v1/fresh-products")
-    public void testCreateProduct() throws Exception {
-        Product productToCreate = fakeProduct;
-        productToCreate.setName(productToCreate.getName().concat("new product"));
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/fresh-products")
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/api/v1/fresh-products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productToCreate)))
         .andExpect(MockMvcResultMatchers.status().isCreated())

@@ -13,31 +13,29 @@ import java.util.Date;
 @Service
 public class TokenService {
 
-    @Value("${jwt.expiration}")
-    private String expiration;
+  @Value("${jwt.expiration}")
+  private String expiration;
 
-    @Value("${jwt.secret}")
-    private String secret;
+  @Value("${jwt.secret}")
+  private String secret;
 
-    public String generateToken(Authentication authentication){
-        AppUser user = (AppUser) authentication.getPrincipal();
+  public String generateToken(Authentication authentication) {
+    AppUser user = (AppUser) authentication.getPrincipal();
 
-        Date now = new Date();
-        Date exp = new Date(now.getTime() + Long.parseLong(expiration));
+    Date now = new Date();
+    Date exp = new Date(now.getTime() + Long.parseLong(expiration));
 
-        return JWT
-                .create()
-                .withSubject(user.getId().toString())
-                .withExpiresAt(exp)
-                .sign(Algorithm.HMAC512(secret));
+    return JWT.create()
+        .withSubject(user.getId().toString())
+        .withExpiresAt(exp)
+        .sign(Algorithm.HMAC512(secret));
+  }
+
+  public String isTokenValid(String token) {
+    try {
+      return JWT.require(Algorithm.HMAC512(secret)).build().verify(token).getSubject();
+    } catch (JWTVerificationException ex) {
+      return null;
     }
-
-    public String isTokenValid(String token){
-        try {
-            return JWT.require(Algorithm.HMAC512(secret)).build().verify(token).getSubject();
-        }catch (JWTVerificationException ex) {
-            return null;
-        }
-
-    }
+  }
 }

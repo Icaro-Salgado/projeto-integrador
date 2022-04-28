@@ -30,21 +30,21 @@ public class ValidationErrorHandler {
           errors.put(fieldName, err.getDefaultMessage());
         });
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
 
-    }
+  @ExceptionHandler(InboundOrderInvalidManagerException.class)
+  public ResponseEntity<StandardError> invalidManager(
+      InboundOrderInvalidManagerException ex, HttpServletRequest request) {
+    StandardError err = new StandardError();
+    HttpStatus notModified = HttpStatus.BAD_REQUEST;
 
-    @ExceptionHandler(InboundOrderInvalidManagerException.class)
-    public ResponseEntity<StandardError> invalidManager(InboundOrderInvalidManagerException ex, HttpServletRequest request){
-        StandardError err = new StandardError();
-        HttpStatus notModified = HttpStatus.BAD_REQUEST;
+    err.setTimestamp(Instant.now());
+    err.setStatus(notModified.value());
+    err.setError(err.getError());
+    err.setMessage(ex.getMessage());
+    err.setPath(request.getRequestURI());
 
-        err.setTimestamp(Instant.now());
-        err.setStatus(notModified.value());
-        err.setError(err.getError());
-        err.setMessage(ex.getMessage());
-        err.setPath(request.getRequestURI());
-
-        return ResponseEntity.status(notModified).body(err);
-    }
+    return ResponseEntity.status(notModified).body(err);
+  }
 }
