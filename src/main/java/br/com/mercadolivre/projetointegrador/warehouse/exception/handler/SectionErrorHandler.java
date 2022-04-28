@@ -16,7 +16,7 @@ import java.time.Instant;
 public class SectionErrorHandler {
 
     @ExceptionHandler(value = SectionNotFoundException.class)
-    protected ResponseEntity<StandardError> handleSectionNotFoundException(SectionNotFoundException e, HttpServletRequest request){
+    protected ResponseEntity<StandardError> handleSectionNotFoundException(SectionNotFoundException e, HttpServletRequest request) {
 
         StandardError err = new StandardError();
         HttpStatus notFound = HttpStatus.NOT_FOUND;
@@ -30,9 +30,9 @@ public class SectionErrorHandler {
     }
 
     @ExceptionHandler(value = SectionTotalCapacityException.class)
-    protected ResponseEntity<StandardError> handleSectionTotalCapacityException(SectionTotalCapacityException e, HttpServletRequest request){
+    protected ResponseEntity<StandardError> handleSectionTotalCapacityException(SectionTotalCapacityException e, HttpServletRequest request) {
         StandardError err = new StandardError();
-        HttpStatus status= HttpStatus.BAD_REQUEST;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
 
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
@@ -43,7 +43,7 @@ public class SectionErrorHandler {
     }
 
     @ExceptionHandler(value = SectionDoesNotMatchWithProductException.class)
-    protected ResponseEntity<StandardError> handleSectionDoesNotMatchWithProductException(SectionDoesNotMatchWithProductException e, HttpServletRequest request){
+    protected ResponseEntity<StandardError> handleSectionDoesNotMatchWithProductException(SectionDoesNotMatchWithProductException e, HttpServletRequest request) {
 
         StandardError err = new StandardError();
         HttpStatus status = HttpStatus.BAD_REQUEST;

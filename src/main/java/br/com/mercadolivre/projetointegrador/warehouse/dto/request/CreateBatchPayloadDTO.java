@@ -1,13 +1,13 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 
-import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -8,7 +8,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 public class CreateWarehousePayloadDTO {
 

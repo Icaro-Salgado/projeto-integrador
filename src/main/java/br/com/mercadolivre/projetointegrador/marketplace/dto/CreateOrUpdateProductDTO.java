@@ -3,17 +3,10 @@ package br.com.mercadolivre.projetointegrador.marketplace.dto;
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.core.MethodParameter;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor

@@ -9,8 +9,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(name = "UniqueBatchAndSeller", columnNames = { "seller_id", "batchNumber" }) })
-@Getter @Setter
+@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueBatchAndSeller", columnNames = {"seller_id", "batchNumber"})})
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -2,13 +2,10 @@ package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.SectionServiceTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateSectionPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +25,12 @@ import java.math.BigDecimal;
 @ActiveProfiles(profiles = "test")
 public class SectionControllerTests {
 
+    private final String SECTION_URL = "/api/v1/section";
+    ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private IntegrationTestUtils integrationTestUtils;
-
-    ObjectMapper objectMapper = new ObjectMapper();
-
-
-    private final String SECTION_URL = "/api/v1/section";
-
-
 
     @Test
     public void shouldReturnObjectContainingSection() throws Exception {

@@ -17,12 +17,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -39,14 +39,14 @@ public class ValidatorsTest {
 
 
     @Test
-    public void shouldThrowExceptionWhenNotFoundWarehouse(){
+    public void shouldThrowExceptionWhenNotFoundWarehouse() {
         WarehouseExistsValidator validator = new WarehouseExistsValidator(1L, warehouseRepository);
 
         assertThrows(WarehouseNotFoundException.class, validator::Validate);
     }
 
     @Test
-    public void shouldNotThrowExceptionWhenFoundWarehouse(){
+    public void shouldNotThrowExceptionWhenFoundWarehouse() {
         Mockito.when(warehouseRepository.findById(Mockito.any())).thenReturn(Optional.of(new Warehouse()));
         WarehouseExistsValidator validator = new WarehouseExistsValidator(1L, warehouseRepository);
 
@@ -54,14 +54,14 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenNotFoundSection(){
+    public void shouldThrowExceptionWhenNotFoundSection() {
         SectionExistsValidator validator = new SectionExistsValidator(1L, sectionRepository);
 
         assertThrows(SectionNotFoundException.class, validator::Validate);
     }
 
     @Test
-    public void shouldNotThrowExceptionWhenFoundSection(){
+    public void shouldNotThrowExceptionWhenFoundSection() {
         Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.of(new Section()));
         SectionExistsValidator validator = new SectionExistsValidator(1L, sectionRepository);
 
@@ -69,7 +69,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void shouldThrowExceptionInboundOrderHasMoreThanSectionLimit(){
+    public void shouldThrowExceptionInboundOrderHasMoreThanSectionLimit() {
         Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.of(Section.builder().capacity(1).build()));
         InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
@@ -79,7 +79,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void shouldNotThrowExceptionWhenInboundOrderHasLessThanSectionLimit(){
+    public void shouldNotThrowExceptionWhenInboundOrderHasLessThanSectionLimit() {
         Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.of(Section.builder().capacity(10000).build()));
         InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
@@ -89,7 +89,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenBatchCategoryIsDiffThanSection(){
+    public void shouldThrowExceptionWhenBatchCategoryIsDiffThanSection() {
         Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.of(Section.builder().product_category(CategoryEnum.FF).build()));
         InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
@@ -99,7 +99,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void shouldNotThrowExceptionWhenBatchCategoryIsEqualWithSection(){
+    public void shouldNotThrowExceptionWhenBatchCategoryIsEqualWithSection() {
         Mockito.when(sectionRepository.findById(Mockito.any())).thenReturn(Optional.of(Section.builder().product_category(CategoryEnum.FS).build()));
         InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
@@ -109,7 +109,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenHasDuplicatedBatch(){
+    public void shouldThrowExceptionWhenHasDuplicatedBatch() {
         Mockito.when(batchRepository.findAllByBatchNumberIn(Mockito.any())).thenReturn(List.of(new Batch()));
         InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
@@ -119,7 +119,7 @@ public class ValidatorsTest {
     }
 
     @Test
-    public void shouldNotThrowExceptionWhenNotFindDuplicatedBatch(){
+    public void shouldNotThrowExceptionWhenNotFindDuplicatedBatch() {
         Mockito.when(batchRepository.findAllByBatchNumberIn(Mockito.any())).thenReturn(Collections.emptyList());
         InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 

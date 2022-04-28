@@ -9,8 +9,8 @@ import java.util.Calendar;
 
 public class SectionServiceTestUtils {
 
-    public static Section getMockSection(){
-        Calendar calendar  = Calendar.getInstance();
+    public static Section getMockSection() {
+        Calendar calendar = Calendar.getInstance();
         calendar.set(2022, Calendar.JANUARY, 1);
 
         return Section

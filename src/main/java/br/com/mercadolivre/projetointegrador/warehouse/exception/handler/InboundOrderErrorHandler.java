@@ -14,9 +14,9 @@ import java.time.Instant;
 public class InboundOrderErrorHandler {
 
     @ExceptionHandler(value = BatchAlreadyExists.class)
-    public ResponseEntity<StandardError> handleDuplicatedBatch(BatchAlreadyExists ex, HttpServletRequest request){
+    public ResponseEntity<StandardError> handleDuplicatedBatch(BatchAlreadyExists ex, HttpServletRequest request) {
         StandardError err = new StandardError();
-        HttpStatus notModified= HttpStatus.CONFLICT;
+        HttpStatus notModified = HttpStatus.CONFLICT;
 
         err.setTimestamp(Instant.now());
         err.setStatus(notModified.value());

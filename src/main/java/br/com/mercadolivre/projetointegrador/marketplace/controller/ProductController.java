@@ -40,7 +40,7 @@ public class ProductController {
             @PathVariable Long id,
             @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
             UriComponentsBuilder uriBuilder
-  ) throws NotFoundException, InvalidCategoryException {
+    ) throws NotFoundException, InvalidCategoryException {
 
         Product product = createOrUpdateProductDTO.mountProduct();
         productService.updateProduct(id, product);
@@ -65,7 +65,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> exclude(@PathVariable Long id) throws NotFoundException {
-       productService.delete(id);
-       return ResponseEntity.noContent().build();
+        productService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

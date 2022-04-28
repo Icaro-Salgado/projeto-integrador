@@ -20,7 +20,7 @@ public class SectionService {
         return sectionRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException("Section not found")); //TODO: replace exception
     }
 
-    public Section createSection(CreateSectionPayloadDTO payload){
+    public Section createSection(CreateSectionPayloadDTO payload) {
         Warehouse warehouse = warehouseService.findWarehouse(payload.getWarehouseId());
 
         Section newSection = Section.builder()

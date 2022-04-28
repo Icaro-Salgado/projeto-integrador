@@ -6,12 +6,10 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Product;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.SectionServiceTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Assertions;
@@ -36,19 +34,15 @@ import java.util.List;
 @ActiveProfiles(profiles = "test")
 public class InboundOrderControllerTests {
 
+    private final String INBOUND_URL = "/api/v1/inboundorder";
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private BatchRepository batchRepository;
-
     @Autowired
     private IntegrationTestUtils integrationTestUtils;
-
-    private final String INBOUND_URL = "/api/v1/inboundorder";
 
     @Test
     public void TestIfInboundOrderIsCreated() throws Exception {
@@ -109,7 +103,6 @@ public class InboundOrderControllerTests {
                 .build();
 
 
-
         InboundOrderDTO objPayload = InboundOrderDTO
                 .builder()
                 .orderNumber(1)
@@ -151,7 +144,6 @@ public class InboundOrderControllerTests {
                 .batch_number(saved.getBatchNumber())
                 .product_id(1L)
                 .build();
-
 
 
         InboundOrderDTO objPayload = InboundOrderDTO

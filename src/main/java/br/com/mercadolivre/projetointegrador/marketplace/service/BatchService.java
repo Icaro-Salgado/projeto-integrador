@@ -3,7 +3,6 @@ package br.com.mercadolivre.projetointegrador.marketplace.service;
 import br.com.mercadolivre.projetointegrador.marketplace.exception.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Batch;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.BatchRepository;
-import br.com.mercadolivre.projetointegrador.marketplace.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +39,7 @@ public class BatchService {
         batchRepository.save(buildUpdatedBatch(batch, updatedBatch));
     }
 
-    public Batch updateBatchByBatchNumber(Batch updatedBatch){
+    public Batch updateBatchByBatchNumber(Batch updatedBatch) {
         Integer batchNumber = updatedBatch.getBatchNumber();
         Batch batch = batchRepository
                 .findByBatchNumber(batchNumber)
@@ -55,7 +54,7 @@ public class BatchService {
         batchRepository.delete(batch);
     }
 
-    private Batch buildUpdatedBatch(Batch batch, Batch updatedBatch){
+    private Batch buildUpdatedBatch(Batch batch, Batch updatedBatch) {
 
         batch.setBatchNumber(updatedBatch.getBatchNumber());
         batch.setPrice(updatedBatch.getPrice());

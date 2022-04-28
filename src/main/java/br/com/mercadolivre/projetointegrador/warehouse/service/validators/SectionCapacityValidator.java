@@ -7,7 +7,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 
-public class SectionCapacityValidator implements WarehouseValidator{
+public class SectionCapacityValidator implements WarehouseValidator {
 
     private final InboundOrder order;
     private final SectionRepository sectionRepository;
@@ -24,6 +24,7 @@ public class SectionCapacityValidator implements WarehouseValidator{
 
         Integer productsQty = order.getBatches().stream().map(Batch::getQuantity).reduce(0, Integer::sum);
 
-        if(sectionCapacity < productsQty) throw new SectionTotalCapacityException("The Section capacity has been reached!!");
+        if (sectionCapacity < productsQty)
+            throw new SectionTotalCapacityException("The Section capacity has been reached!!");
     }
 }
