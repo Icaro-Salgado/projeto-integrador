@@ -88,7 +88,7 @@ public class InboundOrderControllerTests {
         Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
         productRepository.save(productMock);
 
-        Batch mockedBatch = WarehouseTestUtils.getBatch1();
+    Batch mockedBatch = WarehouseTestUtils.getBatch().get(0);
         mockedBatch.setSection_id(mockSection.getId());
         mockedBatch.setPrice(BigDecimal.valueOf(11.99));
 
@@ -131,7 +131,7 @@ public class InboundOrderControllerTests {
         Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
         productRepository.save(productMock);
 
-        Batch mockedBatch = WarehouseTestUtils.getBatch1();
+    Batch mockedBatch = WarehouseTestUtils.getBatch().get(0);
         mockedBatch.setSection_id(mockSection.getId());
         mockedBatch.setPrice(BigDecimal.valueOf(11.99));
 
