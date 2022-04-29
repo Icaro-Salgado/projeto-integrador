@@ -12,8 +12,8 @@ import java.util.List;
 @Setter
 @Getter
 public class Cart {
-    private LocalDate date;
-    private CartStatusCodeEnum statusCode;
-    private List<CartProductDTO> products;
-    private BigDecimal totalPrice;
+  private LocalDate date;
+  private CartStatusCodeEnum statusCode;
+  private List<CartProductDTO> products;
+  private BigDecimal totalPrice;
 }

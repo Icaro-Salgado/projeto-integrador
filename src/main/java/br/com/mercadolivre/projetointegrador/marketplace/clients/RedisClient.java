@@ -11,15 +11,14 @@ import redis.clients.jedis.JedisPool;
 @Setter
 public class RedisClient {
 
-    @Value("${spring.redis.host}")
-    public String host;
+  @Value("${spring.redis.host}")
+  public String host;
 
-    @Value("${spring.redis.port}")
-    public int port;
+  @Value("${spring.redis.port}")
+  public int port;
 
-    @Bean
-    public Jedis getConnection() {
-        return new JedisPool(host, port).getResource();
-    }
-
+  @Bean
+  public Jedis getConnection() {
+    return new JedisPool(host, port).getResource();
+  }
 }
