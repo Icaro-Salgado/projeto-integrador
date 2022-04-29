@@ -6,6 +6,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -80,4 +81,12 @@ public class BatchService {
     Product product = productService.findById(productId);
     return batchRepository.findBatchByProductAndSection(product, section);
   }
+
+  public List<Batch> findBatchesByProductAndSection(Long productId, Section section, Sort sortInfos)
+          throws NotFoundException {
+    Product product = productService.findById(productId);
+
+    return batchRepository.findBatchByProductAndSection(product, section, sortInfos);
+  }
+
 }
