@@ -29,11 +29,11 @@ Para realizar testes de integração na aplicação entre na pasta do projeto ro
 
 ## Testando a API
 
-As comunicações com a API são realizadas através de métodos HTTP e os endpoints e descrições de funcionamento encontram-se na documentação do [requisito 01](/Doc/requisitos/Requisito 01.md).
+As comunicações com a API são realizadas através de métodos HTTP e os endpoints e descrições de funcionamento encontram-se na documentação do [requisito 01](Doc/requisitos/Requisito%2001.md).
 
 Para que as rotas respondam da maneira desejada é necessário ter um batch (lote) já cadastrado na base de dados e o usuário deve estar logado e ter permissão de acesso ao sistema de gestão do Warehouse.
 
-E caso utilize o POSTMAN você pode importar a [collection](Doc/Projeto integrador.postman_collection.json) contida na pasta **doc**.
+E caso utilize o POSTMAN você pode importar a [collection](Doc/Projeto%20integrador.postman_collection.json) contida na pasta **doc**.
 
 
 ## Membros do grupo
