@@ -1,10 +1,10 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.dto.response.CreatedBatchDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.InboundOrderMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
@@ -26,7 +26,7 @@ public class InboundOrderController {
   private final BatchAssembler assembler;
 
   @PostMapping
-  public ResponseEntity<List<CreatedBatchDTO>> addInboundOrder(
+  public ResponseEntity<List<BatchResponseDTO>> addInboundOrder(
       @RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
@@ -38,7 +38,7 @@ public class InboundOrderController {
   }
 
   @PutMapping
-  public ResponseEntity<List<CreatedBatchDTO>> updateInboundOrder(
+  public ResponseEntity<List<BatchResponseDTO>> updateInboundOrder(
       @RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
     InboundOrder inboundOrderToUpdate = inboundOrderMapper.toModel(dto);
     AppUser requestUser = (AppUser) authentication.getPrincipal();

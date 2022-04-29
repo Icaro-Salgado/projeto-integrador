@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
 @WithMockUser
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class WarehouseControllerTests {
 
   private final String SECTION_URL = "/api/v1/warehouse";
@@ -32,7 +34,7 @@ public class WarehouseControllerTests {
         new CreateWarehousePayloadDTO(
             "Warehouse test",
             new RequestLocationDTO(
-                "Brazil", "SP", "Osasco", "Bomfim", "Av. das Nações Unidas", 3003, 6233200));
+                "Brazil", "SP", "Osasco", "Bomfim", "Av. das Nações Unidas", 9999, 6233200));
 
     mockMvc
         .perform(
