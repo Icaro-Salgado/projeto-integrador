@@ -78,12 +78,14 @@ public class WarehouseControllerTests {
   public void shouldListSectionBatches() throws Exception {
     Batch batch = integrationTestUtils.createBatch();
 
-    mockMvc.perform(MockMvcRequestBuilders
-            .get(SECTION_URL.concat("/fresh-products/list?product=" + batch.getProduct().getId()))
-            .contentType(MediaType.APPLICATION_JSON)
-    )
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get(
+                    SECTION_URL.concat(
+                        "/fresh-products/list?product=" + batch.getProduct().getId()))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty());
   }
 
   @Test
@@ -91,22 +93,22 @@ public class WarehouseControllerTests {
   public void shouldReturn404WhenNotFoundAnyResult() throws Exception {
     Product product = integrationTestUtils.createProduct();
 
-    mockMvc.perform(MockMvcRequestBuilders
-            .get(SECTION_URL.concat("/fresh-products/list?product=" + product.getId()))
-            .contentType(MediaType.APPLICATION_JSON)
-    )
-            .andExpect(MockMvcResultMatchers.status().isNotFound());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get(
+                    SECTION_URL.concat("/fresh-products/list?product=" + product.getId()))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
-
 
   @Test
   @WithMockCustomUser
   public void shouldReturnInvalidParameterErrorWhenNotReceiveProductId() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders
-            .get(SECTION_URL.concat("/fresh-products/list"))
-            .contentType(MediaType.APPLICATION_JSON)
-    )
-            .andExpect(MockMvcResultMatchers.status().isBadRequest())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.error").isNotEmpty());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get(SECTION_URL.concat("/fresh-products/list"))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.error").isNotEmpty());
   }
 }
