@@ -35,7 +35,7 @@ public class CreateOrUpdateCustomerDTO {
         }
         customer.setName(name);
         customer.setEmail(email);
-        customer.setPassword(BCrypt.hashpw(password, "Secret"));
+        customer.setPassword(password);
         return customer;
     }
 
