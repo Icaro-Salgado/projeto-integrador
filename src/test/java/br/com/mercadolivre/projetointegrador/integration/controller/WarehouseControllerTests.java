@@ -1,7 +1,11 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
+import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.RequestLocationDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -27,6 +31,8 @@ public class WarehouseControllerTests {
   private final String SECTION_URL = "/api/v1/warehouse";
   ObjectMapper objectMapper = new ObjectMapper();
   @Autowired private MockMvc mockMvc;
+
+  @Autowired private IntegrationTestUtils integrationTestUtils;
 
   @Test
   public void shouldCreateNewWarehouse() throws Exception {
@@ -65,5 +71,42 @@ public class WarehouseControllerTests {
                 .content(objectMapper.writeValueAsString(payloadDTO)))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+  }
+
+  @Test
+  @WithMockCustomUser
+  public void shouldListSectionBatches() throws Exception {
+    Batch batch = integrationTestUtils.createBatch();
+
+    mockMvc.perform(MockMvcRequestBuilders
+            .get(SECTION_URL.concat("/fresh-products/list?product=" + batch.getProduct().getId()))
+            .contentType(MediaType.APPLICATION_JSON)
+    )
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty());
+  }
+
+  @Test
+  @WithMockCustomUser
+  public void shouldReturn404WhenNotFoundAnyResult() throws Exception {
+    Product product = integrationTestUtils.createProduct();
+
+    mockMvc.perform(MockMvcRequestBuilders
+            .get(SECTION_URL.concat("/fresh-products/list?product=" + product.getId()))
+            .contentType(MediaType.APPLICATION_JSON)
+    )
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
+  }
+
+
+  @Test
+  @WithMockCustomUser
+  public void shouldReturnInvalidParameterErrorWhenNotReceiveProductId() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders
+            .get(SECTION_URL.concat("/fresh-products/list"))
+            .contentType(MediaType.APPLICATION_JSON)
+    )
+            .andExpect(MockMvcResultMatchers.status().isBadRequest())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.error").isNotEmpty());
   }
 }
