@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/section")
-@Tag(name = "Seção")
+@Tag(name = "Section")
 public class SectionController {
 
   private final SectionService sectionService;

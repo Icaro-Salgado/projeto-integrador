@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@Tag(name = "Lote")
+@Tag(name = "Batch")
 public class BatchController {
 
   private final BatchService batchService;

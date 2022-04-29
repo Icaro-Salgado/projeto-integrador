@@ -39,35 +39,4 @@ public class SwaggerConfig {
                 .description("GitHub")
                 .url("https://github.com/Icaro-Salgado/projeto-integrador"));
   }
-
-  //  @Bean
-  //  public OpenApiCustomiser CustomerGlobalHeaderOpenAPICustomiser() {
-  //    return openApi -> {
-  //      openApi
-  //          .getPaths()
-  //          .values()
-  //          .forEach(
-  //              pathItem ->
-  //                  pathItem
-  //                      .readOperations()
-  //                      .forEach(
-  //                          operation -> {
-  //                            ApiResponses apiResponses = operation.getResponses();
-  //
-  //                            apiResponses.addApiResponse("200", createApiResponse("Sucesso!"));
-  //                            apiResponses.addApiResponse("201", createApiResponse("Objeto
-  // criado!"));
-  //                            apiResponses.addApiResponse(
-  //                                "204", createApiResponse("Objeto excluido!"));
-  //                            apiResponses.addApiResponse(
-  //                                "400", createApiResponse("Erro na requisição!"));
-  //                            apiResponses.addApiResponse(
-  //                                "404", createApiResponse("Objeto não encontrado!"));
-  //                          }));
-  //    };
-  //  }
-
-  //  private ApiResponse createApiResponse(String message) {
-  //    return new ApiResponse().description(message);
-  //  }
 }
