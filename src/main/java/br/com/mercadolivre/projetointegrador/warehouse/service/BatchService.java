@@ -76,7 +76,6 @@ public class BatchService {
   }
 
   public List<Batch> findBatchesByProductAndSection(Product product, Section section) {
-
     return batchRepository.findBatchByProductAndSection(product, section);
   }
 }
