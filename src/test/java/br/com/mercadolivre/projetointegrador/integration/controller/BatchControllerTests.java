@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
+import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
@@ -34,6 +35,8 @@ public class BatchControllerTests {
 
   @Autowired private ProductRepository productRepository;
 
+  @Autowired private IntegrationTestUtils testUtils;
+
   @Test
   @DisplayName("BatchController - GET - /api/v1/batches/{id}")
   public void testFindBatchById() throws Exception {
@@ -43,7 +46,7 @@ public class BatchControllerTests {
 
     Batch batch = new Batch();
     batch.setProduct(product);
-    batch.setSection_id(1L);
+    batch.setSection(testUtils.createSection());
     batch.setSeller_id(2L);
     batch.setPrice(BigDecimal.valueOf(33.0));
     batch.setOrder_number(2);
@@ -57,7 +60,7 @@ public class BatchControllerTests {
     mockMvc
         .perform(MockMvcRequestBuilders.get("/api/v1/batches/{id}", created.getId()))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.section_id").value(1L))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.section_id").isNotEmpty())
         .andExpect(MockMvcResultMatchers.jsonPath("$.seller_id").value(2L))
         .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(BigDecimal.valueOf(33.0)))
         .andExpect(MockMvcResultMatchers.jsonPath("$.order_number").value(2))

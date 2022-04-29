@@ -18,6 +18,7 @@ import java.util.Date;
 @Setter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode
 public class Section {
 
   @Id
