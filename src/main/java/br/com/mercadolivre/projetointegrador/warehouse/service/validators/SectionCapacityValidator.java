@@ -7,6 +7,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SectionCapacityValidator implements WarehouseValidator {
@@ -32,20 +33,18 @@ public class SectionCapacityValidator implements WarehouseValidator {
             .orElseThrow(() -> new SectionNotFoundException("Setor não encontrado!"));
     Integer sectionCapacity = orderSection.getCapacity();
 
-    // To check the capacity, we need to find all batches that have been registered in a given
-    // section
-    Integer batchesQty =
-        batchRepository.findAll().stream()
-            .filter(batch -> batch.getSection_id().equals(orderSection.getId()))
-            .collect(Collectors.toList())
-            .size();
+    int batchesQty = batchRepository.findAllBySection_IdIn(List.of(order.getSectionCode())).size();
 
-    if (sectionCapacity < batchesQty + order.getBatches().size())
+    if (sectionCapacity < batchesQty + order.getBatches().size()){
+      int availableSpaces = Math.max((sectionCapacity - batchesQty), 0);
+
       throw new SectionTotalCapacityException(
-          "A capacidade do setor foi atingida! A ordem de registro contem "
-              + order.getBatches().size()
-              + " lotes, mas o setor comporta apenas "
-              + (sectionCapacity - batchesQty)
-              + " novos lotes");
+              "A capacidade do setor foi atingida! A ordem de registro contem "
+                      + order.getBatches().size()
+                      + " lotes, mas o setor comporta apenas "
+                      + availableSpaces
+                      + " novos lotes");
+    }
+
   }
 }

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.web.reactive.server.CookieAssertions;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,6 +69,8 @@ public class ValidatorsTest {
   public void shouldThrowExceptionInboundOrderHasMoreThanSectionLimit() {
     Mockito.when(sectionRepository.findById(Mockito.any()))
         .thenReturn(Optional.of(Section.builder().capacity(1).build()));
+    Mockito.when(batchRepository.findAllBySection_IdIn(Mockito.any())).thenReturn(Collections.nCopies(2, new Batch()));
+
     InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
     SectionCapacityValidator validator =
@@ -79,7 +82,8 @@ public class ValidatorsTest {
   @Test
   public void shouldNotThrowExceptionWhenInboundOrderHasLessThanSectionLimit() {
     Mockito.when(sectionRepository.findById(Mockito.any()))
-        .thenReturn(Optional.of(Section.builder().capacity(10000).build()));
+        .thenReturn(Optional.of(Section.builder().capacity(1000).build()));
+    Mockito.when(batchRepository.findAllBySection_IdIn(Mockito.any())).thenReturn(Collections.emptyList());
     InboundOrder inboundOrder = WarehouseTestUtils.getInboundOrder();
 
     SectionCapacityValidator validator =

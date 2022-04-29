@@ -4,6 +4,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundExce
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.BatchService;
@@ -111,7 +112,7 @@ public class BatchServiceTests {
     Batch batch = new Batch();
     Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
 
-    batch.setSection_id(1L);
+    batch.setSection(new Section());
     batch.setSeller_id(2L);
     batch.setPrice(BigDecimal.valueOf(33.0));
     batch.setOrder_number(2);
