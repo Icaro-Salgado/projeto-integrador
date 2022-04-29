@@ -16,41 +16,41 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class CartService {
 
-    RedisRepository redisRepository;
-    ObjectMapper objectMapper;
+  RedisRepository redisRepository;
+  ObjectMapper objectMapper;
 
-    public Cart updateCart(Long id, Cart cart) throws JsonProcessingException {
-        cart.setTotalPrice(totalPrice(cart));
-        String cartAsString = objectMapper.writeValueAsString(cart);
+  public Cart updateCart(Long id, Cart cart) throws JsonProcessingException {
+    cart.setTotalPrice(totalPrice(cart));
+    String cartAsString = objectMapper.writeValueAsString(cart);
 
-        redisRepository.setEx(id.toString(), 3600L, cartAsString);
-        return cart;
+    redisRepository.setEx(id.toString(), 3600L, cartAsString);
+    return cart;
+  }
+
+  public Cart getCart(Long id) throws JsonProcessingException, NotFoundException {
+    String cartAsString = redisRepository.get(id.toString());
+    if (cartAsString == null) {
+      throw new NotFoundException("Pedido de compra não encontrado.");
     }
+    return objectMapper.readValue(cartAsString, Cart.class);
+  }
 
-    public Cart getCart(Long id) throws JsonProcessingException, NotFoundException {
-        String cartAsString = redisRepository.get(id.toString());
-        if (cartAsString == null) {
-            throw new NotFoundException("Pedido de compra não encontrado.");
-        }
-        return objectMapper.readValue(cartAsString, Cart.class);
+  private BigDecimal totalPrice(Cart cart) {
+    BigDecimal total = BigDecimal.ZERO;
+    for (CartProductDTO product : cart.getProducts()) {
+      BigDecimal price = product.getUnitPrice().multiply(BigDecimal.valueOf(product.getQuantity()));
+      total = total.add(price);
     }
+    return total;
+  }
 
-    private BigDecimal totalPrice(Cart cart) {
-        BigDecimal total = BigDecimal.ZERO;
-        for (CartProductDTO product :
-                cart.getProducts()) {
-            BigDecimal price = product.getUnitPrice().multiply(BigDecimal.valueOf(product.getQuantity()));
-            total = total.add(price);
-        }
-        return total;
-    }
+  public Cart changeStatus(Long id, String status)
+      throws JsonProcessingException, NotFoundException {
+    Cart cart = getCart(id);
+    CartStatusCodeEnum statusCode = CartStatusCodeEnum.valueOf(status);
+    cart.setStatusCode(statusCode);
 
-    public Cart changeStatus(Long id, String status) throws JsonProcessingException, NotFoundException {
-        Cart cart = getCart(id);
-        CartStatusCodeEnum statusCode = CartStatusCodeEnum.valueOf(status);
-        cart.setStatusCode(statusCode);
-
-        updateCart(id, cart);
-        return cart;
-    }
+    updateCart(id, cart);
+    return cart;
+  }
 }

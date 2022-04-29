@@ -18,30 +18,34 @@ import java.net.URI;
 @RequestMapping("/api/v1/fresh-products/orders")
 public class CartController {
 
-    CartService cartService;
+  CartService cartService;
 
-    @PostMapping
-    public ResponseEntity<?> orderPrice(
-            @RequestBody PurchaseOrderDTO purchaseOrder,
-            UriComponentsBuilder uriBuilder) throws JsonProcessingException {
-        BigDecimal totalPrice = cartService.updateCart(purchaseOrder.getId(), purchaseOrder.mountCart()).getTotalPrice();
+  @PostMapping
+  public ResponseEntity<?> orderPrice(
+      @RequestBody PurchaseOrderDTO purchaseOrder, UriComponentsBuilder uriBuilder)
+      throws JsonProcessingException {
+    BigDecimal totalPrice =
+        cartService.updateCart(purchaseOrder.getId(), purchaseOrder.mountCart()).getTotalPrice();
 
-        URI uri = uriBuilder.path("/api/v1/fresh-products/orders/{id}").buildAndExpand(purchaseOrder.getId()).toUri();
+    URI uri =
+        uriBuilder
+            .path("/api/v1/fresh-products/orders/{id}")
+            .buildAndExpand(purchaseOrder.getId())
+            .toUri();
 
-        return ResponseEntity.created(uri).body(totalPrice);
-    }
+    return ResponseEntity.created(uri).body(totalPrice);
+  }
 
-    @GetMapping("/{buyerId}")
-    public ResponseEntity<Cart> showOrder(
-            @PathVariable Long buyerId) throws NotFoundException, JsonProcessingException {
-        return ResponseEntity.ok(cartService.getCart(buyerId));
-    }
+  @GetMapping("/{buyerId}")
+  public ResponseEntity<Cart> showOrder(@PathVariable Long buyerId)
+      throws NotFoundException, JsonProcessingException {
+    return ResponseEntity.ok(cartService.getCart(buyerId));
+  }
 
-    @PutMapping("/{buyerId}")
-    public ResponseEntity<Cart> updateOrderStatus(
-            @PathVariable Long buyerId,
-            @RequestParam String status
-    ) throws JsonProcessingException, NotFoundException {
-        return ResponseEntity.ok(cartService.changeStatus(buyerId ,status));
-    }
+  @PutMapping("/{buyerId}")
+  public ResponseEntity<Cart> updateOrderStatus(
+      @PathVariable Long buyerId, @RequestParam String status)
+      throws JsonProcessingException, NotFoundException {
+    return ResponseEntity.ok(cartService.changeStatus(buyerId, status));
+  }
 }
