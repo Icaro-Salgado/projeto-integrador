@@ -101,7 +101,7 @@ public class InboundOrderControllerTests {
         InboundOrderDTO.builder()
             .orderNumber(11)
             .batches(List.of(batchMock))
-            .sectionCode(mockedBatch.getSection_id())
+            .sectionCode(mockedBatch.getSection().getId())
             .warehouseCode(mockSection.getWarehouse().getId())
             .build();
 
@@ -135,7 +135,7 @@ public class InboundOrderControllerTests {
         InboundOrderDTO.builder()
             .orderNumber(1)
             .batches(List.of(batchMock))
-            .sectionCode(mockedBatch.getSection_id())
+            .sectionCode(mockedBatch.getSection().getId())
             .warehouseCode(mockSection.getWarehouse().getId())
             .build();
 
