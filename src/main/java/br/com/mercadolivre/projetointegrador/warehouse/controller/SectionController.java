@@ -24,22 +24,34 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/section")
-@Tag(name="Seção")
+@Tag(name = "Seção")
 public class SectionController {
 
   private final SectionService sectionService;
   private final SectionAssembler assembler;
 
-  @Operation(summary = "RETORNA UMA SEÇÃO", description = "Retorna uma seção com id correspondente ao passado na url")
-  @ApiResponses(value = {
-          @ApiResponse(responseCode = "200",
-                  description = "Seção encontrada com sucesso",
-                  content = {
-                          @Content(mediaType = "application/json", schema = @Schema(implementation = SectionResponseDTO.class))}),
-          @ApiResponse(responseCode = "404",
-                  description = "Seção inválida",
-                  content = {@Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDTO.class))})
-  })
+  @Operation(
+      summary = "RETORNA UMA SEÇÃO",
+      description = "Retorna uma seção com id correspondente ao passado na url")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Seção encontrada com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = SectionResponseDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Seção inválida",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @JsonView(SectionView.Detail.class)
   @GetMapping("{id}")
   public ResponseEntity<SectionResponseDTO> findById(@PathVariable Long id) {
@@ -49,15 +61,27 @@ public class SectionController {
   }
 
   @Operation(summary = "CRIA UMA SEÇÃO", description = "Cria uma seção")
-  @ApiResponses(value = {
-          @ApiResponse(responseCode = "201",
-                  description = "Seção criada com sucesso",
-                  content = {
-                          @Content(mediaType = "application/json", schema = @Schema(implementation = CreateSectionPayloadDTO.class))}),
-          @ApiResponse(responseCode = "400",
-                  description = "A capacidade do setor já foi atingida, ou o setor não corresponde à categoria do produto",
-                  content = {@Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDTO.class))})
-  })
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "Seção criada com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = CreateSectionPayloadDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "A capacidade do setor já foi atingida, ou o setor não corresponde à categoria do"
+                    + " produto",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @PostMapping
   public ResponseEntity<SectionResponseDTO> createSection(
       @RequestBody @Valid CreateSectionPayloadDTO payload) {

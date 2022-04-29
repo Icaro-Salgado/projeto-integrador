@@ -23,24 +23,34 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Lote")
 public class BatchController {
 
+  private final BatchService batchService;
+  private final BatchAssembler assembler;
 
-    private final BatchService batchService;
-    private final BatchAssembler assembler;
-
-    @Operation(summary = "RETORNA UM LOTE", description = "Retorna um lote com o id correspondente ao passado na url")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Lote retornado com sucesso",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = BatchResponseDTO.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "Lote não encontrado",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class))})
-    })
+  @Operation(
+      summary = "RETORNA UM LOTE",
+      description = "Retorna um lote com o id correspondente ao passado na url")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Lote retornado com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = BatchResponseDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Lote não encontrado",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping("/api/v1/batches/{id}")
   public ResponseEntity<BatchResponseDTO> findBatchById(@PathVariable Long id)
       throws NotFoundException {
     return assembler.toResponse(batchService.findById(id), HttpStatus.OK);
   }
-
 }
