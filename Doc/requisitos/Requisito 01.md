@@ -20,68 +20,32 @@
 
 ## VALIDAÇÃO
 
-> - Autentique-se como representante e acesse os terminais.
-> - Registre o lote no setor correspondente.
-> - Verifique se o setor de warehouse está sendo registrado corretamente.
+- Autentique-se como representante e acesse os terminais.
+- Registre o lote no setor correspondente.
+- Verifique se o setor de warehouse está sendo registrado corretamente.
+- **OBSERVAÇÃO: substituir as variáveis ${TOKEN} para o resultado de autenticação**
 
-## ENDPOINTS DO CONTRATO CRIADOS
+## ENDPOINTS AUXILIARES CRIADOS
 
-### <span style="color:green">(POST)</span> /api/v1/inboundorder
-
-#### Para testar
-
+### Registrar um usuário
 ```shell
-curl -X POST http://localhost:8080/api/v1/inboundorder -H "Content-Type: application/json" -d '{
-  "orderNumber": 999,
-  "warehouseCode": 1,
-  "sectionCode": 1,    
-  "batches": 
-    [        
-      {            
-        "product_id": 2,            
-        "seller_id": 1,            
-        "price": 199.90,            
-        "batch_number": 12,            
-        "quantity": 100,            
-        "manufacturing_datetime": "2022-01-01",            
-        "due_date": "2022-06-01"        
-      }    
-    ]
+curl -X POST http://localhost:8080/api/v1/auth/register -H "Content-Type: application/json" -d '{
+  "name": "John Doe",
+  "userName": "john",
+  "email": "john.doe@email.com",
+  "password": "123456"
 }'
 ```
 
-#### Observações
-
-Para testar você precisa ter
-
-- Um _Product_ cadastrado na base
-- Uma _Section_ cadastrada na base e pertencente a um _Warehouse_
-- Estar logado com um usuário que tem permissão de escrita na _Warehouse_
-
-### <span style="color:blue">(PUT)</span> /api/v1/inboundorder
-
-#### Para testar
-
+### Autenticar o usuário
 ```shell
-curl -X PUT http://localhost:8080/api/v1/inboundorder -H "Content-Type: application/json" -d '{
-  "orderNumber": 999,
-  "warehouseCode": 1,
-  "sectionCode": 1,    
-  "batches": 
-    [        
-      {            
-        "product_id": 2,            
-        "seller_id": 1,            
-        "price": 299.90,            
-        "batch_number": 12,            
-        "quantity": 100,            
-        "manufacturing_datetime": "2022-01-01",            
-        "due_date": "2022-06-01"        
-      }    
-    ]
+curl -X POST http://localhost:8080/api/v1/auth -H "Content-Type: application/json" -d '{
+  "email": "john.doe@email.com",
+  "password": "123456"
 }'
 ```
 
+<<<<<<< HEAD
 #### Observações
 
 Para testar você precisa ter
@@ -94,12 +58,14 @@ Para testar você precisa ter
 
 ## ENDPOINTS AUXILIARES CRIADOS
 
+=======
+>>>>>>> 32a2e3b (doc: adjusment of requirement doc)
 ### <span style="color:green">(POST)</span> /api/v1/warehouse
 
 #### Para testar
 
 ```shell
-curl -X POST http://localhost:8080/api/v1/warehouse -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:8080/api/v1/warehouse -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json" -d '{
   "name": "warehouse 1",
   "location": {
     "country": "Brazil",
@@ -122,7 +88,7 @@ Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você
 #### Para testar
 
 ```shell
-curl -X POST http://localhost:8080/api/v1/section -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:8080/api/v1/section -H "Authorization: Bearer {TOKEN} " -H "Content-Type: application/json" -d '{
   "warehouseId": 1,
   "managerId": 1,
   "minimumTemperature": 12.22,
@@ -141,7 +107,7 @@ Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você
 #### Para testar
 
 ```shell
-curl -X POST http://localhost:8080/api/v1/fresh-products -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:8080/api/v1/fresh-products -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json" -d '{
     "name":  "Alface",
     "category": "FF"
 }'
@@ -150,6 +116,73 @@ curl -X POST http://localhost:8080/api/v1/fresh-products -H "Content-Type: appli
 #### Observações
 
 Essa rota foi anexada ao requisito 1 pois para cadastrar um _InboundOrder_ você deve ter um product anexado
+
+## ENDPOINTS DO CONTRATO CRIADOS
+
+### <span style="color:green">(POST)</span> /api/v1/inboundorder
+
+#### Observações
+
+Para testar você precisa ter
+
+- Um _Product_ cadastrado na base
+- Uma _Section_ cadastrada na base e pertencente a um _Warehouse_
+- Estar logado com um usuário que tem permissão de escrita na _Warehouse_
+
+#### Para testar
+
+```shell
+curl -X POST http://localhost:8080/api/v1/inboundorder -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json" -d '{
+  "orderNumber": 999,
+  "warehouseCode": 1,
+  "sectionCode": 1,    
+  "batches": 
+    [        
+      {            
+        "product_id": 2,            
+        "seller_id": 1,            
+        "price": 199.90,            
+        "batch_number": 12,            
+        "quantity": 100,            
+        "manufacturing_datetime": "2022-01-01",            
+        "due_date": "2022-06-01"        
+      }    
+    ]
+}'
+```
+
+### <span style="color:blue">(PUT)</span> /api/v1/inboundorder
+
+#### Para testar
+
+```shell
+curl -X PUT http://localhost:8080/api/v1/inboundorder -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json" -d '{
+  "orderNumber": 999,
+  "warehouseCode": 1,
+  "sectionCode": 1,    
+  "batches": 
+    [        
+      {            
+        "product_id": 2,            
+        "seller_id": 1,            
+        "price": 299.90,            
+        "batch_number": 12,            
+        "quantity": 50,            
+        "manufacturing_datetime": "2022-01-01",            
+        "due_date": "2022-06-01"        
+      }    
+    ]
+}'
+```
+
+#### Observações
+
+Para testar você precisa ter
+
+- Ter a batch já cadastrada na base
+- Estar logado com um usuário que tem permissão de escrita na _Warehouse_
+
+
 
 ## FEATURES EXTRAS IMPLEMENTADAS
 
