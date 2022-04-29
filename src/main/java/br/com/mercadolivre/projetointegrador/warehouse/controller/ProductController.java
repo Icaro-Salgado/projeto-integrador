@@ -1,13 +1,20 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.warehouse.assembler.ProductAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateOrUpdateProductDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
+import br.com.mercadolivre.projetointegrador.warehouse.view.ProductView;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,10 +27,11 @@ import java.util.List;
 @RequestMapping("/api/v1/fresh-products")
 public class ProductController {
 
-  ProductService productService;
+  private final ProductService productService;
+  private final ProductAssembler productAssembler;
 
   @PostMapping
-  public ResponseEntity<Void> createProduct(
+  public ResponseEntity<ProductDTO> createProduct(
       @Valid @RequestBody CreateOrUpdateProductDTO createOrUpdateProductDTO,
       UriComponentsBuilder uriBuilder)
       throws InvalidCategoryException, ProductAlreadyExists {
@@ -33,7 +41,10 @@ public class ProductController {
     URI uri =
         uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
 
-    return ResponseEntity.created(uri).build();
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Location", uri.toString());
+
+    return productAssembler.toResponse(product,HttpStatus.CREATED, headers);
   }
 
   @PutMapping("/{id}")
@@ -53,16 +64,18 @@ public class ProductController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Product> getById(@PathVariable Long id) throws NotFoundException {
+  @JsonView(ProductView.Detail.class)
+  public ResponseEntity<ProductDTO> getById(@PathVariable Long id) throws NotFoundException {
     Product product = productService.findById(id);
 
-    return ResponseEntity.ok(product);
+    return productAssembler.toResponse(product, HttpStatus.OK);
   }
 
   @GetMapping
-  public ResponseEntity<List<Product>> getAll() {
+  @JsonView(ProductView.List.class)
+  public ResponseEntity<List<ProductDTO>> getAll() {
     List<Product> products = productService.findAll();
-    return ResponseEntity.ok(products);
+    return productAssembler.toResponse(products, HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")

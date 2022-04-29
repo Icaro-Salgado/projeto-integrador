@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,6 +37,7 @@ import java.util.List;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
 @WithMockCustomUser
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class InboundOrderControllerTests {
   private final String INBOUND_URL = "/api/v1/inboundorder";
   @Autowired private MockMvc mockMvc;
@@ -102,7 +104,7 @@ public class InboundOrderControllerTests {
             .orderNumber(11)
             .batches(List.of(batchMock))
             .sectionCode(mockedBatch.getSection_id())
-            .warehouseCode(mockSection.getWarehouse().getId())
+            .warehouseCode(1L)
             .build();
 
     String payload = new ObjectMapper().writeValueAsString(objPayload);
