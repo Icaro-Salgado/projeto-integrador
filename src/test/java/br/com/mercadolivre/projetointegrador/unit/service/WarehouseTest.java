@@ -66,18 +66,21 @@ public class WarehouseTest {
   public void TestIfFindBatchesOnManagerSection() {
     Section expectedSection = new Section();
     Product expectedProduct = new Product();
-    Mockito.when(sectionRepository.findByManagerId(Mockito.anyLong())).thenReturn(Optional.of(expectedSection));
+    Mockito.when(sectionRepository.findByManagerId(Mockito.anyLong()))
+        .thenReturn(Optional.of(expectedSection));
     Mockito.when(productService.findById(Mockito.anyLong())).thenReturn(expectedProduct);
 
-    assertDoesNotThrow(() -> warehouseService.findProductOnManagerSection(1L, 1L , SortTypeEnum.C));
-    Mockito.verify(batchService, Mockito.times(1)).findBatchesByProductAndSection(expectedProduct, expectedSection);
-
+    assertDoesNotThrow(() -> warehouseService.findProductOnManagerSection(1L, 1L, SortTypeEnum.C));
+    Mockito.verify(batchService, Mockito.times(1))
+        .findBatchesByProductAndSection(expectedProduct, expectedSection);
   }
 
   @Test
   public void TestIfFindBatchesOnManagerSectionThrowsError() {
     Mockito.when(sectionRepository.findByManagerId(Mockito.anyLong())).thenReturn(Optional.empty());
 
-    assertThrows(SectionNotFoundException.class,() -> warehouseService.findProductOnManagerSection(1L, 1L , SortTypeEnum.C));
+    assertThrows(
+        SectionNotFoundException.class,
+        () -> warehouseService.findProductOnManagerSection(1L, 1L, SortTypeEnum.C));
   }
 }
