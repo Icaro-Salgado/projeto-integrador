@@ -14,7 +14,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreatedBatchDTO {
+public class BatchResponseDTO {
 
   private Long id;
 
@@ -31,8 +31,8 @@ public class CreatedBatchDTO {
 
   private List<Map<String, String>> links;
 
-  public static CreatedBatchDTO fromModel(Batch batch) {
-    return CreatedBatchDTO.builder()
+  public static BatchResponseDTO fromModel(Batch batch) {
+    return BatchResponseDTO.builder()
         .product(batch.getProduct())
         .section_id(batch.getSection().getId())
         .seller_id(batch.getSeller_id())

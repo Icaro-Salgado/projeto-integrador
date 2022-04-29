@@ -14,6 +14,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepos
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.BatchDuplicatedValidator;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class WarehouseService {
                     new SectionNotFoundException(
                         "Não foi encontrada nenhuma seção vinculada ao usuário")));
 
-    return batchService.findBatchesByProductAndSection(productId, managerSection);
+    return batchService.findBatchesByProductAndSection(
+        productId, managerSection, Sort.by(Sort.Direction.ASC, sortType.field));
   }
 }
