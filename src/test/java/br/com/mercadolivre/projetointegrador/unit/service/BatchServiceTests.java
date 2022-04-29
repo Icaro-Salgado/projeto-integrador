@@ -166,4 +166,18 @@ public class BatchServiceTests {
 
     Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
   }
+
+  @Test
+  public void shouldCallFindBatchByProductAndSection(){
+    List<Batch> expectedBatch = List.of(new Batch());
+    Mockito.when(batchRepository.findBatchByProductAndSection(Mockito.any(), Mockito.any())).thenReturn(expectedBatch);
+
+    Product productParam = new Product();
+    Section sectionParam = new Section();
+    List<Batch> result = batchService.findBatchesByProductAndSection(productParam, sectionParam);
+
+    Mockito.verify(batchRepository, Mockito.times(1)).findBatchByProductAndSection(productParam, sectionParam);
+    Assertions.assertEquals(expectedBatch, result);
+
+  }
 }
