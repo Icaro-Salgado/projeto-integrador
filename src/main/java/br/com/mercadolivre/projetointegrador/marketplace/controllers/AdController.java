@@ -16,25 +16,19 @@ import java.util.List;
 @AllArgsConstructor
 public class AdController {
 
-    AdService adService;
+  AdService adService;
 
-    @PostMapping
-    public ResponseEntity<Void> createAd(
-            @Valid @RequestBody Ad ad,
-            UriComponentsBuilder uriBuilder
-    ) {
-        adService.createAd(ad);
-        URI uri = uriBuilder.path("/api/v1/ad/{id}").buildAndExpand(ad.getId()).toUri();
+  @PostMapping
+  public ResponseEntity<Void> createAd(@Valid @RequestBody Ad ad, UriComponentsBuilder uriBuilder) {
+    adService.createAd(ad);
+    URI uri = uriBuilder.path("/api/v1/ad/{id}").buildAndExpand(ad.getId()).toUri();
 
-        return ResponseEntity.created(uri).build();
-    }
+    return ResponseEntity.created(uri).build();
+  }
 
-    @GetMapping("/seller/{seller_id}")
-    public ResponseEntity<List<Ad>> listCustomerAds(
-            @PathVariable Long seller_id
-    ) {
-        List<Ad> sellerAds = adService.listAdsByCustomerId(seller_id);
-        return ResponseEntity.ok(sellerAds);
-    }
-
+  @GetMapping("/seller/{seller_id}")
+  public ResponseEntity<List<Ad>> listCustomerAds(@PathVariable Long seller_id) {
+    List<Ad> sellerAds = adService.listAdsByCustomerId(seller_id);
+    return ResponseEntity.ok(sellerAds);
+  }
 }

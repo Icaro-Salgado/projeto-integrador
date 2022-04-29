@@ -7,21 +7,18 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class Customer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column
-    private String name;
+  @Column private String name;
 
-    @Column
-    private String email;
+  @Column private String email;
 
-    @Column
-    private String password;
-
+  @Column private String password;
 }

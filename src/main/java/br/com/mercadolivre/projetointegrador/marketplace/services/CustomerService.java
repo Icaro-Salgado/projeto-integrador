@@ -13,36 +13,35 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomerService {
 
-    CustomerRepository customerRepository;
+  CustomerRepository customerRepository;
 
-    public void createCustomer(Customer customer) throws UserAlreadyExistsException {
-        Customer customerExists = findCustomerByEmail(customer.getEmail());
-        if (customerExists != null) {
-            throw new UserAlreadyExistsException("Usuário com o email informado já foi cadastrado.");
-        }
-        customerRepository.save(customer);
+  public void createCustomer(Customer customer) throws UserAlreadyExistsException {
+    Customer customerExists = findCustomerByEmail(customer.getEmail());
+    if (customerExists != null) {
+      throw new UserAlreadyExistsException("Usuário com o email informado já foi cadastrado.");
     }
+    customerRepository.save(customer);
+  }
 
-    public Customer findCustomerByEmail(String email) {
-        return customerRepository.findByEmail(email).orElse(null);
+  public Customer findCustomerByEmail(String email) {
+    return customerRepository.findByEmail(email).orElse(null);
+  }
+
+  public Customer findCustomerById(Long id) throws NotFoundException {
+    Customer customer = customerRepository.findById(id).orElse(null);
+    if (customer == null) {
+      throw new NotFoundException("Usuário não localizado.");
     }
+    return customer;
+  }
 
-    public Customer findCustomerById(Long id) throws NotFoundException {
-        Customer customer = customerRepository.findById(id).orElse(null);
-        if (customer == null) {
-            throw new NotFoundException("Usuário não localizado.");
-        }
-        return customer;
-    }
+  public void updateCustomer(Customer updatedCustomer) throws NotFoundException {
+    findCustomerById(updatedCustomer.getId());
 
-    public void updateCustomer(Customer updatedCustomer) throws NotFoundException {
-        findCustomerById(updatedCustomer.getId());
+    customerRepository.save(updatedCustomer);
+  }
 
-        customerRepository.save(updatedCustomer);
-    }
-
-    public List<Customer> listAllCustomers() {
-        return customerRepository.findAll();
-    }
-
+  public List<Customer> listAllCustomers() {
+    return customerRepository.findAll();
+  }
 }

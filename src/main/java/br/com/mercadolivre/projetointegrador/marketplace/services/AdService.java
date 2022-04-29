@@ -12,31 +12,31 @@ import java.util.List;
 @AllArgsConstructor
 public class AdService {
 
-    AdRepository adRepository;
+  AdRepository adRepository;
 
-    public void createAd(Ad ad) {
-        this.adRepository.save(ad);
-    }
+  public void createAd(Ad ad) {
+    this.adRepository.save(ad);
+  }
 
-    public List<Ad> listAdsByCustomerId(Long id) {
-         return this.adRepository.findAllBySellerId(id);
-    }
+  public List<Ad> listAdsByCustomerId(Long id) {
+    return this.adRepository.findAllBySellerId(id);
+  }
 
-    public Ad findAdById(Long id) {
-        Ad ad = this.adRepository.findById(id).orElse(null);
-        if (ad == null) {
-            throw new NotFoundException("Anúncio não localizado.");
-        }
-        return ad;
+  public Ad findAdById(Long id) {
+    Ad ad = this.adRepository.findById(id).orElse(null);
+    if (ad == null) {
+      throw new NotFoundException("Anúncio não localizado.");
     }
+    return ad;
+  }
 
-    public void updateAd(Ad updatedAd) {
-        findAdById(updatedAd.getId());
-        adRepository.save(updatedAd);
-    }
+  public void updateAd(Ad updatedAd) {
+    findAdById(updatedAd.getId());
+    adRepository.save(updatedAd);
+  }
 
-    public void deleteAd(Long id) throws NotFoundException {
-        Ad ad = findAdById(id);
-        adRepository.delete(ad);
-    }
+  public void deleteAd(Long id) throws NotFoundException {
+    Ad ad = findAdById(id);
+    adRepository.delete(ad);
+  }
 }

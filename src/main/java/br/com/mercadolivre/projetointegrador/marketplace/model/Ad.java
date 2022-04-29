@@ -7,39 +7,31 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class Ad {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "seller_id")
-    private Long sellerId;
+  @Column(name = "seller_id")
+  private Long sellerId;
 
-    @Column
-    private String name;
+  @Column private String name;
 
-    @Column
-    private int quantity;
+  @Column private int quantity;
 
-    @Column
-    private BigDecimal price;
+  @Column private BigDecimal price;
 
-    @Column
-    private int discount;
+  @Column private int discount;
 
-    @Column
-    private String category;
+  @Column private String category;
 
-    @Column
-    private LocalDate manufacturing_date;
+  @Column private LocalDate manufacturing_date;
 
-    @Column
-    private LocalDate due_date;
-
+  @Column private LocalDate due_date;
 }

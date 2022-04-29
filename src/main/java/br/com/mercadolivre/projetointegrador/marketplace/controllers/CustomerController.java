@@ -19,46 +19,43 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomerController {
 
-    CustomerService customerService;
+  CustomerService customerService;
 
-    @PostMapping
-    public ResponseEntity<Void> createCustomer(
-            @Valid @RequestBody CreateOrUpdateCustomerDTO createCustomerDTO,
-            UriComponentsBuilder uriBuilder
-    ) throws UserAlreadyExistsException {
-        Customer customer = createCustomerDTO.mountCustomer();
-        customerService.createCustomer(customer);
+  @PostMapping
+  public ResponseEntity<Void> createCustomer(
+      @Valid @RequestBody CreateOrUpdateCustomerDTO createCustomerDTO,
+      UriComponentsBuilder uriBuilder)
+      throws UserAlreadyExistsException {
+    Customer customer = createCustomerDTO.mountCustomer();
+    customerService.createCustomer(customer);
 
-        URI uri = uriBuilder.path("/api/v1/customers/{id}").buildAndExpand(customer.getId()).toUri();
+    URI uri = uriBuilder.path("/api/v1/customers/{id}").buildAndExpand(customer.getId()).toUri();
 
-        return ResponseEntity.created(uri).build();
-    }
+    return ResponseEntity.created(uri).build();
+  }
 
-    @GetMapping
-    public ResponseEntity<List<Customer>> getCustomers() {
-        List<Customer> customers = customerService.listAllCustomers();
-        return ResponseEntity.ok(customers);
-    }
+  @GetMapping
+  public ResponseEntity<List<Customer>> getCustomers() {
+    List<Customer> customers = customerService.listAllCustomers();
+    return ResponseEntity.ok(customers);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(
-            @PathVariable Long id
-    ) throws NotFoundException {
-        Customer customer = customerService.findCustomerById(id);
-        return ResponseEntity.ok(customer);
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) throws NotFoundException {
+    Customer customer = customerService.findCustomerById(id);
+    return ResponseEntity.ok(customer);
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCustomer(
-            @Valid @RequestBody CreateOrUpdateCustomerDTO updateCustomerDTO,
-            UriComponentsBuilder uriBuilder
-    ) throws NotFoundException {
-        Customer customer = updateCustomerDTO.mountCustomer();
-        customerService.updateCustomer(customer);
+  @PutMapping("/{id}")
+  public ResponseEntity<Void> updateCustomer(
+      @Valid @RequestBody CreateOrUpdateCustomerDTO updateCustomerDTO,
+      UriComponentsBuilder uriBuilder)
+      throws NotFoundException {
+    Customer customer = updateCustomerDTO.mountCustomer();
+    customerService.updateCustomer(customer);
 
-        URI uri = uriBuilder.path("/api/v1/customers/{id}").buildAndExpand(customer.getId()).toUri();
+    URI uri = uriBuilder.path("/api/v1/customers/{id}").buildAndExpand(customer.getId()).toUri();
 
-        return ResponseEntity.noContent().location(uri).build();
-    }
-
+    return ResponseEntity.noContent().location(uri).build();
+  }
 }
