@@ -89,6 +89,9 @@ Para testar você precisa ter
 - Ter a batch já cadastrada na base
 - Estar logado com um usuário que tem permissão de escrita na _Warehouse_
 
+## Diagrama de classes
+![image](https://user-images.githubusercontent.com/101267189/166071492-0a17c75d-1c26-4824-a6d6-76c90b151af8.png)
+
 ## ENDPOINTS AUXILIARES CRIADOS
 
 ### <span style="color:green">(POST)</span> /api/v1/warehouse
