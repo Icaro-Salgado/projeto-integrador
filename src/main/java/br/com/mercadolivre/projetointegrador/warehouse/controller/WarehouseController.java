@@ -6,6 +6,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatch
 import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.WarehouseMapper;
+import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
@@ -13,6 +14,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,10 +40,11 @@ public class WarehouseController {
   @GetMapping("/fresh-products/list")
   public ResponseEntity<?> listStockProducts(
           @RequestParam(required = false) Long product,
-          @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort
+          @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,
+          Authentication authentication
   ) throws NotFoundException {
-    // TODO: change for Authentication object from spring security
-    Long managerId = 1L;
+    AppUser requestUser = (AppUser) authentication.getPrincipal();
+    Long managerId = requestUser.getId();
 
     if(product == null) {
       throw new IllegalArgumentException();
