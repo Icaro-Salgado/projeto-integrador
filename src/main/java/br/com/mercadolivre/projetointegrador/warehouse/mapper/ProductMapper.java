@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
 
-    ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
+  ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    ProductDTO toDto(Product product);
+  ProductDTO toDto(Product product);
 
-    List<ProductDTO> toDto(List<Product> products);
+  List<ProductDTO> toDto(List<Product> products);
 }

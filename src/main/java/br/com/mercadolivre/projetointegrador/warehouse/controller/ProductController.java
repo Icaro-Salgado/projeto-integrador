@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -44,7 +43,7 @@ public class ProductController {
     HttpHeaders headers = new HttpHeaders();
     headers.add("Location", uri.toString());
 
-    return productAssembler.toResponse(product,HttpStatus.CREATED, headers);
+    return productAssembler.toResponse(product, HttpStatus.CREATED, headers);
   }
 
   @PutMapping("/{id}")

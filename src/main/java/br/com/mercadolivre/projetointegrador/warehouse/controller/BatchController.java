@@ -19,7 +19,8 @@ public class BatchController {
   private final BatchAssembler assembler;
 
   @GetMapping("/api/v1/batches/{id}")
-  public ResponseEntity<BatchResponseDTO> findBatchById(@PathVariable Long id) throws NotFoundException {
+  public ResponseEntity<BatchResponseDTO> findBatchById(@PathVariable Long id)
+      throws NotFoundException {
     return assembler.toResponse(batchService.findById(id), HttpStatus.OK);
   }
 }

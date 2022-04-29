@@ -32,13 +32,17 @@ public class WarehouseController {
         warehouseService.createWarehouse(WarehouseMapper.INSTANCE.createDtoToModel(payloadDTO));
 
     HttpHeaders headers = new HttpHeaders();
-    headers.add("Location", linkTo(methodOn(WarehouseController.class).findById(created.getId())).withSelfRel().toString());
+    headers.add(
+        "Location",
+        linkTo(methodOn(WarehouseController.class).findById(created.getId()))
+            .withSelfRel()
+            .toString());
 
     return assembler.toResponse(created, HttpStatus.CREATED, headers);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<WarehouseResponseDTO> findById(@PathVariable Long id){
+  public ResponseEntity<WarehouseResponseDTO> findById(@PathVariable Long id) {
     Warehouse warehouse = warehouseService.findWarehouse(id);
 
     return assembler.toResponse(warehouse, HttpStatus.CREATED, null);
