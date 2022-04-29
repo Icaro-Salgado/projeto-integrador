@@ -3,24 +3,17 @@ package br.com.mercadolivre.projetointegrador.warehouse.controller;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.mapper.BatchMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.WarehouseMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
-import br.com.mercadolivre.projetointegrador.warehouse.utils.ResponseUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.view.SectionView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Links;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -69,18 +61,19 @@ public class WarehouseController {
   @GetMapping("/fresh-products/list")
   @JsonView(SectionView.SectionBatches.class)
   public ResponseEntity<?> listStockProducts(
-          @RequestParam(required = false) Long product,
-          @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,
-          Authentication authentication
-  ) throws NotFoundException {
+      @RequestParam(required = false) Long product,
+      @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,
+      Authentication authentication)
+      throws NotFoundException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     Long managerId = requestUser.getId();
 
-    if(product == null) {
+    if (product == null) {
       throw new IllegalArgumentException("Informe o ID do produto");
     }
 
-    List<Batch> batchProducts = warehouseService.findProductOnManagerSection(managerId, product, sort);
+    List<Batch> batchProducts =
+        warehouseService.findProductOnManagerSection(managerId, product, sort);
 
     return sectionAssembler.toSectionBatchesResponse(batchProducts, product, HttpStatus.OK);
   }

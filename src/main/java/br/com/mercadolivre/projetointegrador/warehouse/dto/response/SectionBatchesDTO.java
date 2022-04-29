@@ -16,8 +16,8 @@ import java.util.List;
 @JsonView(SectionView.SectionBatches.class)
 public class SectionBatchesDTO {
 
-    private String warehouse_code;
-    private Long section_code;
-    private Long productId;
-    private List<BatchResponseDTO> batchStock;
+  private String warehouse_code;
+  private Long section_code;
+  private Long productId;
+  private List<BatchResponseDTO> batchStock;
 }

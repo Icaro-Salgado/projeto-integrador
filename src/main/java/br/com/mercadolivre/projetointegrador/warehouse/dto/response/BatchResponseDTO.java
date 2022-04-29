@@ -25,13 +25,18 @@ public class BatchResponseDTO {
   private Long seller_id;
   private BigDecimal price;
   private Integer order_number;
+
   @JsonView(SectionView.SectionBatches.class)
   private Integer batchNumber;
+
   @JsonView(SectionView.SectionBatches.class)
   private Integer quantity;
+
   private LocalDate manufacturing_datetime;
+
   @JsonView(SectionView.SectionBatches.class)
   private LocalDate due_date;
+
   private LocalDate created_at;
 
   @JsonView(SectionView.SectionBatches.class)
