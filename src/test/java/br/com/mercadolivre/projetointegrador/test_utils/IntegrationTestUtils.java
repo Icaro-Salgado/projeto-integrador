@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class IntegrationTestUtils {
@@ -32,7 +33,13 @@ public class IntegrationTestUtils {
             .name("Mocked warehouse")
             .location(
                 new Location(
-                    "Brazil", "SP", "Osasco", "Bomfim", "Av. das Nações Unidas", 3003, 6233200))
+                    "Brazil",
+                    "SP",
+                    "Osasco",
+                    "Bomfim",
+                    "Av. das Nações Unidas",
+                    ThreadLocalRandom.current().nextInt(),
+                    6233200))
             .build();
 
     return warehouseRepository.save(warehouse);
@@ -87,4 +94,6 @@ public class IntegrationTestUtils {
 
     return batchRepository.save(batch);
   }
+
+  public void resetDatabase() {}
 }
