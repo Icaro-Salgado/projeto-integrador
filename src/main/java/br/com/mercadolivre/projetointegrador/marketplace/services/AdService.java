@@ -19,7 +19,7 @@ public class AdService {
     }
 
     public List<Ad> listAdsByCustomerId(Long id) {
-         return this.adRepository.findAllByCustomerId(id);
+         return this.adRepository.findAllBySellerId(id);
     }
 
     public Ad findAdById(Long id) {
