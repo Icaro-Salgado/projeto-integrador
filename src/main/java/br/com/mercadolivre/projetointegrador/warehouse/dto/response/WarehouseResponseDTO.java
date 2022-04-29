@@ -8,15 +8,16 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Map;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 public class WarehouseResponseDTO {
 
-    private Long id;
+  private Long id;
 
-    private String name;
+  private String name;
 
-    private Location location;
+  private Location location;
 
-    private List<Map<String, String>> links;
+  private List<Map<String, String>> links;
 }

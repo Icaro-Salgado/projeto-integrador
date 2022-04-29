@@ -13,11 +13,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "UniqueLocation",
-                        columnNames = {"zipcode", "number"})
-        })
+    uniqueConstraints = {
+      @UniqueConstraint(
+          name = "UniqueLocation",
+          columnNames = {"zipcode", "number"})
+    })
 public class Location {
 
   @Id

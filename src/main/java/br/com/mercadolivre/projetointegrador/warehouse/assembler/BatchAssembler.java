@@ -1,7 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.assembler;
 
 import br.com.mercadolivre.projetointegrador.warehouse.controller.BatchController;
-import br.com.mercadolivre.projetointegrador.warehouse.controller.ProductController;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
@@ -25,11 +24,12 @@ public class BatchAssembler {
     BatchResponseDTO dto = BatchMapper.INSTANCE.toResponseDTO(entity);
 
     Links links =
-            Links.of(linkTo(methodOn(BatchController.class).findBatchById(entity.getId())).withSelfRel());
+        Links.of(
+            linkTo(methodOn(BatchController.class).findBatchById(entity.getId())).withSelfRel());
 
     dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 
-    return new ResponseEntity<>(dto,status);
+    return new ResponseEntity<>(dto, status);
   }
 
   public ResponseEntity<List<BatchResponseDTO>> toCreatedResponse(List<Batch> createdBatches)
