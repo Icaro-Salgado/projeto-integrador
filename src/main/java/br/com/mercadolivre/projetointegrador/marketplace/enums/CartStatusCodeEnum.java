@@ -19,10 +19,10 @@ public enum CartStatusCodeEnum {
     switch (cartStatus) {
       case ABERTO:
         statusCodeEnum = CartStatusCodeEnum.FINALIZADO;
-      break;
+        break;
       case FINALIZADO:
         statusCodeEnum = CartStatusCodeEnum.ABERTO;
-      break;
+        break;
     }
     return statusCodeEnum;
   }

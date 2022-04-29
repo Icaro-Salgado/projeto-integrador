@@ -46,7 +46,7 @@ public class CartService {
   }
 
   public Cart changeStatus(Long id, String status)
-          throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
+      throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
     if (!CartStatusCodeEnum.contains(status)) {
       throw new InvalidStatusCodeException("Verifique o status informado.");
     }
