@@ -23,10 +23,32 @@ public class WarehouseTestUtils {
     Date date = new Date();
 
     Batch batch1 =
-        new Batch(1l, product, Section.builder().id(2L).build(), 3l, new BigDecimal(30.0), 12345, 250422, 4, null, null, null);
+        new Batch(
+            1l,
+            product,
+            Section.builder().id(2L).build(),
+            3l,
+            new BigDecimal(30.0),
+            12345,
+            250422,
+            4,
+            null,
+            null,
+            null);
 
     Batch batch2 =
-        new Batch(2l, product, Section.builder().id(3L).build(), 4l, new BigDecimal(36.0), 12346, 250423, 5, null, null, null);
+        new Batch(
+            2l,
+            product,
+            Section.builder().id(3L).build(),
+            4l,
+            new BigDecimal(36.0),
+            12346,
+            250423,
+            5,
+            null,
+            null,
+            null);
 
     batches.add(batch1);
     batches.add(batch2);
@@ -39,7 +61,18 @@ public class WarehouseTestUtils {
     Product product = new Product(1l, "alface", CategoryEnum.FS, null);
 
     Batch batch1 =
-        new Batch(1l, product, Section.builder().id(2L).build(), 3l, new BigDecimal(30.0), 12345, 250422, 4, null, null, null);
+        new Batch(
+            1l,
+            product,
+            Section.builder().id(2L).build(),
+            3l,
+            new BigDecimal(30.0),
+            12345,
+            250422,
+            4,
+            null,
+            null,
+            null);
 
     return batch1;
   }
@@ -49,7 +82,18 @@ public class WarehouseTestUtils {
     Product product = new Product(1l, "alface", CategoryEnum.FS, null);
 
     Batch batch2 =
-        new Batch(2l, product, Section.builder().id(3L).build(), 4l, new BigDecimal(36.0), 12346, 250423, 5, null, null, null);
+        new Batch(
+            2l,
+            product,
+            Section.builder().id(3L).build(),
+            4l,
+            new BigDecimal(36.0),
+            12346,
+            250423,
+            5,
+            null,
+            null,
+            null);
 
     return batch2;
   }

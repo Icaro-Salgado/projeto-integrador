@@ -8,7 +8,6 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SectionCapacityValidator implements WarehouseValidator {
 
@@ -35,16 +34,15 @@ public class SectionCapacityValidator implements WarehouseValidator {
 
     int batchesQty = batchRepository.findAllBySection_IdIn(List.of(order.getSectionCode())).size();
 
-    if (sectionCapacity < batchesQty + order.getBatches().size()){
+    if (sectionCapacity < batchesQty + order.getBatches().size()) {
       int availableSpaces = Math.max((sectionCapacity - batchesQty), 0);
 
       throw new SectionTotalCapacityException(
-              "A capacidade do setor foi atingida! A ordem de registro contem "
-                      + order.getBatches().size()
-                      + " lotes, mas o setor comporta apenas "
-                      + availableSpaces
-                      + " novos lotes");
+          "A capacidade do setor foi atingida! A ordem de registro contem "
+              + order.getBatches().size()
+              + " lotes, mas o setor comporta apenas "
+              + availableSpaces
+              + " novos lotes");
     }
-
   }
 }

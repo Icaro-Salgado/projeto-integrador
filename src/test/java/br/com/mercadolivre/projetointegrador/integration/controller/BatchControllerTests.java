@@ -3,7 +3,6 @@ package br.com.mercadolivre.projetointegrador.integration.controller;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
