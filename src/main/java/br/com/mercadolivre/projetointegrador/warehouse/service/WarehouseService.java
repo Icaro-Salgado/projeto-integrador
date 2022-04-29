@@ -76,6 +76,7 @@ public class WarehouseService {
                     new SectionNotFoundException(
                         "Não foi encontrada nenhuma seção vinculada ao usuário")));
 
-    return batchService.findBatchesByProductAndSection(productId, managerSection, Sort.by(Sort.Direction.ASC, sortType.field));
+    return batchService.findBatchesByProductAndSection(
+        productId, managerSection, Sort.by(Sort.Direction.ASC, sortType.field));
   }
 }
