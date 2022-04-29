@@ -9,7 +9,6 @@ import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderD
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.InboundOrderMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,27 +33,45 @@ public class InboundOrderController {
   private final InboundOrderMapper inboundOrderMapper;
   private final BatchAssembler assembler;
 
-
-
-  @Operation(summary = "ADICIONA UMA NOVA INBOUND ORDER", description = "Cria uma nova ordem de alocação ")
-  @ApiResponses(value = {
-          @ApiResponse(
-                  responseCode = "200",
-                  description = "Ordem criada",
-                  content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BatchResponseDTO.class))}),
-          @ApiResponse(
-                  responseCode = "404",
-                  description = "Armazem ou Setor não encontrados!",
-                  content = {@Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDTO.class))}),
-          @ApiResponse(
-                  responseCode = "409",
-                  description = "Lotes duplicados!",
-                  content = {@Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDTO.class))}),
-          @ApiResponse(
-                  responseCode = "400",
-                  description = "A capacidade do setor já foi atingida ou o produto não condiz com a sessão!",
-                  content = {@Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDTO.class))})
-  })
+  @Operation(
+      summary = "ADICIONA UMA NOVA INBOUND ORDER",
+      description = "Cria uma nova ordem de alocação ")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Ordem criada",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = BatchResponseDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Armazem ou Setor não encontrados!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "409",
+            description = "Lotes duplicados!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "A capacidade do setor já foi atingida ou o produto não condiz com a sessão!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @PostMapping
   public ResponseEntity<List<BatchResponseDTO>> addInboundOrder(
       @RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
@@ -67,26 +84,45 @@ public class InboundOrderController {
     return assembler.toCreatedResponse(savedBatches);
   }
 
-
-  @Operation(summary = "ATUALIZA UMA INBOUND ORDER", description = "Atualiza uma ordem de alocação ")
-  @ApiResponses(value = {
-          @ApiResponse(
-                  responseCode = "200",
-                  description = "Ordem Atualizada",
-                  content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BatchResponseDTO.class))}),
-          @ApiResponse(
-                  responseCode = "404",
-                  description = "Armazem ou Setor não encontrados!",
-                  content = {@Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDTO.class))}),
-          @ApiResponse(
-                  responseCode = "409",
-                  description = "Lotes duplicados!",
-                  content = {@Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDTO.class))}),
-          @ApiResponse(
-                  responseCode = "400",
-                  description = "A capacidade do setor já foi atingida ou o produto não condiz com a sessão!",
-                  content = {@Content(mediaType = "application/json",schema = @Schema(implementation = ErrorDTO.class))})
-  })
+  @Operation(
+      summary = "ATUALIZA UMA INBOUND ORDER",
+      description = "Atualiza uma ordem de alocação ")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Ordem Atualizada",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = BatchResponseDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Armazem ou Setor não encontrados!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "409",
+            description = "Lotes duplicados!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "A capacidade do setor já foi atingida ou o produto não condiz com a sessão!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @PutMapping
   public ResponseEntity<List<BatchResponseDTO>> updateInboundOrder(
       @RequestBody InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
