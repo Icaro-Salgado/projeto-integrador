@@ -1,6 +1,8 @@
 package br.com.mercadolivre.projetointegrador.warehouse.repository;
 
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,4 +15,6 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
   List<Batch> findAllByBatchNumberIn(List<Integer> batchNumberList);
 
   List<Batch> findAllBySection_IdIn(List<Long> ids);
+
+  List<Batch> findBatchByProductAndSection(Product product, Section section);
 }

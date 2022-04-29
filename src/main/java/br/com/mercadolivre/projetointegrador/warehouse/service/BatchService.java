@@ -2,6 +2,8 @@ package br.com.mercadolivre.projetointegrador.warehouse.service;
 
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -71,5 +73,10 @@ public class BatchService {
     batch.setQuantity(updatedBatch.getQuantity());
 
     return batch;
+  }
+
+  public List<Batch> findBatchesByProductAndSection(Long productId, Section section) throws NotFoundException {
+    Product product = productService.findById(productId);
+    return batchRepository.findBatchByProductAndSection(product, section);
   }
 }
