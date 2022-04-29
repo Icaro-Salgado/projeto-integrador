@@ -2,6 +2,8 @@ package br.com.mercadolivre.projetointegrador.warehouse.dto.response;
 
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.view.SectionView;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -23,12 +25,21 @@ public class BatchResponseDTO {
   private Long seller_id;
   private BigDecimal price;
   private Integer order_number;
+
+  @JsonView(SectionView.SectionBatches.class)
   private Integer batchNumber;
+
+  @JsonView(SectionView.SectionBatches.class)
   private Integer quantity;
+
   private LocalDate manufacturing_datetime;
+
+  @JsonView(SectionView.SectionBatches.class)
   private LocalDate due_date;
+
   private LocalDate created_at;
 
+  @JsonView(SectionView.SectionBatches.class)
   private List<Map<String, String>> links;
 
   public static BatchResponseDTO fromModel(Batch batch) {
