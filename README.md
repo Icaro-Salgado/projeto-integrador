@@ -2,7 +2,7 @@
 
 # Welcome to mercadoFresh!
 
-mercadofresh é um projeto de fechamento do curso de programação Java da escola **Digital House** em parceria com o **Mercado Livre**. O projeto compreende uma API de gestão de estoque e armazenamento de mercadorias que são disponibilizadas por parceiros comerciais (leia-se vendedores) em local com temperatura controlada.
+MercadoFresh é um projeto de fechamento do curso de programação Java da escola **Digital House** em parceria com o **Mercado Livre**. O projeto compreende uma API de gestão de estoque e armazenamento de mercadorias que são disponibilizadas por parceiros comerciais (leia-se vendedores) em local com temperatura controlada.
 
 ## Tecnologias utilizadas para desenvolvimento da API
 
