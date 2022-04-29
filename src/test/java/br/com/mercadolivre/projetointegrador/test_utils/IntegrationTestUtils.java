@@ -62,7 +62,7 @@ public class IntegrationTestUtils {
     Batch batch =
         Batch.builder()
             .product(createProduct())
-            .section_id(createSection().getId())
+            .section(createSection())
             .seller_id(1L)
             .price(BigDecimal.TEN)
             .order_number(123)
@@ -77,7 +77,7 @@ public class IntegrationTestUtils {
     Batch batch =
         Batch.builder()
             .product(createProduct())
-            .section_id(section.getId())
+            .section(createSection())
             .seller_id(1L)
             .price(BigDecimal.TEN)
             .order_number(123)

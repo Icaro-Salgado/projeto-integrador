@@ -33,7 +33,9 @@ public class Batch {
   @JoinColumn(name = "product_id", nullable = false)
   private Product product;
 
-  @Column private Long section_id;
+  @ManyToOne
+  @JoinColumn(name = "section_id", nullable = false)
+  private Section section;
 
   @Column private Long seller_id;
 
