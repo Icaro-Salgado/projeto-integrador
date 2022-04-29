@@ -80,7 +80,8 @@ public class BatchService {
     return batchRepository.findBatchByProductAndSection(product, section);
   }
 
-  public List<Batch> findBatchesByProductAndSection(Product product, Section section, Sort sortInfos) {
+  public List<Batch> findBatchesByProductAndSection(
+      Product product, Section section, Sort sortInfos) {
 
     return batchRepository.findBatchByProductAndSection(product, section, sortInfos);
   }
