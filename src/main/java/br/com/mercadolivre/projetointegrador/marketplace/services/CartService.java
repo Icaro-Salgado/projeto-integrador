@@ -2,6 +2,7 @@ package br.com.mercadolivre.projetointegrador.marketplace.services;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CartStatusCodeEnum;
+import br.com.mercadolivre.projetointegrador.marketplace.exceptions.InvalidStatusCodeException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
@@ -45,11 +46,21 @@ public class CartService {
   }
 
   public Cart changeStatus(Long id, String status)
-      throws JsonProcessingException, NotFoundException {
+          throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
+    if (!CartStatusCodeEnum.contains(status)) {
+      throw new InvalidStatusCodeException("Verifique o status informado.");
+    }
     Cart cart = getCart(id);
     CartStatusCodeEnum statusCode = CartStatusCodeEnum.valueOf(status);
     cart.setStatusCode(statusCode);
 
+    updateCart(id, cart);
+    return cart;
+  }
+
+  public Cart switchStatus(Long id) throws NotFoundException, JsonProcessingException {
+    Cart cart = getCart(id);
+    cart.setStatusCode(CartStatusCodeEnum.switchStatus(cart.getStatusCode()));
     updateCart(id, cart);
     return cart;
   }
