@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.exception.handler;
 
+import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.StandardError;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.validators.InboundOrderInvalidManagerException;
 import org.springframework.http.HttpStatus;
@@ -46,5 +47,15 @@ public class ValidationErrorHandler {
     err.setPath(request.getRequestURI());
 
     return ResponseEntity.status(notModified).body(err);
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<ErrorDTO> invalidArgument(IllegalArgumentException ex){
+    ErrorDTO errorDTO = new ErrorDTO();
+
+    errorDTO.setError("Argumentos inválidos");
+    errorDTO.setMessage(ex.getMessage());
+
+    return ResponseEntity.badRequest().body(errorDTO);
   }
 }
