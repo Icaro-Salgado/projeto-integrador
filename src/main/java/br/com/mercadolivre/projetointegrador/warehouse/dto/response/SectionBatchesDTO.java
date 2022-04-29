@@ -13,8 +13,8 @@ import java.util.List;
 @EqualsAndHashCode(exclude = "batchStock")
 public class SectionBatchesDTO {
 
-    private String warehouse_code;
-    private Long section_code;
-    private Long productId;
-    private List<BatchStockDTO> batchStock;
+  private String warehouse_code;
+  private Long section_code;
+  private Long productId;
+  private List<BatchStockDTO> batchStock;
 }

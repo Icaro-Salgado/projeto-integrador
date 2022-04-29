@@ -39,33 +39,34 @@ public class WarehouseController {
 
   @GetMapping("/fresh-products/list")
   public ResponseEntity<?> listStockProducts(
-          @RequestParam(required = false) Long product,
-          @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,
-          Authentication authentication
-  ) throws NotFoundException {
+      @RequestParam(required = false) Long product,
+      @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,
+      Authentication authentication)
+      throws NotFoundException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     Long managerId = requestUser.getId();
 
-    if(product == null) {
+    if (product == null) {
       throw new IllegalArgumentException();
     }
 
-    List<Batch> batchProducts = warehouseService.findProductOnManagerSection(managerId, product, sort);
+    List<Batch> batchProducts =
+        warehouseService.findProductOnManagerSection(managerId, product, sort);
 
-    if(batchProducts.isEmpty()) {
+    if (batchProducts.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
     Section section = batchProducts.get(0).getSection();
 
-    SectionBatchesDTO response = new SectionBatchesDTO(
+    SectionBatchesDTO response =
+        new SectionBatchesDTO(
             section.getWarehouse().getId().toString(),
             section.getId(),
             product,
-            batchProducts.stream().map(p -> new BatchStockDTO(p.getBatchNumber(), p.getQuantity(), p.getDue_date())).collect(Collectors.toList())
-
-    );
-
+            batchProducts.stream()
+                .map(p -> new BatchStockDTO(p.getBatchNumber(), p.getQuantity(), p.getDue_date()))
+                .collect(Collectors.toList()));
 
     return ResponseEntity.ok(response);
   }

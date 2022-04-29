@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class BatchStockDTO {
 
-    private Integer batchNumber;
-    private Integer quantity;
-    private LocalDate dueDate;
+  private Integer batchNumber;
+  private Integer quantity;
+  private LocalDate dueDate;
 }

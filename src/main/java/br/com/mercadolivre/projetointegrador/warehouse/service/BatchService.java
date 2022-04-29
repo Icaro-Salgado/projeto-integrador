@@ -75,7 +75,8 @@ public class BatchService {
     return batch;
   }
 
-  public List<Batch> findBatchesByProductAndSection(Long productId, Section section) throws NotFoundException {
+  public List<Batch> findBatchesByProductAndSection(Long productId, Section section)
+      throws NotFoundException {
     Product product = productService.findById(productId);
     return batchRepository.findBatchByProductAndSection(product, section);
   }
