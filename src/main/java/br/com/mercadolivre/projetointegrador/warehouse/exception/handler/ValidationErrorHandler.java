@@ -50,7 +50,7 @@ public class ValidationErrorHandler {
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<ErrorDTO> invalidArgument(IllegalArgumentException ex){
+  public ResponseEntity<ErrorDTO> invalidArgument(IllegalArgumentException ex) {
     ErrorDTO errorDTO = new ErrorDTO();
 
     errorDTO.setError("Argumentos inválidos");

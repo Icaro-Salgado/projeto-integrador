@@ -64,9 +64,16 @@ public class WarehouseService {
     return addedBatches;
   }
 
-
-  public List<Batch> findProductOnManagerSection(Long managerId, Long productId, SortTypeEnum sortType) throws RuntimeException, NotFoundException {
-    Section managerSection = sectionRepository.findByManagerId(managerId).orElseThrow((() -> new SectionNotFoundException("Não foi encontrada nenhuma seção vinculada ao usuário")));
+  public List<Batch> findProductOnManagerSection(
+      Long managerId, Long productId, SortTypeEnum sortType)
+      throws RuntimeException, NotFoundException {
+    Section managerSection =
+        sectionRepository
+            .findByManagerId(managerId)
+            .orElseThrow(
+                (() ->
+                    new SectionNotFoundException(
+                        "Não foi encontrada nenhuma seção vinculada ao usuário")));
 
     return batchService.findBatchesByProductAndSection(productId, managerSection);
   }

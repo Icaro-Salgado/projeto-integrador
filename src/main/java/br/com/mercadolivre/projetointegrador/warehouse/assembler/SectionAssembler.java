@@ -35,24 +35,32 @@ public class SectionAssembler {
     return new ResponseEntity<>(dto, status);
   }
 
-  public ResponseEntity<SectionBatchesDTO> toSectionBatchesResponse(List<Batch> entities, Long productId, HttpStatus status){
-    if(entities.isEmpty()) {
+  public ResponseEntity<SectionBatchesDTO> toSectionBatchesResponse(
+      List<Batch> entities, Long productId, HttpStatus status) {
+    if (entities.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
     Section section = entities.get(0).getSection();
 
-    SectionBatchesDTO response = new SectionBatchesDTO(
+    SectionBatchesDTO response =
+        new SectionBatchesDTO(
             section.getWarehouse().getId().toString(),
             section.getId(),
             productId,
-            entities.stream().map(p -> {
-              BatchResponseDTO dto = BatchMapper.INSTANCE.toResponseDTO(p);
+            entities.stream()
+                .map(
+                    p -> {
+                      BatchResponseDTO dto = BatchMapper.INSTANCE.toResponseDTO(p);
 
-              Links links = Links.of(linkTo(methodOn(BatchController.class).findBatchById(dto.getId())).withSelfRel());
-              dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
-              return dto;
-            }).collect(Collectors.toList()));
+                      Links links =
+                          Links.of(
+                              linkTo(methodOn(BatchController.class).findBatchById(dto.getId()))
+                                  .withSelfRel());
+                      dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
+                      return dto;
+                    })
+                .collect(Collectors.toList()));
 
     return new ResponseEntity<>(response, status);
   }
