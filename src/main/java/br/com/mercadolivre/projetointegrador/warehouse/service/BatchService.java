@@ -6,6 +6,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,5 +78,10 @@ public class BatchService {
 
   public List<Batch> findBatchesByProductAndSection(Product product, Section section) {
     return batchRepository.findBatchByProductAndSection(product, section);
+  }
+
+  public List<Batch> findBatchesByProductAndSection(Product product, Section section, Sort sortInfos) {
+
+    return batchRepository.findBatchByProductAndSection(product, section, sortInfos);
   }
 }

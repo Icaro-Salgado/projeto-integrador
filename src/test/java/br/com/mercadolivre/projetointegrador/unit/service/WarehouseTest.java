@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +73,7 @@ public class WarehouseTest {
 
     assertDoesNotThrow(() -> warehouseService.findProductOnManagerSection(1L, 1L, SortTypeEnum.C));
     Mockito.verify(batchService, Mockito.times(1))
-        .findBatchesByProductAndSection(expectedProduct, expectedSection);
+        .findBatchesByProductAndSection(Mockito.eq(expectedProduct), Mockito.eq(expectedSection), Mockito.any());
   }
 
   @Test
