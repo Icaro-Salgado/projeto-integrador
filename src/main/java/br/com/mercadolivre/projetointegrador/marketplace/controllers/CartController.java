@@ -24,7 +24,7 @@ public class CartController {
   CartService cartService;
 
   @PostMapping
-  public ResponseEntity<?> orderPrice(
+  public ResponseEntity<BigDecimal> createOrUpdatePurchaseOrder(
       @RequestBody PurchaseOrderDTO purchaseOrderDTO,
       UriComponentsBuilder uriBuilder,
       Authentication authentication
