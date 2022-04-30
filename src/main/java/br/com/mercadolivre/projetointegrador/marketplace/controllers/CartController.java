@@ -27,8 +27,8 @@ public class CartController {
   public ResponseEntity<BigDecimal> createOrUpdatePurchaseOrder(
       @RequestBody PurchaseOrderDTO purchaseOrderDTO,
       UriComponentsBuilder uriBuilder,
-      Authentication authentication
-  ) throws JsonProcessingException {
+      Authentication authentication)
+      throws JsonProcessingException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     BigDecimal totalPrice =
         cartService.updateCart(requestUser.getId(), purchaseOrderDTO.mountCart()).getTotalPrice();
@@ -43,20 +43,21 @@ public class CartController {
   }
 
   @GetMapping("/{buyerId}")
-  public ResponseEntity<Cart> showOrder(
-          @PathVariable Long buyerId)
+  public ResponseEntity<Cart> showOrder(@PathVariable Long buyerId)
       throws NotFoundException, JsonProcessingException {
     return ResponseEntity.ok(cartService.getCart(buyerId));
   }
 
   @GetMapping
-  public ResponseEntity<Cart> showOrderAuth(Authentication authentication) throws NotFoundException, JsonProcessingException {
+  public ResponseEntity<Cart> showOrderAuth(Authentication authentication)
+      throws NotFoundException, JsonProcessingException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     return ResponseEntity.ok(cartService.getCart(requestUser.getId()));
   }
 
   @PatchMapping("/status")
-  public ResponseEntity<Cart> switchOrder(Authentication authentication) throws NotFoundException, JsonProcessingException {
+  public ResponseEntity<Cart> switchOrder(Authentication authentication)
+      throws NotFoundException, JsonProcessingException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     return ResponseEntity.ok(cartService.switchStatus(requestUser.getId()));
   }
@@ -64,7 +65,7 @@ public class CartController {
   @PutMapping("/{buyerId}")
   public ResponseEntity<Cart> updateOrderStatus(
       @PathVariable Long buyerId, @RequestParam String status)
-          throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
+      throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
     return ResponseEntity.ok(cartService.changeStatus(buyerId, status));
   }
 }

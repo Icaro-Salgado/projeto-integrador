@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class PurchaseOrderErrorHandler {
-    @ExceptionHandler(InvalidStatusCodeException.class)
-    public ResponseEntity<ErrorDTO> notFoundHandler(Exception e) {
-        ErrorDTO error = new ErrorDTO();
-        error.setError("Parâmetros inválidos.");
-        error.setMessage(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
+  @ExceptionHandler(InvalidStatusCodeException.class)
+  public ResponseEntity<ErrorDTO> notFoundHandler(Exception e) {
+    ErrorDTO error = new ErrorDTO();
+    error.setError("Parâmetros inválidos.");
+    error.setMessage(e.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+  }
 }

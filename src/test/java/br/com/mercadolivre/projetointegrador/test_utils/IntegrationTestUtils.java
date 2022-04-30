@@ -37,7 +37,9 @@ public class IntegrationTestUtils {
 
   @Autowired private RedisRepository redisRepository;
 
-  ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule())
+  ObjectMapper objectMapper =
+      new ObjectMapper()
+          .registerModule(new JavaTimeModule())
           .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
   public Warehouse createWarehouse() {
@@ -103,26 +105,26 @@ public class IntegrationTestUtils {
   }
 
   public PurchaseOrderDTO createPurchaseOrder() {
-      PurchaseOrderDTO purchaseOrder = new PurchaseOrderDTO();
+    PurchaseOrderDTO purchaseOrder = new PurchaseOrderDTO();
 
-      CartProductDTO product1 = new CartProductDTO();
-      product1.setProductId(1L);
-      product1.setQuantity(5);
-      product1.setUnitPrice(BigDecimal.valueOf(7.00));
+    CartProductDTO product1 = new CartProductDTO();
+    product1.setProductId(1L);
+    product1.setQuantity(5);
+    product1.setUnitPrice(BigDecimal.valueOf(7.00));
 
-      List<CartProductDTO> products = List.of(product1);
-      purchaseOrder.setProducts(products);
+    List<CartProductDTO> products = List.of(product1);
+    purchaseOrder.setProducts(products);
 
-      return purchaseOrder;
+    return purchaseOrder;
   }
 
   public Cart createCart() throws JsonProcessingException {
-      Cart cart = createPurchaseOrder().mountCart();
-      cart.setTotalPrice(BigDecimal.valueOf(35.0));
+    Cart cart = createPurchaseOrder().mountCart();
+    cart.setTotalPrice(BigDecimal.valueOf(35.0));
 
-      String cartAsString = objectMapper.writeValueAsString(cart);
-      redisRepository.setEx("1", 3600L, cartAsString);
+    String cartAsString = objectMapper.writeValueAsString(cart);
+    redisRepository.setEx("1", 3600L, cartAsString);
 
-      return cart;
+    return cart;
   }
 }

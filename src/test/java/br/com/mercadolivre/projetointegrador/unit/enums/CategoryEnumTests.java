@@ -10,25 +10,25 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class CategoryEnumTests {
 
-    CategoryEnum categoryEnum;
+  CategoryEnum categoryEnum;
 
-    @Test
-    public void validateFS() {
-        assertTrue(CategoryEnum.contains("FS"));
-    }
+  @Test
+  public void validateFS() {
+    assertTrue(CategoryEnum.contains("FS"));
+  }
 
-    @Test
-    public void validateRF() {
-        assertTrue(CategoryEnum.contains("RF"));
-    }
+  @Test
+  public void validateRF() {
+    assertTrue(CategoryEnum.contains("RF"));
+  }
 
-    @Test
-    public void validateFF() {
-        assertTrue(CategoryEnum.contains("FF"));
-    }
+  @Test
+  public void validateFF() {
+    assertTrue(CategoryEnum.contains("FF"));
+  }
 
-    @Test
-    public void invalidEnum() {
-        assertFalse(CategoryEnum.contains("GG"));
-    }
+  @Test
+  public void invalidEnum() {
+    assertFalse(CategoryEnum.contains("GG"));
+  }
 }

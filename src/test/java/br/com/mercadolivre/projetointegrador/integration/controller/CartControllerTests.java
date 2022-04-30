@@ -31,79 +31,98 @@ import static org.hamcrest.Matchers.hasSize;
 @ContextConfiguration
 @WithMockCustomUser
 public class CartControllerTests {
-    private final String PURCHASEORDER_URL = "/api/v1/fresh-products/orders";
-    @Autowired private MockMvc mockMvc;
-    @Autowired private IntegrationTestUtils integrationTestUtils;
-    ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule())
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+  private final String PURCHASEORDER_URL = "/api/v1/fresh-products/orders";
+  @Autowired private MockMvc mockMvc;
+  @Autowired private IntegrationTestUtils integrationTestUtils;
+  ObjectMapper objectMapper =
+      new ObjectMapper()
+          .registerModule(new JavaTimeModule())
+          .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-    @Test
-    @DisplayName("CartController - POST - api/v1/fresh-products/orders")
-    public void testCreateOrUpdatePurchaseOrder() throws Exception {
+  @Test
+  @DisplayName("CartController - POST - api/v1/fresh-products/orders")
+  public void testCreateOrUpdatePurchaseOrder() throws Exception {
 
-        PurchaseOrderDTO purchaseOrder = integrationTestUtils.createPurchaseOrder();
+    PurchaseOrderDTO purchaseOrder = integrationTestUtils.createPurchaseOrder();
 
-        mockMvc.perform(MockMvcRequestBuilders.post(PURCHASEORDER_URL)
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(PURCHASEORDER_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(purchaseOrder))
-        )
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().string("35.0"));
-    }
+                .content(objectMapper.writeValueAsString(purchaseOrder)))
+        .andExpect(MockMvcResultMatchers.status().isCreated())
+        .andExpect(MockMvcResultMatchers.content().string("35.0"));
+  }
 
-    @Test
-    @DisplayName("CartController - GET - api/v1/fresh-products/orders/{buyerId}")
-    public void testShowOrder() throws Exception {
+  @Test
+  @DisplayName("CartController - GET - api/v1/fresh-products/orders/{buyerId}")
+  public void testShowOrder() throws Exception {
 
-        Cart cart = integrationTestUtils.createCart();
+    Cart cart = integrationTestUtils.createCart();
 
-        mockMvc.perform(MockMvcRequestBuilders.get(PURCHASEORDER_URL + "/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value(cart.getStatusCode().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.totalPrice").value(cart.getTotalPrice().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.date").value(cart.getDate().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.products", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].productId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].quantity").value(5))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].unitPrice").value(cart.getProducts().get(0).getUnitPrice().toString()));
-    }
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(PURCHASEORDER_URL + "/1"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.statusCode").value(cart.getStatusCode().toString()))
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.totalPrice").value(cart.getTotalPrice().toString()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.date").value(cart.getDate().toString()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.products", hasSize(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].productId").value(1))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].quantity").value(5))
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.products[0].unitPrice")
+                .value(cart.getProducts().get(0).getUnitPrice().toString()));
+  }
 
-    @Test
-    @DisplayName("CartController - GET - api/v1/fresh-products/orders")
-    public void testShowOrderAuthenticated() throws Exception {
+  @Test
+  @DisplayName("CartController - GET - api/v1/fresh-products/orders")
+  public void testShowOrderAuthenticated() throws Exception {
 
-        Cart cart = integrationTestUtils.createCart();
+    Cart cart = integrationTestUtils.createCart();
 
-        mockMvc.perform(MockMvcRequestBuilders.get(PURCHASEORDER_URL))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value(cart.getStatusCode().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.totalPrice").value(cart.getTotalPrice().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.date").value(cart.getDate().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.products", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].productId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].quantity").value(5))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].unitPrice").value(cart.getProducts().get(0).getUnitPrice().toString()));
-    }
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(PURCHASEORDER_URL))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.statusCode").value(cart.getStatusCode().toString()))
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.totalPrice").value(cart.getTotalPrice().toString()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.date").value(cart.getDate().toString()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.products", hasSize(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].productId").value(1))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].quantity").value(5))
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.products[0].unitPrice")
+                .value(cart.getProducts().get(0).getUnitPrice().toString()));
+  }
 
-    @Test
-    @DisplayName("CartController - PUT - api/v1/fresh-products/orders/{buyerId}?status=FINALIZADO")
-    public void testUpdateOrderStatus() throws Exception {
+  @Test
+  @DisplayName("CartController - PUT - api/v1/fresh-products/orders/{buyerId}?status=FINALIZADO")
+  public void testUpdateOrderStatus() throws Exception {
 
-        integrationTestUtils.createCart();
+    integrationTestUtils.createCart();
 
-        mockMvc.perform(MockMvcRequestBuilders.put(PURCHASEORDER_URL + "/1?status=FINALIZADO"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value(CartStatusCodeEnum.FINALIZADO.toString()));
-    }
+    mockMvc
+        .perform(MockMvcRequestBuilders.put(PURCHASEORDER_URL + "/1?status=FINALIZADO"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.statusCode")
+                .value(CartStatusCodeEnum.FINALIZADO.toString()));
+  }
 
-    @Test
-    @DisplayName("CartController - PATCH - api/v1/fresh-products/orders/status")
-    public void testSwitchStatus() throws Exception {
+  @Test
+  @DisplayName("CartController - PATCH - api/v1/fresh-products/orders/status")
+  public void testSwitchStatus() throws Exception {
 
-        integrationTestUtils.createCart();
+    integrationTestUtils.createCart();
 
-        mockMvc.perform(MockMvcRequestBuilders.patch(PURCHASEORDER_URL + "/status"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value(CartStatusCodeEnum.FINALIZADO.toString()));
-    }
+    mockMvc
+        .perform(MockMvcRequestBuilders.patch(PURCHASEORDER_URL + "/status"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.statusCode")
+                .value(CartStatusCodeEnum.FINALIZADO.toString()));
+  }
 }

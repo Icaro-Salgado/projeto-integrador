@@ -10,23 +10,23 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class CartStatusCodeEnumTests {
 
-    CartStatusCodeEnum cartStatusCodeEnum;
+  CartStatusCodeEnum cartStatusCodeEnum;
 
-    @Test
-    public void validateABERTO() {
-        assertTrue(CartStatusCodeEnum.contains("ABERTO"));
-    }
+  @Test
+  public void validateABERTO() {
+    assertTrue(CartStatusCodeEnum.contains("ABERTO"));
+  }
 
-    @Test
-    public void validateFINALIZADO() {
-        assertTrue(CartStatusCodeEnum.contains("FINALIZADO"));
-    }
+  @Test
+  public void validateFINALIZADO() {
+    assertTrue(CartStatusCodeEnum.contains("FINALIZADO"));
+  }
 
-    @Test
-    public void testSwitchStatus() {
-        CartStatusCodeEnum status = CartStatusCodeEnum.ABERTO;
-        CartStatusCodeEnum switchedStatus = CartStatusCodeEnum.switchStatus(status);
+  @Test
+  public void testSwitchStatus() {
+    CartStatusCodeEnum status = CartStatusCodeEnum.ABERTO;
+    CartStatusCodeEnum switchedStatus = CartStatusCodeEnum.switchStatus(status);
 
-        assertNotEquals(status, switchedStatus);
-    }
+    assertNotEquals(status, switchedStatus);
+  }
 }
