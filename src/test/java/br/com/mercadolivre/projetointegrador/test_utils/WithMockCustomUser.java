@@ -8,6 +8,8 @@ import java.lang.annotation.*;
 @WithSecurityContext(factory = CustomUserSecurityContextFactory.class)
 public @interface WithMockCustomUser {
 
+  String id() default "1";
+
   String userName() default "springuser";
 
   String name() default "spring";
