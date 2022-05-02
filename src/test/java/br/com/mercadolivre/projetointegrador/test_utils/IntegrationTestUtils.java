@@ -134,5 +134,6 @@ public class IntegrationTestUtils {
 
     return cart;
   }
+
   public void resetDatabase() {}
 }
