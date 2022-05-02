@@ -21,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.math.BigDecimal;
 import java.net.URI;
 
 @RestController
@@ -37,7 +36,7 @@ public class CartController {
     description = "Cria um carrinho de compras"
   )
   @ApiResponses(
-    value= {
+    value = {
       @ApiResponse(
         description = "Carrinho criado.",
         responseCode = "201",
@@ -71,10 +70,10 @@ public class CartController {
 
   @Operation(
     summary = "RETORNA UM CARRINHO DE COMPRAS",
-    description = "Retorna o carrinho de compras do comprador com id informado.
+    description = "Retorna o carrinho de compras do comprador com id informado."
   )
   @ApiResponses(
-    value= {
+    value = {
       @ApiResponse(
         description = "Carrinho encontrado.",
         responseCode = "200",
@@ -108,7 +107,7 @@ public class CartController {
     description = "Retorna o carrinho de compras do comprador autenticado"
   )
   @ApiResponses(
-    value= {
+    value = {
       @ApiResponse(
         description = "Carrinho encontrado.",
         responseCode = "200",
@@ -143,7 +142,7 @@ public class CartController {
     description = "Modifica o status code do pedido do usuário autenticado. Se o valor atual for ABERTO, será modificado para FINALIZADO e o contrário também."
   )
   @ApiResponses(
-    value= {
+    value = {
       @ApiResponse(
         description = "Status do carrinho atualizado com sucesso.",
         responseCode = "200",
