@@ -15,8 +15,8 @@ import java.util.Date;
 @JsonView(BatchView.BatchAd.class)
 public class ProductResponseDTO {
 
-    private Long id;
-    private String name;
-    private CategoryEnum category;
-    private Date created_at;
+  private Long id;
+  private String name;
+  private CategoryEnum category;
+  private Date created_at;
 }

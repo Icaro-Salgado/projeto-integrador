@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,13 +28,16 @@ public class InboundOrderMapper {
     List<CreateBatchPayloadDTO> batchPayloadDTOS = inboundOrderDTO.getBatches();
     Section section = sectionService.findSectionById(inboundOrderDTO.getSectionCode());
 
-
     List<Batch> batchList =
         batchPayloadDTOS.stream()
             .map(
                 dtoBatch -> {
                   Product product = productService.findById(dtoBatch.getProduct_id());
-                    AppUser seller = appUserRepository.findById(dtoBatch.getSeller_id()).orElseThrow(() -> new UsernameNotFoundException("Vendedor não encontrado"));
+                  AppUser seller =
+                      appUserRepository
+                          .findById(dtoBatch.getSeller_id())
+                          .orElseThrow(
+                              () -> new UsernameNotFoundException("Vendedor não encontrado"));
 
                   return Batch.builder()
                       .product(product)

@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.response;
 
-import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.view.BatchView;
 import com.fasterxml.jackson.annotation.JsonView;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;

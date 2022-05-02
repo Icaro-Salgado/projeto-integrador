@@ -3,7 +3,6 @@ package br.com.mercadolivre.projetointegrador.warehouse.service;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -79,7 +78,7 @@ public class BatchService {
     return batch;
   }
 
-  public List<Batch> listBySellerId(final Long sellerId){
+  public List<Batch> listBySellerId(final Long sellerId) {
     LocalDate date = LocalDate.now().plusWeeks(minimumWeeksToAnnounce);
 
     return batchRepository.findAllBySellerIdAndDueDateGreaterThan(sellerId, date);

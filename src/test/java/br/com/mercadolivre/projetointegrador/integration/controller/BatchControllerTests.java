@@ -2,7 +2,6 @@ package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
@@ -77,8 +76,10 @@ public class BatchControllerTests {
   public void testIfReturnBatchesWithMoreThan3weeksOfDueDate() throws Exception {
     Batch batch = integrationTestUtils.createBatch();
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/batches/ad/{sellerId}", batch.getSeller().getId()))
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get("/api/v1/batches/ad/{sellerId}", batch.getSeller().getId()))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
   }
 }
