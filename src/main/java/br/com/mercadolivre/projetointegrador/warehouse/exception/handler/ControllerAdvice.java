@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.exception.handler;
 
+import br.com.mercadolivre.projetointegrador.marketplace.exceptions.UnauthorizedException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
@@ -26,5 +27,14 @@ public class ControllerAdvice {
     error.setError("Parâmetros inválidos.");
     error.setMessage(e.getMessage());
     return ResponseEntity.badRequest().body(error);
+  }
+
+  @ExceptionHandler(value = UnauthorizedException.class)
+  public ResponseEntity<ErrorDTO> notAllowedException(UnauthorizedException exc) {
+    ErrorDTO error = new ErrorDTO();
+    error.setError("Unauthorized");
+    error.setMessage(exc.getMessage());
+
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
   }
 }
