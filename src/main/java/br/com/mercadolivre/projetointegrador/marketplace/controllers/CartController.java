@@ -18,7 +18,7 @@ import java.net.URI;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/fresh-products/orders")
+@RequestMapping("/api/v1/marketplace/fresh-products/orders")
 public class CartController {
 
   CartService cartService;
@@ -35,7 +35,7 @@ public class CartController {
 
     URI uri =
         uriBuilder
-            .path("/api/v1/fresh-products/orders/{id}")
+            .path("/api/v1/marketplace/fresh-products/orders/{id}")
             .buildAndExpand(requestUser.getId())
             .toUri();
 

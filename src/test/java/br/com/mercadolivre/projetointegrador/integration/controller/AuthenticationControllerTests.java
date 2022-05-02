@@ -40,6 +40,8 @@ public class AuthenticationControllerTests {
 
   @Autowired private AppUserRepository appUserRepository;
 
+  private final String API_URL = "/api/v1/warehouse/auth";
+
   ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
@@ -47,17 +49,18 @@ public class AuthenticationControllerTests {
     Section section = integrationTestUtils.createSection();
 
     mockMvc
-        .perform(MockMvcRequestBuilders.get("/api/v1/inboundorder/{id}", section.getId()))
+        .perform(MockMvcRequestBuilders.get("/api/v1/warehouse/inboundorder/{id}", section.getId()))
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   public void shouldRegisterNewUser() throws Exception {
+    integrationTestUtils.createRoles();
     RegisterDTO registerDTO = new RegisterDTO("mocked@email.com", "mocked", "mockedUser", "123");
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/auth/register")
+            MockMvcRequestBuilders.post(API_URL + "/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(registerDTO)))
         .andExpect(MockMvcResultMatchers.status().isCreated());
@@ -79,7 +82,7 @@ public class AuthenticationControllerTests {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/auth")
+            MockMvcRequestBuilders.post(API_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(registerDTO)))
         .andExpect(MockMvcResultMatchers.status().isOk())

@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,7 +25,7 @@ import java.time.LocalDate;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
-@WithMockUser
+@WithMockManagerUser
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class BatchControllerTests {
 
@@ -36,6 +36,8 @@ public class BatchControllerTests {
   @Autowired private ProductRepository productRepository;
 
   @Autowired private IntegrationTestUtils testUtils;
+
+  private final String API_URL = "/api/v1/warehouse/batches";
 
   @Test
   @DisplayName("BatchController - GET - /api/v1/batches/{id}")
@@ -58,7 +60,7 @@ public class BatchControllerTests {
     Batch created = batchRepository.save(batch);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.get("/api/v1/batches/{id}", created.getId()))
+        .perform(MockMvcRequestBuilders.get(API_URL + "/{id}", created.getId()))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$.section_id").isNotEmpty())
         .andExpect(MockMvcResultMatchers.jsonPath("$.seller_id").value(2L))

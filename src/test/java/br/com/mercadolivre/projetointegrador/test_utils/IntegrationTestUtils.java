@@ -5,15 +5,8 @@ import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.model.*;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -35,6 +28,8 @@ public class IntegrationTestUtils {
   @Autowired private ProductRepository productRepository;
 
   @Autowired private BatchRepository batchRepository;
+
+  @Autowired private RolesRepository rolesRepository;
 
   @Autowired private RedisRepository redisRepository;
 
@@ -133,6 +128,15 @@ public class IntegrationTestUtils {
     redisRepository.setEx("1", 3600L, cartAsString);
 
     return cart;
+  }
+
+  public List<UserRole> createRoles(){
+   return rolesRepository.saveAll(
+            List.of(
+                    new UserRole(null, "CUSTOMER"),
+                    new UserRole(null, "MANAGER")
+            )
+    );
   }
 
   public void resetDatabase() {}

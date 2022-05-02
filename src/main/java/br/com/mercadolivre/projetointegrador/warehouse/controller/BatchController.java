@@ -16,11 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
 @Tag(name = "Batch")
+@RequestMapping("/api/v1/warehouse/batches")
 public class BatchController {
 
   private final BatchService batchService;
@@ -48,7 +50,7 @@ public class BatchController {
                   schema = @Schema(implementation = ErrorDTO.class))
             })
       })
-  @GetMapping("/api/v1/batches/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<BatchResponseDTO> findBatchById(@PathVariable Long id)
       throws NotFoundException {
     return assembler.toResponse(batchService.findById(id), HttpStatus.OK);

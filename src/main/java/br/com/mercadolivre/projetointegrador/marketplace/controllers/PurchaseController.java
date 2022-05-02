@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/customers/purchases")
+@RequestMapping("/api/v1/customers/marketplace/purchases")
 public class PurchaseController {
 
   PurchaseService purchaseService;

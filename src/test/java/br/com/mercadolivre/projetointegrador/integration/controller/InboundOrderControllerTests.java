@@ -6,7 +6,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
@@ -36,10 +36,10 @@ import java.util.List;
 @ActiveProfiles(profiles = "test")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
-@WithMockCustomUser
+@WithMockManagerUser
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class InboundOrderControllerTests {
-  private final String INBOUND_URL = "/api/v1/inboundorder";
+  private final String INBOUND_URL = "/api/v1/warehouse/inboundorder";
   @Autowired private MockMvc mockMvc;
   @Autowired private ProductRepository productRepository;
   @Autowired private BatchRepository batchRepository;

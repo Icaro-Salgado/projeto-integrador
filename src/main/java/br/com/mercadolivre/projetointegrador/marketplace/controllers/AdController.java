@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/ads")
+@RequestMapping("/api/v1/marketplace/ads")
 @AllArgsConstructor
 public class AdController {
 

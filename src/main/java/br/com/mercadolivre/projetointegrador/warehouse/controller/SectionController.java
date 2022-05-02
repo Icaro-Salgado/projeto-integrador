@@ -23,7 +23,7 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/section")
+@RequestMapping("api/v1/warehouse/section")
 @Tag(name = "Section")
 public class SectionController {
 

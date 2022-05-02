@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/inboundorder")
+@RequestMapping("/api/v1/warehouse/inboundorder")
 @RequiredArgsConstructor
 @Tag(name = "Inbound Order")
 public class InboundOrderController {
