@@ -105,7 +105,7 @@ public class CartControllerTests {
     integrationTestUtils.createCart();
 
     mockMvc
-        .perform(MockMvcRequestBuilders.put(PURCHASEORDER_URL + "/1?status=FINALIZADO"))
+        .perform(MockMvcRequestBuilders.put(PURCHASEORDER_URL + "?status=FINALIZADO"))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(
             MockMvcResultMatchers.jsonPath("$.statusCode")

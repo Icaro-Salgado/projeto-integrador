@@ -7,7 +7,6 @@ import lombok.Setter;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -15,13 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateOrUpdateAdDTO {
 
-  private Long id;
-
   @NotEmpty(message = "O produto deve pertencer a pelo menos um lote.")
-  private List<Long> batches;
-
-  // O Seller ID chegará pelo Headers via token JWT
-  private Long seller_id;
+  private List<Long> batchesId;
 
   @NotEmpty(message = "O campo nome deve ser preenchido.")
   private String name;
@@ -30,8 +24,9 @@ public class CreateOrUpdateAdDTO {
   private int quantity;
 
   private BigDecimal price;
+
+  @Min(value = 0, message = "O desconto não pode ser negativo.")
   private int discount;
+
   private String category;
-  private LocalDate manufacturing_date;
-  private LocalDate due_date;
 }

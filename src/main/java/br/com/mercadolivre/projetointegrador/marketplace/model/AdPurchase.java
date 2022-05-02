@@ -5,12 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
-@Entity(name = "ad_batches")
+@Entity(name = "ad_purchase")
 @Getter
 @Setter
 @NoArgsConstructor
-public class AdBatch {
+public class AdPurchase {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,13 @@ public class AdBatch {
   @JoinColumn(name = "ad_id", referencedColumnName = "id", nullable = false)
   private Ad ad;
 
-  @Column(name = "batch_id")
-  private Long batchId;
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "purchase_id", referencedColumnName = "id", nullable = false)
+  private Purchase purchase;
+
+  private Integer quantity;
+
+  private BigDecimal price;
+
+  private Integer discount;
 }

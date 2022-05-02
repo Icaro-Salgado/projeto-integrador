@@ -62,10 +62,11 @@ public class CartController {
     return ResponseEntity.ok(cartService.switchStatus(requestUser.getId()));
   }
 
-  @PutMapping("/{buyerId}")
+  @PutMapping
   public ResponseEntity<Cart> updateOrderStatus(
-      @PathVariable Long buyerId, @RequestParam String status)
+      @RequestParam String status, Authentication authentication)
       throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
-    return ResponseEntity.ok(cartService.changeStatus(buyerId, status));
+    AppUser requestUser = (AppUser) authentication.getPrincipal();
+    return ResponseEntity.ok(cartService.changeStatus(requestUser.getId(), status));
   }
 }
