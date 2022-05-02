@@ -18,7 +18,7 @@ public class AdBatch {
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "ad_id", referencedColumnName = "id", nullable = false)
-  private Ad ads;
+  private Ad ad;
 
   @Column(name = "batch_id")
   private Long batchId;

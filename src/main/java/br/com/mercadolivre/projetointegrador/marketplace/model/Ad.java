@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,8 +31,4 @@ public class Ad {
   @Column private int discount;
 
   @Column private String category;
-
-  @Column private LocalDate manufacturing_date;
-
-  @Column private LocalDate due_date;
 }
