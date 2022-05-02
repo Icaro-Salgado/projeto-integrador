@@ -1,10 +1,8 @@
 package br.com.mercadolivre.projetointegrador.marketplace.controllers;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
 import br.com.mercadolivre.projetointegrador.marketplace.services.PurchaseService;
-import br.com.mercadolivre.projetointegrador.marketplace.utils.IdentifyCustomer;
 import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.service.TokenService;
 import lombok.AllArgsConstructor;
