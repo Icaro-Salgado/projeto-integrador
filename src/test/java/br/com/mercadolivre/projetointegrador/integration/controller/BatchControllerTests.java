@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
+import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,6 +26,7 @@ import java.time.LocalDate;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
 @WithMockUser
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class BatchControllerTests {
 
   @Autowired private MockMvc mockMvc;
@@ -31,6 +34,8 @@ public class BatchControllerTests {
   @Autowired private BatchRepository batchRepository;
 
   @Autowired private ProductRepository productRepository;
+
+  @Autowired private IntegrationTestUtils testUtils;
 
   @Test
   @DisplayName("BatchController - GET - /api/v1/batches/{id}")
@@ -41,7 +46,7 @@ public class BatchControllerTests {
 
     Batch batch = new Batch();
     batch.setProduct(product);
-    batch.setSection_id(1L);
+    batch.setSection(testUtils.createSection());
     batch.setSeller_id(2L);
     batch.setPrice(BigDecimal.valueOf(33.0));
     batch.setOrder_number(2);
@@ -55,7 +60,7 @@ public class BatchControllerTests {
     mockMvc
         .perform(MockMvcRequestBuilders.get("/api/v1/batches/{id}", created.getId()))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.section_id").value(1L))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.section_id").isNotEmpty())
         .andExpect(MockMvcResultMatchers.jsonPath("$.seller_id").value(2L))
         .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(BigDecimal.valueOf(33.0)))
         .andExpect(MockMvcResultMatchers.jsonPath("$.order_number").value(2))

@@ -2,10 +2,12 @@ package br.com.mercadolivre.projetointegrador.warehouse.mapper;
 
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
+import br.com.mercadolivre.projetointegrador.warehouse.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +18,11 @@ import java.util.stream.Collectors;
 public class InboundOrderMapper {
 
   @Autowired private ProductService productService;
+  @Autowired private SectionService sectionService;
 
   public InboundOrder toModel(InboundOrderDTO inboundOrderDTO) {
     List<CreateBatchPayloadDTO> batchPayloadDTOS = inboundOrderDTO.getBatches();
+    Section section = sectionService.findSectionById(inboundOrderDTO.getSectionCode());
 
     List<Batch> batchList =
         batchPayloadDTOS.stream()
@@ -28,7 +32,7 @@ public class InboundOrderMapper {
 
                   return Batch.builder()
                       .product(product)
-                      .section_id(inboundOrderDTO.getSectionCode())
+                      .section(section)
                       .seller_id(dtoBatch.getSeller_id())
                       .price(dtoBatch.getPrice())
                       .order_number(inboundOrderDTO.getOrderNumber())
