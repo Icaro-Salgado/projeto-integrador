@@ -2,7 +2,6 @@ package br.com.mercadolivre.projetointegrador.warehouse.service;
 
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
@@ -64,12 +63,15 @@ public class WarehouseService {
     return addedBatches;
   }
 
-  //TODO: implements of controller
-  public List<Batch> dueDateBatches(Long numberOfDays, Long sectionId){
-    SectionExistsValidator sectionExistsValidator = new SectionExistsValidator(sectionId, sectionRepository);
+  // TODO: implements of controller
+  public List<Batch> dueDateBatches(Long numberOfDays, Long sectionId) {
+    SectionExistsValidator sectionExistsValidator =
+        new SectionExistsValidator(sectionId, sectionRepository);
     sectionExistsValidator.Validate();
 
-    List<Batch> section = batchRepository.findAllBySectionIdAndDueDateLessThan(sectionId, LocalDate.now().plusDays(numberOfDays));
+    List<Batch> section =
+        batchRepository.findAllBySectionIdAndDueDateLessThan(
+            sectionId, LocalDate.now().plusDays(numberOfDays));
 
     return section;
   }
