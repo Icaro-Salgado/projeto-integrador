@@ -7,7 +7,6 @@ import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductReposit
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -22,113 +21,107 @@ import java.util.concurrent.ThreadLocalRandom;
 @ActiveProfiles(profiles = "test")
 public class IntegrationTestUtils {
 
-    @Autowired
-    private WarehouseRepository warehouseRepository;
+  @Autowired private WarehouseRepository warehouseRepository;
 
-    @Autowired
-    private SectionRepository sectionRepository;
+  @Autowired private SectionRepository sectionRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+  @Autowired private ProductRepository productRepository;
 
-    @Autowired
-    private BatchRepository batchRepository;
+  @Autowired private BatchRepository batchRepository;
 
-    public Warehouse createWarehouse() {
-        Warehouse warehouse =
-                Warehouse.builder()
-                        .name("Mocked warehouse")
-                        .location(
-                                new Location(
-                                        "Brazil",
-                                        "SP",
-                                        "Osasco",
-                                        "Bomfim",
-                                        "Av. das Nações Unidas",
-                                        ThreadLocalRandom.current().nextInt(),
-                                        6233200))
-                        .build();
+  public Warehouse createWarehouse() {
+    Warehouse warehouse =
+        Warehouse.builder()
+            .name("Mocked warehouse")
+            .location(
+                new Location(
+                    "Brazil",
+                    "SP",
+                    "Osasco",
+                    "Bomfim",
+                    "Av. das Nações Unidas",
+                    ThreadLocalRandom.current().nextInt(),
+                    6233200))
+            .build();
 
-        return warehouseRepository.save(warehouse);
+    return warehouseRepository.save(warehouse);
+  }
+
+  public Section createSection() {
+    Warehouse warehouse = createWarehouse();
+
+    return sectionRepository.save(
+        new Section(
+            null,
+            warehouse,
+            1L,
+            BigDecimal.valueOf(33.33),
+            BigDecimal.ZERO,
+            1000,
+            CategoryEnum.FS,
+            null));
+  }
+
+  public Product createProduct() {
+    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
+    return productRepository.save(productMock);
+  }
+
+  public Batch createBatch() {
+    Batch batch =
+        Batch.builder()
+            .product(createProduct())
+            .section(createSection())
+            .seller_id(1L)
+            .price(BigDecimal.TEN)
+            .order_number(123)
+            .batchNumber(9595)
+            .quantity(10)
+            .build();
+
+    return batchRepository.save(batch);
+  }
+
+  public List<Batch> createMultipleBatchesOnSameWarehouse() {
+
+    Random random = new Random();
+    List<Batch> batchesToCreate = new ArrayList<>();
+
+    Section section = createSection();
+
+    for (int i = 0; i < 5; i++) {
+      batchesToCreate.add(
+          Batch.builder()
+              .product(createProduct())
+              .section(section)
+              .seller_id(1L + i)
+              .price(BigDecimal.valueOf(10 * i))
+              .order_number(i)
+              .batchNumber(5 - i)
+              .quantity(random.nextInt(350))
+              .dueDate(
+                  LocalDate.of(
+                      random.nextInt(2021) + 1977, random.nextInt(12) + 1, random.nextInt(27) + 1))
+              .build());
     }
 
-    public Section createSection() {
-        Warehouse warehouse = createWarehouse();
+    return batchRepository.saveAll(batchesToCreate);
+  }
 
-        return sectionRepository.save(
-                new Section(
-                        null,
-                        warehouse,
-                        1L,
-                        BigDecimal.valueOf(33.33),
-                        BigDecimal.ZERO,
-                        1000,
-                        CategoryEnum.FS,
-                        null));
-    }
+  public Batch createBatch(Section section) {
+    Batch batch =
+        Batch.builder()
+            .product(createProduct())
+            .section(createSection())
+            .seller_id(1L)
+            .price(BigDecimal.TEN)
+            .order_number(123)
+            .batchNumber(9595)
+            .quantity(10)
+            .build();
 
-    public Product createProduct() {
-        Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
-        return productRepository.save(productMock);
-    }
+    return batchRepository.save(batch);
+  }
 
-    public Batch createBatch() {
-        Batch batch =
-                Batch.builder()
-                        .product(createProduct())
-                        .section(createSection())
-                        .seller_id(1L)
-                        .price(BigDecimal.TEN)
-                        .order_number(123)
-                        .batchNumber(9595)
-                        .quantity(10)
-                        .build();
-
-        return batchRepository.save(batch);
-    }
-
-
-    public List<Batch> createMultipleBatchesOnSameWarehouse() {
-
-        Random random = new Random();
-        List<Batch> batchesToCreate = new ArrayList<>();
-
-        Section section = createSection();
-
-        for (int i = 0; i < 5; i++) {
-            batchesToCreate.add(
-                    Batch.builder()
-                            .product(createProduct())
-                            .section(section)
-                            .seller_id(1L + i)
-                            .price(BigDecimal.valueOf(10 * i))
-                            .order_number(i)
-                            .batchNumber(5 - i)
-                            .quantity(random.nextInt(350))
-                            .dueDate(LocalDate.of(random.nextInt(2021) + 1977, random.nextInt(12) + 1, random.nextInt(27) + 1))
-                            .build()
-            );
-        }
-
-        return batchRepository.saveAll(batchesToCreate);
-    }
-
-
-    public Batch createBatch(Section section) {
-        Batch batch =
-                Batch.builder()
-                        .product(createProduct())
-                        .section(createSection())
-                        .seller_id(1L)
-                        .price(BigDecimal.TEN)
-                        .order_number(123)
-                        .batchNumber(9595)
-                        .quantity(10)
-                        .build();
-
-        return batchRepository.save(batch);
-    }
-
-    public void resetDatabase() {
-    }
+  public void resetDatabase() {}
 }

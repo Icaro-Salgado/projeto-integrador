@@ -4,7 +4,6 @@ import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.RequestLocationDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -101,49 +100,58 @@ public class WarehouseControllerTests {
   public void shouldListSectionBatchesOrderedByBatchNumber() throws Exception {
     List<Batch> batch = integrationTestUtils.createMultipleBatchesOnSameWarehouse();
 
-    List<Integer> batchNumbers = batch.stream().map(Batch::getBatchNumber).sorted().collect(Collectors.toList());
+    List<Integer> batchNumbers =
+        batch.stream().map(Batch::getBatchNumber).sorted().collect(Collectors.toList());
 
-    MvcResult mvcResult = mockMvc
+    MvcResult mvcResult =
+        mockMvc
             .perform(
-                    MockMvcRequestBuilders.get(
-                            SECTION_URL.concat(
-                                    "/fresh-products/list?product=" + batch.get(0).getProduct().getId()) + "&sort=L")
-                            .contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.get(
+                        SECTION_URL.concat(
+                                "/fresh-products/list?product=" + batch.get(0).getProduct().getId())
+                            + "&sort=L")
+                    .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty())
             .andReturn();
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
 
-    for (Integer i = 0; i < batch.size(); i ++){
-      String value = JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]batchNumber")).toString();
+    for (Integer i = 0; i < batch.size(); i++) {
+      String value =
+          JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]batchNumber"))
+              .toString();
 
       Assertions.assertEquals(value, batchNumbers.get(i).toString());
     }
   }
-
 
   @Test
   @WithMockCustomUser
   public void shouldListSectionBatchesOrderedByQuantity() throws Exception {
     List<Batch> batch = integrationTestUtils.createMultipleBatchesOnSameWarehouse();
 
-    List<Integer> batchNumbers = batch.stream().map(Batch::getQuantity).sorted().collect(Collectors.toList());
+    List<Integer> batchNumbers =
+        batch.stream().map(Batch::getQuantity).sorted().collect(Collectors.toList());
 
-    MvcResult mvcResult = mockMvc
+    MvcResult mvcResult =
+        mockMvc
             .perform(
-                    MockMvcRequestBuilders.get(
-                            SECTION_URL.concat(
-                                    "/fresh-products/list?product=" + batch.get(0).getProduct().getId()) + "&sort=C")
-                            .contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.get(
+                        SECTION_URL.concat(
+                                "/fresh-products/list?product=" + batch.get(0).getProduct().getId())
+                            + "&sort=C")
+                    .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty())
             .andReturn();
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
 
-    for (Integer i = 0; i < batch.size(); i ++){
-      String value = JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]quantity")).toString();
+    for (Integer i = 0; i < batch.size(); i++) {
+      String value =
+          JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]quantity"))
+              .toString();
 
       Assertions.assertEquals(value, batchNumbers.get(i).toString());
     }
@@ -154,22 +162,27 @@ public class WarehouseControllerTests {
   public void shouldListSectionBatchesOrderedByDueDate() throws Exception {
     List<Batch> batch = integrationTestUtils.createMultipleBatchesOnSameWarehouse();
 
-    List<LocalDate> batchNumbers = batch.stream().map(Batch::getDueDate).sorted().collect(Collectors.toList());
+    List<LocalDate> batchNumbers =
+        batch.stream().map(Batch::getDueDate).sorted().collect(Collectors.toList());
 
-    MvcResult mvcResult = mockMvc
+    MvcResult mvcResult =
+        mockMvc
             .perform(
-                    MockMvcRequestBuilders.get(
-                            SECTION_URL.concat(
-                                    "/fresh-products/list?product=" + batch.get(0).getProduct().getId()) + "&sort=F")
-                            .contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.get(
+                        SECTION_URL.concat(
+                                "/fresh-products/list?product=" + batch.get(0).getProduct().getId())
+                            + "&sort=F")
+                    .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.batchStock").isNotEmpty())
             .andReturn();
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
 
-    for (Integer i = 0; i < batch.size(); i ++){
-      String value = JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]dueDate")).toString();
+    for (Integer i = 0; i < batch.size(); i++) {
+      String value =
+          JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]dueDate"))
+              .toString();
 
       Assertions.assertEquals(value, batchNumbers.get(i).toString());
     }

@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
