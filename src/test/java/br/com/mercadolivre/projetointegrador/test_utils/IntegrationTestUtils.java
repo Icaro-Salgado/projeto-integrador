@@ -147,5 +147,6 @@ public class IntegrationTestUtils {
 
     return appUserRepository.save(user);
   }
+
   public void resetDatabase() {}
 }

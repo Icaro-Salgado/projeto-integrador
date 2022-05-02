@@ -52,7 +52,8 @@ public class BatchAssembler {
     return ResponseEntity.status(HttpStatus.CREATED).body(createdBatchesDTO);
   }
 
-  public ResponseEntity<List<BatchResponseDTO>> toBatchResponse(List<Batch> batchList, HttpStatus status) {
+  public ResponseEntity<List<BatchResponseDTO>> toBatchResponse(
+      List<Batch> batchList, HttpStatus status) {
     List<BatchResponseDTO> batchResponseDTOList = BatchMapper.INSTANCE.toResponseDTOList(batchList);
 
     batchResponseDTOList.forEach(

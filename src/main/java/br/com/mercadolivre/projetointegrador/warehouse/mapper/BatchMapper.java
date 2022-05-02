@@ -19,5 +19,4 @@ public interface BatchMapper {
   @Mapping(source = "section.id", target = "section_id")
   @Mapping(source = "dueDate", target = "dueDate")
   BatchResponseDTO toResponseDTO(Batch batch);
-
 }
