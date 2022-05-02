@@ -1,9 +1,15 @@
 package br.com.mercadolivre.projetointegrador.warehouse.enums;
 
 public enum CategoryEnum {
-  FS,
-  RF,
-  FF;
+  FS("Fresh"),
+  RF("Refresh"),
+  FF("Frozen");
+
+  private final String label;
+
+  CategoryEnum(String label) {
+    this.label = label;
+  }
 
   public static boolean contains(String payload) {
     for (CategoryEnum c : CategoryEnum.values()) {
@@ -13,5 +19,9 @@ public enum CategoryEnum {
     }
 
     return false;
+  }
+
+  public String label(){
+    return this.label;
   }
 }
