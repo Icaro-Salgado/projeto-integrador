@@ -3,6 +3,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.dto.response;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.view.BatchView;
 import com.fasterxml.jackson.annotation.JsonView;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -30,7 +31,8 @@ public class BatchResponseDTO {
     @JsonView(BatchView.BatchAd.class)
     private Integer quantity;
     private LocalDate manufacturing_datetime;
-    private LocalDate due_date;
+    private LocalDate dueDate;
     private LocalDate created_at;
     private List<Map<String, String>> links;
+
 }

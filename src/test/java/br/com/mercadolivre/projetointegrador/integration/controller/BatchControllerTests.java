@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -27,6 +28,7 @@ import java.time.LocalDate;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
 @WithMockCustomUser
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class BatchControllerTests {
 
   @Autowired private MockMvc mockMvc;
@@ -46,7 +48,7 @@ public class BatchControllerTests {
 
     Batch batch = new Batch();
     batch.setProduct(product);
-    batch.setSection_id(1L);
+    batch.setSection(integrationTestUtils.createSection());
     batch.setSeller(integrationTestUtils.createUser());
     batch.setPrice(BigDecimal.valueOf(33.0));
     batch.setOrder_number(2);
@@ -60,7 +62,7 @@ public class BatchControllerTests {
     mockMvc
         .perform(MockMvcRequestBuilders.get("/api/v1/batches/{id}", created.getId()))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.section_id").value(1L))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.section_id").value(created.getSection().getId()))
         .andExpect(MockMvcResultMatchers.jsonPath("$.seller").isNotEmpty())
         .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(BigDecimal.valueOf(33.0)))
         .andExpect(MockMvcResultMatchers.jsonPath("$.order_number").value(2))

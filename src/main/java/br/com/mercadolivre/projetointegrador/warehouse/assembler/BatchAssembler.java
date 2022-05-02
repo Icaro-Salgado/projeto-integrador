@@ -7,7 +7,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundExce
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.AppUserMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
-import br.com.mercadolivre.projetointegrador.warehouse.dto.response.CreatedBatchDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.BatchMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.utils.ResponseUtils;
 import org.springframework.hateoas.Links;
@@ -24,15 +24,27 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class BatchAssembler {
 
-  public ResponseEntity<List<CreatedBatchDTO>> toCreatedResponse(List<Batch> createdBatches)
+  public ResponseEntity<BatchResponseDTO> toResponse(Batch entity, HttpStatus status) {
+    BatchResponseDTO dto = BatchMapper.INSTANCE.toResponseDTO(entity);
+
+    Links links =
+        Links.of(
+            linkTo(methodOn(BatchController.class).findBatchById(entity.getId())).withSelfRel());
+
+    dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
+
+    return new ResponseEntity<>(dto, status);
+  }
+
+  public ResponseEntity<List<BatchResponseDTO>> toCreatedResponse(List<Batch> createdBatches)
       throws NotFoundException {
 
-    List<CreatedBatchDTO> createdBatchesDTO =
+    List<BatchResponseDTO> createdBatchesDTO =
         createdBatches.stream()
-            .map(BatchMapper.INSTANCE::toCreatedDTO)
+            .map(BatchMapper.INSTANCE::toResponseDTO)
             .collect(Collectors.toList());
 
-    for (CreatedBatchDTO dto : createdBatchesDTO) {
+    for (BatchResponseDTO dto : createdBatchesDTO) {
       Links links =
           Links.of(
               linkTo(methodOn(BatchController.class).findBatchById(dto.getId())).withSelfRel());
@@ -44,7 +56,7 @@ public class BatchAssembler {
   }
 
   public ResponseEntity<List<BatchResponseDTO>> toBatchResponse(List<Batch> batchList, HttpStatus status) {
-    List<BatchResponseDTO> batchResponseDTOList = BatchMapper.INSTANCE.toResponseDTO(batchList);
+    List<BatchResponseDTO> batchResponseDTOList = BatchMapper.INSTANCE.toResponseDTOList(batchList);
 
     batchResponseDTOList.forEach(batch -> {
       Links links = Links.of(

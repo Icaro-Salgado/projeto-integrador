@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class IntegrationTestUtils {
@@ -45,7 +46,13 @@ public class IntegrationTestUtils {
             .name("Mocked warehouse")
             .location(
                 new Location(
-                    "Brazil", "SP", "Osasco", "Bomfim", "Av. das Nações Unidas", 3003, 6233200))
+                    "Brazil",
+                    "SP",
+                    "Osasco",
+                    "Bomfim",
+                    "Av. das Nações Unidas",
+                    ThreadLocalRandom.current().nextInt(),
+                    6233200))
             .build();
 
     return warehouseRepository.save(warehouse);
@@ -75,7 +82,7 @@ public class IntegrationTestUtils {
     Batch batch =
         Batch.builder()
             .product(createProduct())
-            .section_id(createSection().getId())
+            .section(createSection())
             .seller(createUser())
             .price(BigDecimal.TEN)
             .order_number(123)
@@ -91,7 +98,7 @@ public class IntegrationTestUtils {
     Batch batch =
         Batch.builder()
             .product(createProduct())
-            .section_id(section.getId())
+            .section(section)
             .seller(createUser())
             .price(BigDecimal.TEN)
             .order_number(123)
@@ -139,4 +146,5 @@ public class IntegrationTestUtils {
 
     return appUserRepository.save(user);
   }
+  public void resetDatabase() {}
 }
