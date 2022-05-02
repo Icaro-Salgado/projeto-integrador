@@ -67,6 +67,6 @@ public class BatchControllerTests {
         .andExpect(MockMvcResultMatchers.jsonPath("$.batchNumber").value(2))
         .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(250))
         .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturing_datetime").value("2022-01-01"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.due_date").value("2022-05-02"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.dueDate").value("2022-05-02"));
   }
 }

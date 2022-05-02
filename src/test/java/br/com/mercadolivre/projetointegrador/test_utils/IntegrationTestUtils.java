@@ -7,7 +7,9 @@ import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductReposit
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
+@ActiveProfiles(profiles = "test")
 public class IntegrationTestUtils {
 
     @Autowired
