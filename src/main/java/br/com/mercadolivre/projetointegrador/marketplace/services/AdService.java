@@ -23,7 +23,10 @@ public class AdService {
   AdRepository adRepository;
   AdBatchesRepository adBatchesRepository;
 
-  @Transactional(rollbackFor = Exception.class, propagation=Propagation.REQUIRED, isolation=Isolation.SERIALIZABLE)
+  @Transactional(
+      rollbackFor = Exception.class,
+      propagation = Propagation.REQUIRED,
+      isolation = Isolation.SERIALIZABLE)
   public Ad createAd(Long sellerId, CreateOrUpdateAdDTO createAdDTO) {
     Ad ad = new Ad();
     ad.setSellerId(sellerId);
@@ -36,11 +39,11 @@ public class AdService {
     List<Long> batchesId = createAdDTO.getBatchesId();
     adRepository.save(ad);
 
-    for (Long id: batchesId) {
-        AdBatch adBatch = new AdBatch();
-        adBatch.setBatchId(id);
-        adBatch.setAd(ad);
-        adBatchesRepository.save(adBatch);
+    for (Long id : batchesId) {
+      AdBatch adBatch = new AdBatch();
+      adBatch.setBatchId(id);
+      adBatch.setAd(ad);
+      adBatchesRepository.save(adBatch);
     }
 
     return ad;

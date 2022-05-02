@@ -29,5 +29,4 @@ public class CreateOrUpdateAdDTO {
   private int discount;
 
   private String category;
-
 }

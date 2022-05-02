@@ -7,14 +7,14 @@ import lombok.Setter;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class CreatePurchaseDTO {
 
-    @NotNull(message = "Informe o anúncio corretamente.")
-    Long adId;
+  @NotNull(message = "Informe o anúncio corretamente.")
+  Long adId;
 
-    @Min(value = 1, message = "Quantidade mínima é um.")
-    Integer quantity;
-
+  @Min(value = 1, message = "Quantidade mínima é um.")
+  Integer quantity;
 }

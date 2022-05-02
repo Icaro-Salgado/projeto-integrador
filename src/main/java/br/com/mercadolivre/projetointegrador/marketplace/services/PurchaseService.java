@@ -15,32 +15,31 @@ import java.util.List;
 @AllArgsConstructor
 public class PurchaseService {
 
-    AdService adService;
-    PurchaseRepository purchaseRepository;
+  AdService adService;
+  PurchaseRepository purchaseRepository;
 
-    public void createMultiplePurchases(List<CreatePurchaseDTO> adId, Long buyer_id) {
-        List<Purchase> purchasesToBeSaved = new ArrayList<>();
+  public void createMultiplePurchases(List<CreatePurchaseDTO> adId, Long buyer_id) {
+    List<Purchase> purchasesToBeSaved = new ArrayList<>();
 
-        for (CreatePurchaseDTO item: adId) {
-            Ad ad = adService.findAdById(item.getAdId());
+    for (CreatePurchaseDTO item : adId) {
+      Ad ad = adService.findAdById(item.getAdId());
 
-            Purchase purchase = new Purchase();
-            AdPurchase adPurchase = new AdPurchase();
-            purchase.setBuyerId(buyer_id);
+      Purchase purchase = new Purchase();
+      AdPurchase adPurchase = new AdPurchase();
+      purchase.setBuyerId(buyer_id);
 
-            adPurchase.setAd(ad);
-            adPurchase.setQuantity(item.getQuantity());
-            adPurchase.setDiscount(ad.getDiscount());
-            adPurchase.setPrice(ad.getPrice());
+      adPurchase.setAd(ad);
+      adPurchase.setQuantity(item.getQuantity());
+      adPurchase.setDiscount(ad.getDiscount());
+      adPurchase.setPrice(ad.getPrice());
 
-            purchasesToBeSaved.add(purchase);
-        }
-
-        purchaseRepository.saveAllAndFlush(purchasesToBeSaved);
+      purchasesToBeSaved.add(purchase);
     }
 
-    public List<Purchase> listAllPurchases(Long customerId) {
-        return purchaseRepository.findAllByBuyerId(customerId);
-    }
+    purchaseRepository.saveAllAndFlush(purchasesToBeSaved);
+  }
 
+  public List<Purchase> listAllPurchases(Long customerId) {
+    return purchaseRepository.findAllByBuyerId(customerId);
+  }
 }

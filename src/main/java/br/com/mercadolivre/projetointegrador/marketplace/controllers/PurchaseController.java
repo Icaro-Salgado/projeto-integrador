@@ -16,26 +16,21 @@ import java.util.List;
 @RequestMapping("/api/v1/customers/purchases")
 public class PurchaseController {
 
-    PurchaseService purchaseService;
-    TokenService tokenService;
+  PurchaseService purchaseService;
+  TokenService tokenService;
 
-    @PostMapping
-    public void createPurchase(
-            @RequestBody List<CreatePurchaseDTO> createPurchaseDTO,
-            Authentication authentication
-    ) {
-        AppUser requestUser = (AppUser) authentication.getPrincipal();
+  @PostMapping
+  public void createPurchase(
+      @RequestBody List<CreatePurchaseDTO> createPurchaseDTO, Authentication authentication) {
+    AppUser requestUser = (AppUser) authentication.getPrincipal();
 
-        purchaseService.createMultiplePurchases(createPurchaseDTO, requestUser.getId());
-    }
+    purchaseService.createMultiplePurchases(createPurchaseDTO, requestUser.getId());
+  }
 
-    @GetMapping
-    public List<Purchase> listCustomerPurchases(
-            Authentication authentication
-    ) {
-        AppUser requestUser = (AppUser) authentication.getPrincipal();
+  @GetMapping
+  public List<Purchase> listCustomerPurchases(Authentication authentication) {
+    AppUser requestUser = (AppUser) authentication.getPrincipal();
 
-        return purchaseService.listAllPurchases(requestUser.getId());
-    }
-
+    return purchaseService.listAllPurchases(requestUser.getId());
+  }
 }

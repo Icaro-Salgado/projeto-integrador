@@ -26,10 +26,9 @@ public class AdController {
 
   @PostMapping
   public ResponseEntity<Void> createAd(
-          @Valid @RequestBody CreateOrUpdateAdDTO createOrUpdateAdDTO,
-          UriComponentsBuilder uriBuilder,
-          Authentication authentication
-  ) {
+      @Valid @RequestBody CreateOrUpdateAdDTO createOrUpdateAdDTO,
+      UriComponentsBuilder uriBuilder,
+      Authentication authentication) {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     Ad ad = adService.createAd(requestUser.getId(), createOrUpdateAdDTO);
     URI uri = uriBuilder.path("/api/v1/ad/{id}").buildAndExpand(ad.getId()).toUri();
@@ -38,16 +37,12 @@ public class AdController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Ad> findAd(
-          @PathVariable Long id
-  ) {
+  public ResponseEntity<Ad> findAd(@PathVariable Long id) {
     return ResponseEntity.ok(adService.findAdById(id));
   }
 
   @GetMapping
-  public ResponseEntity<List<Ad>> listAds(
-          @RequestParam(required = false) String name
-  ) {
+  public ResponseEntity<List<Ad>> listAds(@RequestParam(required = false) String name) {
     if (name != null) {
       return ResponseEntity.ok(adService.listAds(name));
     }
@@ -56,8 +51,7 @@ public class AdController {
   }
 
   @GetMapping("/seller")
-  public ResponseEntity<List<Ad>> listCustomerAds(
-          Authentication authentication) {
+  public ResponseEntity<List<Ad>> listCustomerAds(Authentication authentication) {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     List<Ad> sellerAds = adService.listAdsByCustomerId(requestUser.getId());
 
@@ -65,10 +59,8 @@ public class AdController {
   }
 
   @DeleteMapping("/{adId}/delete")
-  public ResponseEntity<Void> deleteAd(
-          @PathVariable Long adId,
-          Authentication authentication
-  ) throws UnauthorizedException {
+  public ResponseEntity<Void> deleteAd(@PathVariable Long adId, Authentication authentication)
+      throws UnauthorizedException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     adService.deleteAd(requestUser.getId(), adId);
 
