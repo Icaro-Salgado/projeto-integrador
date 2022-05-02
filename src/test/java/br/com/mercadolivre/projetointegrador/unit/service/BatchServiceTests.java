@@ -2,6 +2,7 @@ package br.com.mercadolivre.projetointegrador.unit.service;
 
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
+import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
@@ -112,13 +113,13 @@ public class BatchServiceTests {
     Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
 
     batch.setSection_id(1L);
-    batch.setSeller_id(2L);
+    batch.setSeller(new AppUser());
     batch.setPrice(BigDecimal.valueOf(33.0));
     batch.setOrder_number(2);
     batch.setBatchNumber(2);
     batch.setQuantity(250);
     batch.setManufacturing_datetime(LocalDate.parse("2022-01-01"));
-    batch.setDue_date(LocalDate.parse("2022-05-02"));
+    batch.setDueDate(LocalDate.parse("2022-05-02"));
 
     batchService.updateBatch(1L, batch);
 

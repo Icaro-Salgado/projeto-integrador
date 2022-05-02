@@ -5,15 +5,8 @@ import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.model.*;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -23,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class IntegrationTestUtils {
@@ -36,6 +30,8 @@ public class IntegrationTestUtils {
   @Autowired private BatchRepository batchRepository;
 
   @Autowired private RedisRepository redisRepository;
+
+  @Autowired private AppUserRepository appUserRepository;
 
   ObjectMapper objectMapper =
       new ObjectMapper()
@@ -79,7 +75,7 @@ public class IntegrationTestUtils {
         Batch.builder()
             .product(createProduct())
             .section_id(createSection().getId())
-            .seller_id(1L)
+            .seller(createUser())
             .price(BigDecimal.TEN)
             .order_number(123)
             .batchNumber(9595)
@@ -94,7 +90,7 @@ public class IntegrationTestUtils {
         Batch.builder()
             .product(createProduct())
             .section_id(section.getId())
-            .seller_id(1L)
+            .seller(createUser())
             .price(BigDecimal.TEN)
             .order_number(123)
             .batchNumber(9595)
@@ -126,5 +122,19 @@ public class IntegrationTestUtils {
     redisRepository.setEx("1", 3600L, cartAsString);
 
     return cart;
+  }
+
+  public AppUser createUser() {
+    Random random = new Random();
+    int randomWithNextInt = random.nextInt();
+
+    AppUser user = AppUser.builder()
+            .name("Spring user")
+            .userName("mockedUser".concat(String.valueOf(randomWithNextInt)))
+            .email("email" + randomWithNextInt + "@email.com")
+            .password("123")
+            .build();
+
+    return appUserRepository.save(user);
   }
 }

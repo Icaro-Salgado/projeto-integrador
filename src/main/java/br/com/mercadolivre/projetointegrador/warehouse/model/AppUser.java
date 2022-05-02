@@ -13,9 +13,11 @@ import java.util.Collection;
 @Getter
 @Setter
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class AppUser implements UserDetails {
 
   @Id
