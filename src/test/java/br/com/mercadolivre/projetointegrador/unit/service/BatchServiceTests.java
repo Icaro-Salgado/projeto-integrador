@@ -10,18 +10,11 @@ import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepositor
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.BatchService;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
@@ -184,9 +177,12 @@ public class BatchServiceTests {
 
   @Test
   @DisplayName("Given a seller id, should return all relate batches")
-  public void shouldReturnListOfBatches(){
+  public void shouldReturnListOfBatches() {
     List<Batch> batchList = WarehouseTestUtils.getBatch();
-    Mockito.when(batchRepository.findAllBySellerIdAndDueDateGreaterThan(Mockito.anyLong(), Mockito.any())).thenReturn(batchList);
+    Mockito.when(
+            batchRepository.findAllBySellerIdAndDueDateGreaterThan(
+                Mockito.anyLong(), Mockito.any()))
+        .thenReturn(batchList);
 
     List<Batch> result = batchService.listBySellerId(1L);
 

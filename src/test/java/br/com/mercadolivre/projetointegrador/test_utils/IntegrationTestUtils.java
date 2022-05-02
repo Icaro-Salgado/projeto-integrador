@@ -130,7 +130,8 @@ public class IntegrationTestUtils {
     Random random = new Random();
     int randomWithNextInt = random.nextInt();
 
-    AppUser user = AppUser.builder()
+    AppUser user =
+        AppUser.builder()
             .name("Spring user")
             .userName("mockedUser".concat(String.valueOf(randomWithNextInt)))
             .email("email" + randomWithNextInt + "@email.com")

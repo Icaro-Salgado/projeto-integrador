@@ -9,8 +9,8 @@ import lombok.*;
 @ToString
 public class UserResponseDTO {
 
-    private Long id;
-    private String email;
-    private String name;
-    private String userName;
+  private Long id;
+  private String email;
+  private String name;
+  private String userName;
 }

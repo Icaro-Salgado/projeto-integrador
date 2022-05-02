@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.response;
 
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import lombok.*;
 
