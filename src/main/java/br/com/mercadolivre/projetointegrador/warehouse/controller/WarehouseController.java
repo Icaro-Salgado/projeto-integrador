@@ -3,6 +3,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.controller;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
@@ -60,7 +61,7 @@ public class WarehouseController {
 
   @GetMapping("/fresh-products/list")
   @JsonView(SectionView.SectionBatches.class)
-  public ResponseEntity<?> listStockProducts(
+  public ResponseEntity<SectionBatchesDTO> listStockProducts(
       @RequestParam(required = false) Long product,
       @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,
       Authentication authentication)
