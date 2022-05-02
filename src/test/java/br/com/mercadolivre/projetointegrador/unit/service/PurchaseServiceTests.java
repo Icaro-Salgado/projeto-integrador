@@ -21,51 +21,51 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class PurchaseServiceTests {
 
-    @Mock
-    PurchaseRepository purchaseRepository;
+  @Mock PurchaseRepository purchaseRepository;
 
-    @Mock
-    AdService adService;
+  @Mock AdService adService;
 
-    @InjectMocks
-    PurchaseService purchaseService;
+  @InjectMocks PurchaseService purchaseService;
 
-    @Test
-    @DisplayName("Given an valid order, when call createPurchase, then purchaseRepository.saveAllAndFlush should be called with right arguments")
-    public void createPurchase() {
-        List<CreatePurchaseDTO> adsOrder = new ArrayList<>();
-        adsOrder.add(new CreatePurchaseDTO(1L, 10));
-        adsOrder.add(new CreatePurchaseDTO(2L, 5));
-        adsOrder.add(new CreatePurchaseDTO(3L, 7));
+  @Test
+  @DisplayName(
+      "Given an valid order, when call createPurchase, then purchaseRepository.saveAllAndFlush"
+          + " should be called with right arguments")
+  public void createPurchase() {
+    List<CreatePurchaseDTO> adsOrder = new ArrayList<>();
+    adsOrder.add(new CreatePurchaseDTO(1L, 10));
+    adsOrder.add(new CreatePurchaseDTO(2L, 5));
+    adsOrder.add(new CreatePurchaseDTO(3L, 7));
 
-        List<Purchase> purchasesToBeSaved = new ArrayList<>();
-        Ad ad = new Ad();
-        Mockito.when(adService.findAdById(Mockito.any())).thenReturn(ad);
+    List<Purchase> purchasesToBeSaved = new ArrayList<>();
+    Ad ad = new Ad();
+    Mockito.when(adService.findAdById(Mockito.any())).thenReturn(ad);
 
-        for (CreatePurchaseDTO item : adsOrder) {
-            Purchase purchase = new Purchase();
-            AdPurchase adPurchase = new AdPurchase();
-            purchase.setBuyerId(10L);
+    for (CreatePurchaseDTO item : adsOrder) {
+      Purchase purchase = new Purchase();
+      AdPurchase adPurchase = new AdPurchase();
+      purchase.setBuyerId(10L);
 
-            adPurchase.setAd(ad);
-            adPurchase.setQuantity(item.getQuantity());
-            adPurchase.setDiscount(ad.getDiscount());
-            adPurchase.setPrice(ad.getPrice());
+      adPurchase.setAd(ad);
+      adPurchase.setQuantity(item.getQuantity());
+      adPurchase.setDiscount(ad.getDiscount());
+      adPurchase.setPrice(ad.getPrice());
 
-            purchasesToBeSaved.add(purchase);
-        }
-
-        purchaseService.createMultiplePurchases(adsOrder, 10L);
-
-        Mockito.verify(purchaseRepository, Mockito.times(1)).saveAllAndFlush(purchasesToBeSaved);
+      purchasesToBeSaved.add(purchase);
     }
 
-    @Test
-    @DisplayName("Given an valid customer id, when call listAllPurchases, then should call purchaseRepository.findAllByBuyerId with this customer id")
-    public void listPurchases() {
-        purchaseService.listAllPurchases(10L);
+    purchaseService.createMultiplePurchases(adsOrder, 10L);
 
-        Mockito.verify(purchaseRepository, Mockito.times(1)).findAllByBuyerId(10L);
-    }
+    Mockito.verify(purchaseRepository, Mockito.times(1)).saveAllAndFlush(purchasesToBeSaved);
+  }
 
+  @Test
+  @DisplayName(
+      "Given an valid customer id, when call listAllPurchases, then should call"
+          + " purchaseRepository.findAllByBuyerId with this customer id")
+  public void listPurchases() {
+    purchaseService.listAllPurchases(10L);
+
+    Mockito.verify(purchaseRepository, Mockito.times(1)).findAllByBuyerId(10L);
+  }
 }
