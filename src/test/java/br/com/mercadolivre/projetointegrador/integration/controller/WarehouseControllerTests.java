@@ -154,7 +154,7 @@ public class WarehouseControllerTests {
   public void shouldListSectionBatchesOrderedByDueDate() throws Exception {
     List<Batch> batch = integrationTestUtils.createMultipleBatchesOnSameWarehouse();
 
-    List<LocalDate> batchNumbers = batch.stream().map(Batch::getDue_date).sorted().collect(Collectors.toList());
+    List<LocalDate> batchNumbers = batch.stream().map(Batch::getDueDate).sorted().collect(Collectors.toList());
 
     MvcResult mvcResult = mockMvc
             .perform(
@@ -169,7 +169,7 @@ public class WarehouseControllerTests {
     String contentAsString = mvcResult.getResponse().getContentAsString();
 
     for (Integer i = 0; i < batch.size(); i ++){
-      String value = JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]due_date")).toString();
+      String value = JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]dueDate")).toString();
 
       Assertions.assertEquals(value, batchNumbers.get(i).toString());
     }

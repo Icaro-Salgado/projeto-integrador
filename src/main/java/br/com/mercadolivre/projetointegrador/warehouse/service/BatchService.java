@@ -65,7 +65,7 @@ public class BatchService {
 
     batch.setBatchNumber(updatedBatch.getBatchNumber());
     batch.setPrice(updatedBatch.getPrice());
-    batch.setDue_date(updatedBatch.getDue_date());
+    batch.setDueDate(updatedBatch.getDueDate());
     batch.setManufacturing_datetime(updatedBatch.getManufacturing_datetime());
     batch.setProduct(updatedBatch.getProduct());
     batch.setOrder_number(updatedBatch.getOrder_number());

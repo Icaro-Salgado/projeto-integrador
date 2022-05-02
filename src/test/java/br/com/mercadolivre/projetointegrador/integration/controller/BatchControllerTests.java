@@ -53,7 +53,7 @@ public class BatchControllerTests {
     batch.setBatchNumber(2);
     batch.setQuantity(250);
     batch.setManufacturing_datetime(LocalDate.parse("2022-01-01"));
-    batch.setDue_date(LocalDate.parse("2022-05-02"));
+    batch.setDueDate(LocalDate.parse("2022-05-02"));
 
     Batch created = batchRepository.save(batch);
 

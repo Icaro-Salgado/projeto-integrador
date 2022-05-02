@@ -102,7 +102,7 @@ public class IntegrationTestUtils {
                             .order_number(i)
                             .batchNumber(5 - i)
                             .quantity(random.nextInt(350))
-                            .due_date(LocalDate.of(random.nextInt(2021) + 1977, random.nextInt(12) + 1, random.nextInt(27) + 1))
+                            .dueDate(LocalDate.of(random.nextInt(2021) + 1977, random.nextInt(12) + 1, random.nextInt(27) + 1))
                             .build()
             );
         }

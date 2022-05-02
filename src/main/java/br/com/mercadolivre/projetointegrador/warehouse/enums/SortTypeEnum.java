@@ -3,7 +3,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.enums;
 public enum SortTypeEnum {
   L("batchNumber"),
   C("quantity"),
-  F("due_date");
+  F("dueDate");
 
   public final String field;
 
