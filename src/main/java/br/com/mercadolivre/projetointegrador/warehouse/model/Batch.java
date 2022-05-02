@@ -49,7 +49,7 @@ public class Batch {
 
   @Column private LocalDate manufacturing_datetime;
 
-  @Column private LocalDate due_date;
+  @Column private LocalDate dueDate;
 
   @Column @CreatedDate private LocalDate created_at;
 }

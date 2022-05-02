@@ -1,22 +1,24 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Location;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
+@ActiveProfiles(profiles = "test")
 public class IntegrationTestUtils {
 
   @Autowired private WarehouseRepository warehouseRepository;
@@ -78,6 +80,32 @@ public class IntegrationTestUtils {
             .build();
 
     return batchRepository.save(batch);
+  }
+
+  public List<Batch> createMultipleBatchesOnSameWarehouse() {
+
+    Random random = new Random();
+    List<Batch> batchesToCreate = new ArrayList<>();
+
+    Section section = createSection();
+
+    for (int i = 0; i < 5; i++) {
+      batchesToCreate.add(
+          Batch.builder()
+              .product(createProduct())
+              .section(section)
+              .seller_id(1L + i)
+              .price(BigDecimal.valueOf(10 * i))
+              .order_number(i)
+              .batchNumber(5 - i)
+              .quantity(random.nextInt(350))
+              .dueDate(
+                  LocalDate.of(
+                      random.nextInt(2021) + 1977, random.nextInt(12) + 1, random.nextInt(27) + 1))
+              .build());
+    }
+
+    return batchRepository.saveAll(batchesToCreate);
   }
 
   public Batch createBatch(Section section) {

@@ -35,7 +35,7 @@ public class BatchResponseDTO {
   private LocalDate manufacturing_datetime;
 
   @JsonView(SectionView.SectionBatches.class)
-  private LocalDate due_date;
+  private LocalDate dueDate;
 
   private LocalDate created_at;
 
@@ -52,7 +52,7 @@ public class BatchResponseDTO {
         .batchNumber(batch.getBatchNumber())
         .quantity(batch.getQuantity())
         .manufacturing_datetime(batch.getManufacturing_datetime())
-        .due_date(batch.getDue_date())
+        .dueDate(batch.getDueDate())
         .created_at(batch.getCreated_at())
         .build();
   }
