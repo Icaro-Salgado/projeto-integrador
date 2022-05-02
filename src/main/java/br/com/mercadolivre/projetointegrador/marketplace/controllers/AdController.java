@@ -29,22 +29,14 @@ public class AdController {
   AdService adService;
   AppUserRepository tokenService;
 
-  @Operation(
-    summary = "CRIA UM ANÚNCIO",
-    description = "Cria um anúncio relacionado a um produto"
-  )
+  @Operation(summary = "CRIA UM ANÚNCIO", description = "Cria um anúncio relacionado a um produto")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Anúncio criado.",
-        responseCode = "201"
-      ),
-      @ApiResponse(
-        description = "Um ou mais atributos da Anúncio não foi preenchido.",
-        responseCode = "400"
-      )
-    }
-  )
+      value = {
+        @ApiResponse(description = "Anúncio criado.", responseCode = "201"),
+        @ApiResponse(
+            description = "Um ou mais atributos da Anúncio não foi preenchido.",
+            responseCode = "400")
+      })
   @PostMapping
   public ResponseEntity<Void> createAd(
       @Valid @RequestBody CreateOrUpdateAdDTO createOrUpdateAdDTO,
@@ -58,38 +50,22 @@ public class AdController {
   }
 
   @Operation(
-    summary = "RETORNA UM ANÚNCIO",
-    description = "Retorna um anúncio com id correspondente ao passado na url"
-  )
+      summary = "RETORNA UM ANÚNCIO",
+      description = "Retorna um anúncio com id correspondente ao passado na url")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Anúncio encontrado.",
-        responseCode = "200"
-      ),
-      @ApiResponse(
-        description = "Anúncio não localizado.",
-        responseCode = "404"
-      )
-    }
-  )
+      value = {
+        @ApiResponse(description = "Anúncio encontrado.", responseCode = "200"),
+        @ApiResponse(description = "Anúncio não localizado.", responseCode = "404")
+      })
   @GetMapping("/{id}")
   public ResponseEntity<Ad> findAd(@PathVariable Long id) {
     return ResponseEntity.ok(adService.findAdById(id));
   }
 
   @Operation(
-    summary = "RETORNA LISTA DE ANÚNCIOS CADASTRADOS",
-    description = "Retorna lista de anúncios cadastrados."
-  )
-  @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Anúncios encontrados.",
-        responseCode = "200"
-      )
-    }
-  )
+      summary = "RETORNA LISTA DE ANÚNCIOS CADASTRADOS",
+      description = "Retorna lista de anúncios cadastrados.")
+  @ApiResponses(value = {@ApiResponse(description = "Anúncios encontrados.", responseCode = "200")})
   @GetMapping
   public ResponseEntity<List<Ad>> listAds(@RequestParam(required = false) String name) {
     if (name != null) {
@@ -100,17 +76,9 @@ public class AdController {
   }
 
   @Operation(
-    summary = "RETORNA ANÚNCIOS DE UM VENDEDOR",
-    description = "Retorna lista de anúncios cadastrados pelo vendedor autenticado."
-  )
-  @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Anúncios encontrados.",
-        responseCode = "200"
-      )
-    }
-  )
+      summary = "RETORNA ANÚNCIOS DE UM VENDEDOR",
+      description = "Retorna lista de anúncios cadastrados pelo vendedor autenticado.")
+  @ApiResponses(value = {@ApiResponse(description = "Anúncios encontrados.", responseCode = "200")})
   @GetMapping("/seller")
   public ResponseEntity<List<Ad>> listCustomerAds(Authentication authentication) {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
@@ -120,16 +88,9 @@ public class AdController {
   }
 
   @Operation(
-    summary = "EXCLUI UM ANÚNCIO",
-    description = "Exclui o anúncio com id correspondente ao passado na url."
-  )
-  @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Anúncio deletado.",
-        responseCode = "204")
-    }
-  )
+      summary = "EXCLUI UM ANÚNCIO",
+      description = "Exclui o anúncio com id correspondente ao passado na url.")
+  @ApiResponses(value = {@ApiResponse(description = "Anúncio deletado.", responseCode = "204")})
   @DeleteMapping("/{adId}/delete")
   public ResponseEntity<Void> deleteAd(@PathVariable Long adId, Authentication authentication)
       throws UnauthorizedException {

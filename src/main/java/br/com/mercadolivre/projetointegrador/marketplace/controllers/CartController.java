@@ -31,24 +31,18 @@ public class CartController {
 
   CartService cartService;
 
-  @Operation(
-    summary = "SALVA UM CARRINHO NO COMPRAS",
-    description = "Cria um carrinho de compras"
-  )
+  @Operation(summary = "SALVA UM CARRINHO NO COMPRAS", description = "Cria um carrinho de compras")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Carrinho criado.",
-        responseCode = "201",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = PurchaseOrderResponseDTO.class)
-          )
-        }
-      )
-    }
-  )
+      value = {
+        @ApiResponse(
+            description = "Carrinho criado.",
+            responseCode = "201",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = PurchaseOrderResponseDTO.class))
+            })
+      })
   @PostMapping
   public ResponseEntity<PurchaseOrderResponseDTO> createOrUpdatePurchaseOrder(
       @RequestBody PurchaseOrderDTO purchaseOrderDTO,
@@ -57,7 +51,8 @@ public class CartController {
       throws JsonProcessingException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     PurchaseOrderResponseDTO totalPrice = new PurchaseOrderResponseDTO();
-    totalPrice.setTotalPrice(cartService.updateCart(requestUser.getId(), purchaseOrderDTO.mountCart()).getTotalPrice());
+    totalPrice.setTotalPrice(
+        cartService.updateCart(requestUser.getId(), purchaseOrderDTO.mountCart()).getTotalPrice());
 
     URI uri =
         uriBuilder
@@ -69,33 +64,27 @@ public class CartController {
   }
 
   @Operation(
-    summary = "RETORNA UM CARRINHO DE COMPRAS",
-    description = "Retorna o carrinho de compras do comprador com id informado."
-  )
+      summary = "RETORNA UM CARRINHO DE COMPRAS",
+      description = "Retorna o carrinho de compras do comprador com id informado.")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Carrinho encontrado.",
-        responseCode = "200",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Cart.class)
-          )
-        }
-      ),
-      @ApiResponse(
-        description = "Carrinho não encontrado.",
-        responseCode = "404",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = ErrorDTO.class)
-          )
-        }
-      )
-    }
-  )
+      value = {
+        @ApiResponse(
+            description = "Carrinho encontrado.",
+            responseCode = "200",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = Cart.class))
+            }),
+        @ApiResponse(
+            description = "Carrinho não encontrado.",
+            responseCode = "404",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping("/{buyerId}")
   public ResponseEntity<Cart> showOrder(@PathVariable Long buyerId)
       throws NotFoundException, JsonProcessingException {
@@ -103,33 +92,27 @@ public class CartController {
   }
 
   @Operation(
-    summary = "RETORNA UM CARRINHO DE COMPRAS",
-    description = "Retorna o carrinho de compras do comprador autenticado"
-  )
+      summary = "RETORNA UM CARRINHO DE COMPRAS",
+      description = "Retorna o carrinho de compras do comprador autenticado")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Carrinho encontrado.",
-        responseCode = "200",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Cart.class)
-          )
-        }
-      ),
-      @ApiResponse(
-        description = "Carrinho não encontrado.",
-        responseCode = "404",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = ErrorDTO.class)
-          )
-        }
-      )
-    }
-  )
+      value = {
+        @ApiResponse(
+            description = "Carrinho encontrado.",
+            responseCode = "200",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = Cart.class))
+            }),
+        @ApiResponse(
+            description = "Carrinho não encontrado.",
+            responseCode = "404",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping
   public ResponseEntity<Cart> showOrderAuth(Authentication authentication)
       throws NotFoundException, JsonProcessingException {
@@ -138,23 +121,21 @@ public class CartController {
   }
 
   @Operation(
-    summary = "MODIFICA O STATUS CODE DO PEDIDO",
-    description = "Modifica o status code do pedido do usuário autenticado. Se o valor atual for ABERTO, será modificado para FINALIZADO e o contrário também."
-  )
+      summary = "MODIFICA O STATUS CODE DO PEDIDO",
+      description =
+          "Modifica o status code do pedido do usuário autenticado. Se o valor atual for ABERTO,"
+              + " será modificado para FINALIZADO e o contrário também.")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Status do carrinho atualizado com sucesso.",
-        responseCode = "200",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Cart.class)
-          )
-        }
-        )
-    }
-  )
+      value = {
+        @ApiResponse(
+            description = "Status do carrinho atualizado com sucesso.",
+            responseCode = "200",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = Cart.class))
+            })
+      })
   @PatchMapping("/status")
   public ResponseEntity<Cart> switchOrder(Authentication authentication)
       throws NotFoundException, JsonProcessingException {
@@ -163,23 +144,19 @@ public class CartController {
   }
 
   @Operation(
-          summary = "MODIFICA O STATUS CODE DO PEDIDO",
-          description = "Altera o status do carrinho para o valor informado."
-  )
+      summary = "MODIFICA O STATUS CODE DO PEDIDO",
+      description = "Altera o status do carrinho para o valor informado.")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Status do carrinho definido com sucesso",
-        responseCode = "200",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Cart.class)
-          )
-        }
-      )
-    }
-  )
+      value = {
+        @ApiResponse(
+            description = "Status do carrinho definido com sucesso",
+            responseCode = "200",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = Cart.class))
+            })
+      })
   @PutMapping
   public ResponseEntity<Cart> updateOrderStatus(
       @RequestParam String status, Authentication authentication)
