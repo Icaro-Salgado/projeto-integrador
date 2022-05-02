@@ -3,9 +3,13 @@ package br.com.mercadolivre.projetointegrador.warehouse.controller;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
 
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
+
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.WarehouseMapper;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +25,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -76,4 +82,11 @@ public class WarehouseController {
 
     return assembler.toResponse(warehouse, HttpStatus.CREATED, null);
   }
+
+  @GetMapping("/fresh-products/duedate")
+  public /*ResponseEntity<List<BatchResponseDTO>>*/ResponseEntity<List<Batch>> findDueDateBatches(@RequestParam(name = "numb_days") String numberOfDays, @RequestParam(name = "section_id") String sectionId){
+    List<Batch> section = warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
+    return ResponseEntity.ok(section);
+  }
+
 }
