@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
@@ -80,6 +81,7 @@ public class IntegrationTestUtils {
             .order_number(123)
             .batchNumber(9595)
             .quantity(10)
+            .dueDate(LocalDate.now().plusWeeks(10))
             .build();
 
     return batchRepository.save(batch);

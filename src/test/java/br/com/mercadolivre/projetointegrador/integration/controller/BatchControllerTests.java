@@ -67,6 +67,16 @@ public class BatchControllerTests {
         .andExpect(MockMvcResultMatchers.jsonPath("$.batchNumber").value(2))
         .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(250))
         .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturing_datetime").value("2022-01-01"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.due_date").value("2022-05-02"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.dueDate").value("2022-05-02"));
+  }
+
+  @Test
+  @DisplayName("BatchController - GET - /api/v1/batches/ad/{sellerId}")
+  public void testIfReturnBatchesWithMoreThan3weeksOfDueDate() throws Exception {
+    Batch batch = integrationTestUtils.createBatch();
+
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/batches/ad/{sellerId}", batch.getSeller().getId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
   }
 }
