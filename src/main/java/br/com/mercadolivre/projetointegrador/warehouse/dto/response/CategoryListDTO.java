@@ -5,8 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class CategoryListDTO {
-    private String name;
-    private String code;
+  private String name;
+  private String code;
 }

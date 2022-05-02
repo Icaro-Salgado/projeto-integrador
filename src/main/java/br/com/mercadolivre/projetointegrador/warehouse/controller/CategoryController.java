@@ -15,10 +15,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/fresh-products/categories")
 public class CategoryController {
 
-    @GetMapping
-    public ResponseEntity<?> listCategories(){
-        List<CategoryListDTO> categories = Arrays.stream(CategoryEnum.values()).map(val -> new CategoryListDTO(val.label(), val.name())).collect(Collectors.toList());
+  @GetMapping
+  public ResponseEntity<?> listCategories() {
+    List<CategoryListDTO> categories =
+        Arrays.stream(CategoryEnum.values())
+            .map(val -> new CategoryListDTO(val.label(), val.name()))
+            .collect(Collectors.toList());
 
-        return ResponseEntity.ok(categories);
-    }
+    return ResponseEntity.ok(categories);
+  }
 }

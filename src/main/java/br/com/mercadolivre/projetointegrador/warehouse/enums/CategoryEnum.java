@@ -21,7 +21,7 @@ public enum CategoryEnum {
     return false;
   }
 
-  public String label(){
+  public String label() {
     return this.label;
   }
 }
