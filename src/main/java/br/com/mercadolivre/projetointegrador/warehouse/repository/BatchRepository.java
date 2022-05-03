@@ -1,10 +1,12 @@
 package br.com.mercadolivre.projetointegrador.warehouse.repository;
 
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,4 +25,8 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
   List<Batch> findBatchByProductAndSection(Product product, Section section);
 
   List<Batch> findBatchByProductAndSection(Product product, Section section, Sort sort);
+
+  List<Batch> findAllByDueDateLessThanAndProductCategoryOrderByDueDate(LocalDate date, CategoryEnum category);
+
+  List<Batch> findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(LocalDate date, CategoryEnum category);
 }

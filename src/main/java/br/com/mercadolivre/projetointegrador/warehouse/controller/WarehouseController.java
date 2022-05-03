@@ -1,9 +1,12 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 
@@ -47,6 +50,7 @@ public class WarehouseController {
   private final WarehouseService warehouseService;
   private final WarehouseAssembler assembler;
   private final SectionAssembler sectionAssembler;
+  private final BatchAssembler batchAssembler;
 
   @Operation(summary = "CRIA UM NOVO ARMAZÉM", description = "Cria um novo armazém/depósito ")
   @ApiResponses(
@@ -68,6 +72,7 @@ public class WarehouseController {
                   schema = @Schema(implementation = ErrorDTO.class))
             })
       })
+
   @PostMapping
   public ResponseEntity<WarehouseResponseDTO> createWarehouse(
       @RequestBody @Valid CreateWarehousePayloadDTO payloadDTO) {
@@ -98,6 +103,17 @@ public class WarehouseController {
     List<Batch> section =
             warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
     return ResponseEntity.ok(section);
+  }
+
+  @GetMapping("/fresh-products/duedate-batches")
+  public ResponseEntity<List<BatchResponseDTO>> findDueDateBatchesByCategory(
+          @RequestParam(name = "numb_days") String numberOfDays,
+          @RequestParam(name = "category") CategoryEnum category,
+          @RequestParam(name = "order") String order) {
+
+    List<Batch> batches =
+            warehouseService.dueDateBatchesByCategory(Long.parseLong(numberOfDays), category, order);
+    return batchAssembler.toCreatedResponse(batches);
   }
 
   @GetMapping("/fresh-products/list")

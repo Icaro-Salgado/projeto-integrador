@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionNotFoundException;
@@ -67,7 +68,6 @@ public class WarehouseService {
     return addedBatches;
   }
 
-  // TODO: implements of controller
   public List<Batch> dueDateBatches(Long numberOfDays, Long sectionId) {
     SectionExistsValidator sectionExistsValidator =
             new SectionExistsValidator(sectionId, sectionRepository);
@@ -78,6 +78,18 @@ public class WarehouseService {
                     sectionId, LocalDate.now().plusDays(numberOfDays));
 
     return section;
+  }
+
+  public List<Batch> dueDateBatchesByCategory(Long numberofdays, CategoryEnum category, String order) {
+    List<Batch> batches = null;
+    if (order.equals("ASC")){
+      batches = batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(LocalDate.now().plusDays(numberofdays), category);
+    } else if (order.equals("DESC")) {
+      batches = batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(LocalDate.now().plusDays(numberofdays), category);
+    } else {
+      throw new IllegalArgumentException("Informe o seletor de ordenação (ASC ou DESC)");
+    }
+    return batches;
   }
 
   public List<Batch> findProductOnManagerSection(
