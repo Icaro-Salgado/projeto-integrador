@@ -10,28 +10,24 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import java.util.List;
 
 @Configuration
-public class StartupConfiguration implements
-        ApplicationListener<ContextRefreshedEvent> {
+public class StartupConfiguration implements ApplicationListener<ContextRefreshedEvent> {
 
-    boolean alreadySetup = false;
+  boolean alreadySetup = false;
 
-    @Autowired
-    private RolesRepository rolesRepository;
+  @Autowired private RolesRepository rolesRepository;
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        if(alreadySetup) {
-            return;
-        }
-        List<UserRole> roles = rolesRepository.findAll();
-
-        if(roles.isEmpty()){
-            rolesRepository.saveAll(
-                    List.of(new UserRole(null, "CUSTOMER"), new UserRole(null, "MANAGER"))
-            );
-        }
-
-        alreadySetup = true;
-
+  @Override
+  public void onApplicationEvent(ContextRefreshedEvent event) {
+    if (alreadySetup) {
+      return;
     }
+    List<UserRole> roles = rolesRepository.findAll();
+
+    if (roles.isEmpty()) {
+      rolesRepository.saveAll(
+          List.of(new UserRole(null, "CUSTOMER"), new UserRole(null, "MANAGER")));
+    }
+
+    alreadySetup = true;
+  }
 }
