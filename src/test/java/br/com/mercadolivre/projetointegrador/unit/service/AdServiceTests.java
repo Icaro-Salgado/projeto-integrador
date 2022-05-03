@@ -6,6 +6,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdBatchesRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.services.AdService;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -62,10 +63,14 @@ public class AdServiceTests {
           + " repository findAll and findAdsByLikeName methods.")
   public void listAds() {
     adService.listAds();
-    adService.listAds("toddy");
+    adService.listAds("toddy", null);
+    adService.listAds(null, CategoryEnum.RF);
+    adService.listAds("toddy", CategoryEnum.RF);
 
     Mockito.verify(adRepository, Mockito.times(1)).findAll();
     Mockito.verify(adRepository, Mockito.times(1)).findAdsByLikeName("toddy");
+    Mockito.verify(adRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.RF);
+    Mockito.verify(adRepository, Mockito.times(1)).findAllByCategoryAndNameLike(CategoryEnum.RF, "toddy");
   }
 
   @Test
