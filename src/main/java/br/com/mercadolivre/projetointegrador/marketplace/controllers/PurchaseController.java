@@ -26,24 +26,18 @@ public class PurchaseController {
   PurchaseService purchaseService;
   TokenService tokenService;
 
-  @Operation(
-    summary = "SALVA UMA COMPRA",
-    description = "Registra uma compra."
-  )
+  @Operation(summary = "SALVA UMA COMPRA", description = "Registra uma compra.")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Compra registrada.",
-        responseCode = "201",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = CreatePurchaseDTO.class)
-          )
-        }
-      )
-    }
-  )
+      value = {
+        @ApiResponse(
+            description = "Compra registrada.",
+            responseCode = "201",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = CreatePurchaseDTO.class))
+            })
+      })
   @PostMapping
   public void createPurchase(
       @RequestBody List<CreatePurchaseDTO> createPurchaseDTO, Authentication authentication) {
@@ -52,24 +46,18 @@ public class PurchaseController {
     purchaseService.createMultiplePurchases(createPurchaseDTO, requestUser.getId());
   }
 
-  @Operation(
-    summary = "RETORNA UMA COMPRA",
-    description = "Retorna uma compra."
-  )
+  @Operation(summary = "RETORNA UMA COMPRA", description = "Retorna uma compra.")
   @ApiResponses(
-    value = {
-      @ApiResponse(
-        description = "Compra encontrada.",
-        responseCode = "200",
-        content = {
-          @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Purchase.class)
-          )
-        }
-      )
-    }
-  )
+      value = {
+        @ApiResponse(
+            description = "Compra encontrada.",
+            responseCode = "200",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = Purchase.class))
+            })
+      })
   @GetMapping
   public List<Purchase> listCustomerPurchases(Authentication authentication) {
     AppUser requestUser = (AppUser) authentication.getPrincipal();

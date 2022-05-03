@@ -5,8 +5,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter @Setter
+@Getter
+@Setter
 public class PurchaseOrderResponseDTO {
 
-    BigDecimal totalPrice;
+  BigDecimal totalPrice;
 }
