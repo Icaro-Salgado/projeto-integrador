@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +23,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,11 +45,11 @@ public class AdControllerTests {
     CreateOrUpdateAdDTO adDTO = integrationTestUtils.createAdDTO();
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.post(AD_URL)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(adDTO)))
-      .andExpect(MockMvcResultMatchers.status().isCreated());
+        .perform(
+            MockMvcRequestBuilders.post(AD_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(adDTO)))
+        .andExpect(MockMvcResultMatchers.status().isCreated());
   }
 
   @Test
@@ -65,13 +63,11 @@ public class AdControllerTests {
     adRepository.save(ad);
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.get(AD_URL + "/" + ad.getId())
-      )
-      .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Fake Ad"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(10))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.discount").value(0))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("FS"));
+        .perform(MockMvcRequestBuilders.get(AD_URL + "/" + ad.getId()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Fake Ad"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(10))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.discount").value(0))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("FS"));
   }
 
   @Test
@@ -88,14 +84,12 @@ public class AdControllerTests {
     adRepository.save(ad2);
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.get(AD_URL)
-      )
-      .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[0].sellerId").value("1"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Fake Ad"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[1].sellerId").value("2"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Fake Ad 2"));
+        .perform(MockMvcRequestBuilders.get(AD_URL))
+        .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].sellerId").value("1"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Fake Ad"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].sellerId").value("2"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Fake Ad 2"));
   }
 
   @Test
@@ -112,12 +106,10 @@ public class AdControllerTests {
     adRepository.save(ad2);
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.get(AD_URL + "?name=Fake%Ad%2")
-      )
-      .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[0].sellerId").value("2"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Fake Ad 2"));
+        .perform(MockMvcRequestBuilders.get(AD_URL + "?name=Fake%Ad%2"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].sellerId").value("2"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Fake Ad 2"));
   }
 
   @Test
@@ -133,12 +125,10 @@ public class AdControllerTests {
     adRepository.save(ad2);
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.get(AD_URL + "?category=FF")
-      )
-      .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Frozen Product Ad"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[0].category").value("FF"));
+        .perform(MockMvcRequestBuilders.get(AD_URL + "?category=FF"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Frozen Product Ad"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].category").value("FF"));
   }
 
   @Test
@@ -154,11 +144,10 @@ public class AdControllerTests {
     adRepository.save(ad2);
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.get(AD_URL + "/seller"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Fake Ad"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Fake Ad 2"));
+        .perform(MockMvcRequestBuilders.get(AD_URL + "/seller"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Fake Ad"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Fake Ad 2"));
   }
 
   @Test
@@ -170,10 +159,7 @@ public class AdControllerTests {
 
     System.out.println(AD_URL + "/" + ad.getId() + "/delete");
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.delete(AD_URL + "/" + ad.getId() + "/delete"))
-      .andExpect(MockMvcResultMatchers.status().isNoContent());
+        .perform(MockMvcRequestBuilders.delete(AD_URL + "/" + ad.getId() + "/delete"))
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 }
-
-

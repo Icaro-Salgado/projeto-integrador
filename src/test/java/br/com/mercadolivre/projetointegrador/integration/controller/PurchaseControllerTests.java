@@ -7,7 +7,6 @@ import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository
 import br.com.mercadolivre.projetointegrador.marketplace.repository.PurchaseRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomerUser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,14 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.print.attribute.standard.Media;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -55,11 +48,11 @@ public class PurchaseControllerTests {
     List<CreatePurchaseDTO> purchases = integrationTestUtils.createPurchases();
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.post(PURCHASE_URL)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(purchases)))
-      .andExpect(MockMvcResultMatchers.status().isCreated());
+        .perform(
+            MockMvcRequestBuilders.post(PURCHASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(purchases)))
+        .andExpect(MockMvcResultMatchers.status().isCreated());
   }
 
   @Test
@@ -72,9 +65,8 @@ public class PurchaseControllerTests {
     purchaseRepository.saveAllAndFlush(purchases);
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.get(PURCHASE_URL))
-      .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
-      .andExpect(MockMvcResultMatchers.jsonPath("$[0].buyerId").value(1));
+        .perform(MockMvcRequestBuilders.get(PURCHASE_URL))
+        .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].buyerId").value(1));
   }
 }

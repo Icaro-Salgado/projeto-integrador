@@ -173,7 +173,7 @@ public class IntegrationTestUtils {
 
   public CreateOrUpdateAdDTO createAdDTO() {
     CreateOrUpdateAdDTO adDTO = new CreateOrUpdateAdDTO();
-    adDTO.setBatchesId(List.of(1L,2L,3L));
+    adDTO.setBatchesId(List.of(1L, 2L, 3L));
     adDTO.setName("Fake Ad");
     adDTO.setQuantity(10);
     adDTO.setPrice(BigDecimal.valueOf(10.0));

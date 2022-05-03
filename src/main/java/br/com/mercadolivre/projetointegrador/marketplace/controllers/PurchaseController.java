@@ -29,12 +29,7 @@ public class PurchaseController implements SecuredMarketplaceRestController {
   TokenService tokenService;
 
   @Operation(summary = "SALVA UMA COMPRA", description = "Registra uma compra.")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            description = "Compra registrada.",
-            responseCode = "201")
-      })
+  @ApiResponses(value = {@ApiResponse(description = "Compra registrada.", responseCode = "201")})
   @PostMapping
   public ResponseEntity<Void> createPurchase(
       @RequestBody List<CreatePurchaseDTO> createPurchaseDTO, Authentication authentication) {
