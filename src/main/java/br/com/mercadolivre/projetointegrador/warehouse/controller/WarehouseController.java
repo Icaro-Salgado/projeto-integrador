@@ -95,12 +95,13 @@ public class WarehouseController {
   }
 
   @GetMapping("/fresh-products/duedate")
-  public /*ResponseEntity<List<BatchResponseDTO>>*/ ResponseEntity<List<Batch>> findDueDateBatches(
+  public ResponseEntity<List<BatchResponseDTO>> findDueDateBatches(
       @RequestParam(name = "numb_days") String numberOfDays,
       @RequestParam(name = "section_id") String sectionId) {
-    List<Batch> section =
+
+    List<Batch> batches =
         warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
-    return ResponseEntity.ok(section);
+    return batchAssembler.toCreatedResponse(batches);
   }
 
   @GetMapping("/fresh-products/duedate-batches")
