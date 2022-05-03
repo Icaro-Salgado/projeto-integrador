@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
-import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
@@ -54,7 +53,11 @@ public class InboundOrderControllerTests {
     Product productMock = integrationTestUtils.createProduct();
 
     CreateBatchPayloadDTO batchMock =
-        CreateBatchPayloadDTO.builder().seller_id(1L).quantity(2).product_id(productMock.getId()).build();
+        CreateBatchPayloadDTO.builder()
+            .seller_id(1L)
+            .quantity(2)
+            .product_id(productMock.getId())
+            .build();
 
     InboundOrderDTO objPayload =
         InboundOrderDTO.builder()

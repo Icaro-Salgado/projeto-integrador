@@ -22,5 +22,7 @@ public class RedisRepository {
     jedis.setex(key, ttl, value);
   }
 
-  public void del(String key) { jedis.del(key); }
+  public void del(String key) {
+    jedis.del(key);
+  }
 }

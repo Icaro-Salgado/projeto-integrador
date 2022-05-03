@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AdPurchaseRepository extends JpaRepository<AdPurchase, Long> {
-    List<AdPurchase> findAllByPurchase(Purchase purchase);
+  List<AdPurchase> findAllByPurchase(Purchase purchase);
 }

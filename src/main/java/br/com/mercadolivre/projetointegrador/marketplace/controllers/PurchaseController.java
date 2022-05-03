@@ -47,13 +47,19 @@ public class PurchaseController implements SecuredMarketplaceRestController {
             })
       })
   @PostMapping
-  public ResponseEntity<Void> createPurchase(Authentication authentication, UriComponentsBuilder uriBuilder) throws NotFoundException, JsonProcessingException {
+  public ResponseEntity<Void> createPurchase(
+      Authentication authentication, UriComponentsBuilder uriBuilder)
+      throws NotFoundException, JsonProcessingException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
 
     purchaseService.createPurchase(requestUser.getId());
     cartService.clearCart(requestUser.getId());
 
-    URI uri = uriBuilder.path("/api/v1/customers/marketplace/purchases/{id}").buildAndExpand(requestUser.getId()).toUri();
+    URI uri =
+        uriBuilder
+            .path("/api/v1/customers/marketplace/purchases/{id}")
+            .buildAndExpand(requestUser.getId())
+            .toUri();
     return ResponseEntity.created(uri).build();
   }
 
@@ -70,14 +76,13 @@ public class PurchaseController implements SecuredMarketplaceRestController {
             })
       })
   @GetMapping("/{id}")
-  public ResponseEntity<List<PurchaseResponseDTO>> listCustomerPurchases(
-          @PathVariable Long id) {
+  public ResponseEntity<List<PurchaseResponseDTO>> listCustomerPurchases(@PathVariable Long id) {
     return ResponseEntity.ok(purchaseService.listAllPurchases(id));
   }
 
-//  public ResponseEntity<Void> payment(
-//          @Authenticate
-//  ) {
-//
-//  }
+  //  public ResponseEntity<Void> payment(
+  //          @Authenticate
+  //  ) {
+  //
+  //  }
 }

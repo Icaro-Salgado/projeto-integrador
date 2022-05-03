@@ -7,13 +7,13 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class PurchaseResponseDTO {
 
-    private Long purchaseId;
-    private String statusCode;
-    private List<PurchaseProductResponseDTO> products;
-    private BigDecimal total;
-
+  private Long purchaseId;
+  private String statusCode;
+  private List<PurchaseProductResponseDTO> products;
+  private BigDecimal total;
 }

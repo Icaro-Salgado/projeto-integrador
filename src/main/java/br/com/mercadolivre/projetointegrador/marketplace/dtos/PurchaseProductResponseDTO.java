@@ -6,13 +6,13 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 public class PurchaseProductResponseDTO {
 
-    private String name;
-    private BigDecimal price;
-    private Integer quantity;
-    private String category;
-
+  private String name;
+  private BigDecimal price;
+  private Integer quantity;
+  private String category;
 }

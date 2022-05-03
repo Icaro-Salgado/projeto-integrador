@@ -32,9 +32,9 @@ public class PurchaseService {
   PurchaseRepository purchaseRepository;
 
   @Transactional(
-          rollbackFor = Exception.class,
-          propagation = Propagation.REQUIRED,
-          isolation = Isolation.SERIALIZABLE)
+      rollbackFor = Exception.class,
+      propagation = Propagation.REQUIRED,
+      isolation = Isolation.SERIALIZABLE)
   public void createPurchase(Long buyerId) throws NotFoundException, JsonProcessingException {
     Cart cart = cartService.getCart(buyerId);
 
@@ -65,13 +65,18 @@ public class PurchaseService {
     List<Purchase> purchases = purchaseRepository.findAllByBuyerId(customerId);
     List<PurchaseResponseDTO> purchasesResponse = new ArrayList<>();
 
-    for (Purchase purchase: purchases) {
+    for (Purchase purchase : purchases) {
       List<AdPurchase> adPurchases = adPurchaseRepository.findAllByPurchase(purchase);
 
-      List<PurchaseProductResponseDTO> products = adPurchases.stream().map(p -> {
-        Ad ad = p.getAd();
-        return new PurchaseProductResponseDTO(ad.getName(), ad.getPrice(), p.getQuantity(), ad.getCategory());
-      }).collect(Collectors.toList());
+      List<PurchaseProductResponseDTO> products =
+          adPurchases.stream()
+              .map(
+                  p -> {
+                    Ad ad = p.getAd();
+                    return new PurchaseProductResponseDTO(
+                        ad.getName(), ad.getPrice(), p.getQuantity(), ad.getCategory());
+                  })
+              .collect(Collectors.toList());
 
       PurchaseResponseDTO purchaseResponse = new PurchaseResponseDTO();
       purchaseResponse.setPurchaseId(purchase.getId());

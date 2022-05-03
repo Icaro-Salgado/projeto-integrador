@@ -1,7 +1,6 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.model.AdPurchase;
@@ -28,22 +27,20 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class PurchaseServiceTests {
 
-  @Mock
-  AdPurchaseRepository adPurchaseRepository;
+  @Mock AdPurchaseRepository adPurchaseRepository;
 
   @Mock PurchaseRepository purchaseRepository;
 
   @Mock AdService adService;
 
-  @Mock
-  CartService cartService;
+  @Mock CartService cartService;
 
   @InjectMocks PurchaseService purchaseService;
 
   @Test
   @DisplayName(
-      "Given an valid order, when call createPurchase, then purchaseRepository.save and adPurchaseRepository.saveAll"
-          + " should be called with right arguments")
+      "Given an valid order, when call createPurchase, then purchaseRepository.save and"
+          + " adPurchaseRepository.saveAll should be called with right arguments")
   public void createPurchase() throws NotFoundException, JsonProcessingException {
     Cart mockCart = new Cart();
     List<CartProductDTO> products = new ArrayList<>();
@@ -52,7 +49,6 @@ public class PurchaseServiceTests {
     mockCart.setTotalPrice(BigDecimal.valueOf(125.00));
     mockCart.setProducts(products);
     Mockito.when(cartService.getCart(Mockito.any())).thenReturn(mockCart);
-
 
     Purchase purchase = new Purchase();
     purchase.setBuyerId(10L);
@@ -93,7 +89,8 @@ public class PurchaseServiceTests {
     purchase.setTotal(BigDecimal.valueOf(11.90));
 
     Mockito.when(purchaseRepository.findAllByBuyerId(Mockito.any())).thenReturn(List.of(purchase));
-    Mockito.when(adPurchaseRepository.findAllByPurchase(Mockito.any())).thenReturn(new ArrayList<>());
+    Mockito.when(adPurchaseRepository.findAllByPurchase(Mockito.any()))
+        .thenReturn(new ArrayList<>());
 
     purchaseService.listAllPurchases(10L);
 
