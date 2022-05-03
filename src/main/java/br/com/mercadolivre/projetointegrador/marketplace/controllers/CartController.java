@@ -2,7 +2,6 @@ package br.com.mercadolivre.projetointegrador.marketplace.controllers;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderResponseDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.exceptions.InvalidStatusCodeException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.services.CartService;
@@ -89,79 +88,5 @@ public class CartController implements SecuredMarketplaceRestController {
   public ResponseEntity<Cart> showOrder(@PathVariable Long buyerId)
       throws NotFoundException, JsonProcessingException {
     return ResponseEntity.ok(cartService.getCart(buyerId));
-  }
-
-  @Operation(
-      summary = "RETORNA UM CARRINHO DE COMPRAS",
-      description = "Retorna o carrinho de compras do comprador autenticado")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            description = "Carrinho encontrado.",
-            responseCode = "200",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = Cart.class))
-            }),
-        @ApiResponse(
-            description = "Carrinho não encontrado.",
-            responseCode = "404",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = ErrorDTO.class))
-            })
-      })
-  @GetMapping
-  public ResponseEntity<Cart> showOrderAuth(Authentication authentication)
-      throws NotFoundException, JsonProcessingException {
-    AppUser requestUser = (AppUser) authentication.getPrincipal();
-    return ResponseEntity.ok(cartService.getCart(requestUser.getId()));
-  }
-
-  @Operation(
-      summary = "MODIFICA O STATUS CODE DO PEDIDO",
-      description =
-          "Modifica o status code do pedido do usuário autenticado. Se o valor atual for ABERTO,"
-              + " será modificado para FINALIZADO e o contrário também.")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            description = "Status do carrinho atualizado com sucesso.",
-            responseCode = "200",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = Cart.class))
-            })
-      })
-  @PatchMapping("/status")
-  public ResponseEntity<Cart> switchOrder(Authentication authentication)
-      throws NotFoundException, JsonProcessingException {
-    AppUser requestUser = (AppUser) authentication.getPrincipal();
-    return ResponseEntity.ok(cartService.switchStatus(requestUser.getId()));
-  }
-
-  @Operation(
-      summary = "MODIFICA O STATUS CODE DO PEDIDO",
-      description = "Altera o status do carrinho para o valor informado.")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            description = "Status do carrinho definido com sucesso",
-            responseCode = "200",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = Cart.class))
-            })
-      })
-  @PutMapping
-  public ResponseEntity<Cart> updateOrderStatus(
-      @RequestParam String status, Authentication authentication)
-      throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
-    AppUser requestUser = (AppUser) authentication.getPrincipal();
-    return ResponseEntity.ok(cartService.changeStatus(requestUser.getId(), status));
   }
 }
