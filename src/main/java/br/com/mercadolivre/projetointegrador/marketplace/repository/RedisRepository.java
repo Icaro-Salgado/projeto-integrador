@@ -6,16 +6,14 @@ import redis.clients.jedis.Jedis;
 
 @AllArgsConstructor
 @Repository
-public class RedisRepository implements CacheRepository<String, String> {
+public class RedisRepository {
 
   Jedis jedis;
 
-  @Override
   public String get(String key) {
     return jedis.get(key);
   }
 
-  @Override
   public void set(String key, String value) {
     jedis.set(key, value);
   }
@@ -23,4 +21,6 @@ public class RedisRepository implements CacheRepository<String, String> {
   public void setEx(String key, Long ttl, String value) {
     jedis.setex(key, ttl, value);
   }
+
+  public void del(String key) { jedis.del(key); }
 }
