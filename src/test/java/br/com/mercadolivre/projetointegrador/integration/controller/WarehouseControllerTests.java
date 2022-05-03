@@ -147,6 +147,8 @@ public class WarehouseControllerTests {
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
 
+    System.out.println(contentAsString);
+
     for (Integer i = 0; i < batch.size(); i++) {
       String value =
           JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]quantity"))
