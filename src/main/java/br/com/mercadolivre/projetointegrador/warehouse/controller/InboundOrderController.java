@@ -7,7 +7,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.InboundOrderMapper;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;

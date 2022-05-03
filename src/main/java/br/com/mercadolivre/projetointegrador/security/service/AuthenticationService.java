@@ -1,11 +1,11 @@
-package br.com.mercadolivre.projetointegrador.warehouse.service;
+package br.com.mercadolivre.projetointegrador.security.service;
 
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
-import br.com.mercadolivre.projetointegrador.warehouse.model.UserRole;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.AppUserRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.RolesRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.model.UserRole;
+import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
+import br.com.mercadolivre.projetointegrador.security.repository.RolesRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,8 +22,8 @@ public class AuthenticationService implements UserDetailsService {
   private final PasswordEncoder passwordEncoder;
   private final RolesRepository rolesRepository;
 
-  public AppUser registerUser(AppUser user) {
-    UserRole role = rolesRepository.findById(2L).get();
+  public AppUser registerUser(AppUser user, String roleName) {
+    UserRole role = rolesRepository.findByName(roleName).orElseThrow(() -> new NotFoundException("Role não encontrada"));
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 
     user.getAuthorities().add(role);

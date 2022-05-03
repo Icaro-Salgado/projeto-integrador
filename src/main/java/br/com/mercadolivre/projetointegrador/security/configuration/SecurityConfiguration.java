@@ -1,9 +1,9 @@
-package br.com.mercadolivre.projetointegrador.warehouse.configuration;
+package br.com.mercadolivre.projetointegrador.security.configuration;
 
-import br.com.mercadolivre.projetointegrador.warehouse.filter.TokenAuthenticationFilter;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.AppUserRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.service.AuthenticationService;
-import br.com.mercadolivre.projetointegrador.warehouse.service.TokenService;
+import br.com.mercadolivre.projetointegrador.security.filter.TokenAuthenticationFilter;
+import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
+import br.com.mercadolivre.projetointegrador.security.service.AuthenticationService;
+import br.com.mercadolivre.projetointegrador.security.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
         .permitAll()
-        .antMatchers(HttpMethod.POST, "/api/v1/*/auth", "/api/v1/*/auth/register")
+        .antMatchers(HttpMethod.POST, "/api/v1/auth", "/api/v1/*/auth/register")
         .permitAll()
         .antMatchers("/api/v1/marketplace/**").hasAuthority("CUSTOMER")
         .antMatchers("/api/v1/warehouse/**").access("hasAuthority('MANAGER')")

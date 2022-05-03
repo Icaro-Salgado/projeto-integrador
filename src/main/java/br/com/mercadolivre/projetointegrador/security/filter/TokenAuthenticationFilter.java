@@ -1,8 +1,8 @@
-package br.com.mercadolivre.projetointegrador.warehouse.filter;
+package br.com.mercadolivre.projetointegrador.security.filter;
 
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.AppUserRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.service.TokenService;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
+import br.com.mercadolivre.projetointegrador.security.service.TokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Optional;
 
 @AllArgsConstructor

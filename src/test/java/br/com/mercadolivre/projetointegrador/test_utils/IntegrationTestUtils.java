@@ -4,6 +4,8 @@ import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
+import br.com.mercadolivre.projetointegrador.security.model.UserRole;
+import br.com.mercadolivre.projetointegrador.security.repository.RolesRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.*;
@@ -131,12 +133,16 @@ public class IntegrationTestUtils {
   }
 
   public List<UserRole> createRoles(){
-   return rolesRepository.saveAll(
-            List.of(
-                    new UserRole(null, "CUSTOMER"),
-                    new UserRole(null, "MANAGER")
-            )
-    );
+    List<UserRole> roles = rolesRepository.findAll();
+    if(roles.isEmpty()){
+      return rolesRepository.saveAll(
+              List.of(
+                      new UserRole(null, "CUSTOMER"),
+                      new UserRole(null, "MANAGER")
+              )
+      );
+    }
+    return roles;
   }
 
   public void resetDatabase() {}

@@ -1,4 +1,4 @@
-package br.com.mercadolivre.projetointegrador.warehouse.model;
+package br.com.mercadolivre.projetointegrador.security.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRole implements GrantedAuthority {
@@ -18,7 +17,7 @@ public class UserRole implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
 
