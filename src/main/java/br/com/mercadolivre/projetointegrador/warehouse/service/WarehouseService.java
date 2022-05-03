@@ -12,7 +12,6 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.BatchDuplicatedValidator;
-import br.com.mercadolivre.projetointegrador.warehouse.service.validators.SectionExistsValidator;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -69,9 +68,6 @@ public class WarehouseService {
   }
 
   public List<Batch> dueDateBatches(Long numberOfDays, Long sectionId) {
-    SectionExistsValidator sectionExistsValidator =
-        new SectionExistsValidator(sectionId, sectionRepository);
-    sectionExistsValidator.Validate();
 
     List<Batch> section =
         batchRepository.findAllBySectionIdAndDueDateLessThan(

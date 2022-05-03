@@ -13,6 +13,7 @@ import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
+import br.com.mercadolivre.projetointegrador.warehouse.service.validators.SectionExistsValidator;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,8 @@ public class WarehouseTest {
   @Mock private BatchService batchService;
 
   @Mock private SectionRepository sectionRepository;
+
+  @Mock private SectionExistsValidator sectionExistsValidator;
 
   @Mock private WarehouseValidatorExecutor warehouseValidatorExecutor;
 
@@ -122,5 +125,14 @@ public class WarehouseTest {
             });
 
     Assertions.assertEquals("Informe o seletor de ordenação (ASC ou DESC)", exception.getMessage());
+  }
+
+  @Test
+  public void TestIfDueDateBatchesBySection() {
+    List<Batch> expected = WarehouseTestUtils.getBatch();
+    Mockito.when(batchRepository.findAllBySectionIdAndDueDateLessThan(Mockito.any(), Mockito.any()))
+        .thenReturn(expected);
+    List<Batch> testBatch = warehouseService.dueDateBatches(10l, 1l);
+    assertEquals(expected, testBatch);
   }
 }
