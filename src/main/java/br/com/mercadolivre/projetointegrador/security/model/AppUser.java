@@ -13,8 +13,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class AppUser implements UserDetails {
 
   @Id
@@ -48,6 +51,9 @@ public class AppUser implements UserDetails {
 
   @Override
   public Collection<UserRole> getAuthorities() {
+    if(roles == null) {
+      roles = new HashSet<>();
+    }
     return roles;
   }
 
