@@ -70,22 +70,27 @@ public class WarehouseService {
 
   public List<Batch> dueDateBatches(Long numberOfDays, Long sectionId) {
     SectionExistsValidator sectionExistsValidator =
-            new SectionExistsValidator(sectionId, sectionRepository);
+        new SectionExistsValidator(sectionId, sectionRepository);
     sectionExistsValidator.Validate();
 
     List<Batch> section =
-            batchRepository.findAllBySectionIdAndDueDateLessThan(
-                    sectionId, LocalDate.now().plusDays(numberOfDays));
+        batchRepository.findAllBySectionIdAndDueDateLessThan(
+            sectionId, LocalDate.now().plusDays(numberOfDays));
 
     return section;
   }
 
-  public List<Batch> dueDateBatchesByCategory(Long numberofdays, CategoryEnum category, String order) {
+  public List<Batch> dueDateBatchesByCategory(
+      Long numberofdays, CategoryEnum category, String order) {
     List<Batch> batches = null;
-    if (order.equals("ASC")){
-      batches = batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(LocalDate.now().plusDays(numberofdays), category);
+    if (order.equals("ASC")) {
+      batches =
+          batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(
+              LocalDate.now().plusDays(numberofdays), category);
     } else if (order.equals("DESC")) {
-      batches = batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(LocalDate.now().plusDays(numberofdays), category);
+      batches =
+          batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
+              LocalDate.now().plusDays(numberofdays), category);
     } else {
       throw new IllegalArgumentException("Informe o seletor de ordenação (ASC ou DESC)");
     }

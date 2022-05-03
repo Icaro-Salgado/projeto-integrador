@@ -10,7 +10,6 @@ import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 
-
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.WarehouseMapper;
@@ -72,7 +71,6 @@ public class WarehouseController {
                   schema = @Schema(implementation = ErrorDTO.class))
             })
       })
-
   @PostMapping
   public ResponseEntity<WarehouseResponseDTO> createWarehouse(
       @RequestBody @Valid CreateWarehousePayloadDTO payloadDTO) {
@@ -101,18 +99,18 @@ public class WarehouseController {
       @RequestParam(name = "numb_days") String numberOfDays,
       @RequestParam(name = "section_id") String sectionId) {
     List<Batch> section =
-            warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
+        warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
     return ResponseEntity.ok(section);
   }
 
   @GetMapping("/fresh-products/duedate-batches")
   public ResponseEntity<List<BatchResponseDTO>> findDueDateBatchesByCategory(
-          @RequestParam(name = "numb_days") String numberOfDays,
-          @RequestParam(name = "category") CategoryEnum category,
-          @RequestParam(name = "order") String order) {
+      @RequestParam(name = "numb_days") String numberOfDays,
+      @RequestParam(name = "category") CategoryEnum category,
+      @RequestParam(name = "order") String order) {
 
     List<Batch> batches =
-            warehouseService.dueDateBatchesByCategory(Long.parseLong(numberOfDays), category, order);
+        warehouseService.dueDateBatchesByCategory(Long.parseLong(numberOfDays), category, order);
     return batchAssembler.toCreatedResponse(batches);
   }
 
