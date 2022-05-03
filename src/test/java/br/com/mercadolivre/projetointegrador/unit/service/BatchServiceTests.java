@@ -26,6 +26,7 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles(profiles = "test")
 public class BatchServiceTests {
 
   ProductRepository productRepository = Mockito.mock(ProductRepository.class);
