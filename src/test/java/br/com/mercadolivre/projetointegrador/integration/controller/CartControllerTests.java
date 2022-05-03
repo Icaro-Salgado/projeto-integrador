@@ -5,7 +5,6 @@ import br.com.mercadolivre.projetointegrador.marketplace.enums.CartStatusCodeEnu
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomerUser;
-import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

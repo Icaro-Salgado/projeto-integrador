@@ -63,7 +63,12 @@ public class AuthControllerTests {
   public void shouldRegisterNewUser() throws Exception {
     integrationTestUtils.createRoles();
     Random random = new Random();
-    RegisterDTO registerDTO = new RegisterDTO(random.nextInt() + "mocked@email.com", random.nextInt() + "mocked", random.nextInt() + "mockedUser", "123");
+    RegisterDTO registerDTO =
+        new RegisterDTO(
+            random.nextInt() + "mocked@email.com",
+            random.nextInt() + "mocked",
+            random.nextInt() + "mockedUser",
+            "123");
 
     mockMvc
         .perform(
@@ -99,34 +104,35 @@ public class AuthControllerTests {
   @Test
   public void shouldRegisterNewMarketplaceUser() throws Exception {
     integrationTestUtils.createRoles();
-    RegisterDTO registerDTO = new RegisterDTO("marketplace@email.com", "mocked", "marketplacemock", "123");
+    RegisterDTO registerDTO =
+        new RegisterDTO("marketplace@email.com", "mocked", "marketplacemock", "123");
 
     mockMvc
-            .perform(
-                    MockMvcRequestBuilders.post(API_URL_MARKETPLACE + "/register")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(registerDTO)))
-            .andExpect(MockMvcResultMatchers.status().isCreated());
+        .perform(
+            MockMvcRequestBuilders.post(API_URL_MARKETPLACE + "/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDTO)))
+        .andExpect(MockMvcResultMatchers.status().isCreated());
 
     AppUser created = appUserRepository.findByEmail(registerDTO.getEmail()).orElse(new AppUser());
 
-    Assertions.assertEquals("CUSTOMER", created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
+    Assertions.assertEquals(
+        "CUSTOMER", created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
   }
 
   @Test
   @WithMockManagerUser
   public void shouldReturn403WhenAccessEndpointWithWrongRole() throws Exception {
     mockMvc
-            .perform(MockMvcRequestBuilders.get("/api/v1/marketplace/ads"))
-            .andExpect(MockMvcResultMatchers.status().isForbidden());
+        .perform(MockMvcRequestBuilders.get("/api/v1/marketplace/ads"))
+        .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @WithMockCustomerUser
   public void shouldReturn403WhenAccessWarehouseEndpointFromMarketplaceUser() throws Exception {
     mockMvc
-            .perform(MockMvcRequestBuilders.get("/api/v1/warehouse/{id}", 1L))
-            .andExpect(MockMvcResultMatchers.status().isForbidden());
+        .perform(MockMvcRequestBuilders.get("/api/v1/warehouse/{id}", 1L))
+        .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
-
 }
