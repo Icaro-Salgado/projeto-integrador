@@ -16,6 +16,8 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 
   List<Batch> findAllByBatchNumberIn(List<Integer> batchNumberList);
 
+  List<Batch> findAllBySellerIdAndDueDateGreaterThan(Long id, LocalDate date);
+
   List<Batch> findAllBySection_IdIn(List<Long> ids);
 
   List<Batch> findBatchByProductAndSection(Product product, Section section);

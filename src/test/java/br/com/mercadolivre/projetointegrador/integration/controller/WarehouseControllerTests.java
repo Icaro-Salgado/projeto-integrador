@@ -1,7 +1,7 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.RequestLocationDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +23,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
-@WithMockUser
+@WithMockManagerUser
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class WarehouseControllerTests {
 
@@ -81,7 +82,6 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
   public void shouldListSectionBatches() throws Exception {
     Batch batch = integrationTestUtils.createBatch();
 
@@ -96,12 +96,12 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
   public void shouldListSectionBatchesOrderedByBatchNumber() throws Exception {
     List<Batch> batch = integrationTestUtils.createMultipleBatchesOnSameWarehouse();
 
     List<Integer> batchNumbers =
-        batch.stream().map(Batch::getBatchNumber).sorted().collect(Collectors.toList());
+        batch.stream().map(Batch::getBatchNumber).collect(Collectors.toList());
+    Collections.sort(batchNumbers);
 
     MvcResult mvcResult =
         mockMvc
@@ -127,12 +127,12 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
   public void shouldListSectionBatchesOrderedByQuantity() throws Exception {
     List<Batch> batch = integrationTestUtils.createMultipleBatchesOnSameWarehouse();
 
     List<Integer> batchNumbers =
-        batch.stream().map(Batch::getQuantity).sorted().collect(Collectors.toList());
+        batch.stream().map(Batch::getQuantity).collect(Collectors.toList());
+    Collections.sort(batchNumbers);
 
     MvcResult mvcResult =
         mockMvc
@@ -158,12 +158,12 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
   public void shouldListSectionBatchesOrderedByDueDate() throws Exception {
     List<Batch> batch = integrationTestUtils.createMultipleBatchesOnSameWarehouse();
 
     List<LocalDate> batchNumbers =
-        batch.stream().map(Batch::getDueDate).sorted().collect(Collectors.toList());
+        batch.stream().map(Batch::getDueDate).collect(Collectors.toList());
+    Collections.sort(batchNumbers);
 
     MvcResult mvcResult =
         mockMvc
@@ -190,7 +190,6 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
   public void shouldReturn404WhenNotFoundAnyResult() throws Exception {
     Product product = integrationTestUtils.createProduct();
 
@@ -203,7 +202,6 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
   public void shouldReturnInvalidParameterErrorWhenNotReceiveProductId() throws Exception {
     mockMvc
         .perform(

@@ -1,6 +1,6 @@
-package br.com.mercadolivre.projetointegrador.warehouse.service;
+package br.com.mercadolivre.projetointegrador.security.service;
 
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;

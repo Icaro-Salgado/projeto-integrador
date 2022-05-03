@@ -1,5 +1,7 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
@@ -118,8 +120,8 @@ public class BatchServiceTests {
     Batch batch = new Batch();
     Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
 
+    batch.setSeller(new AppUser());
     batch.setSection(new Section());
-    batch.setSeller_id(2L);
     batch.setPrice(BigDecimal.valueOf(33.0));
     batch.setOrder_number(2);
     batch.setBatchNumber(2);
@@ -194,5 +196,18 @@ public class BatchServiceTests {
             Mockito.eq(sort),
             Mockito.any(LocalDate.class));
     Assertions.assertEquals(expectedBatch, result);
+  }
+
+  @DisplayName("Given a seller id, should return all relate batches")
+  public void shouldReturnListOfBatches() {
+    List<Batch> batchList = WarehouseTestUtils.getBatch();
+    Mockito.when(
+            batchRepository.findAllBySellerIdAndDueDateGreaterThan(
+                Mockito.anyLong(), Mockito.any()))
+        .thenReturn(batchList);
+
+    List<Batch> result = batchService.listBySellerId(1L);
+
+    Assertions.assertEquals(batchList, result);
   }
 }

@@ -1,4 +1,4 @@
-package br.com.mercadolivre.projetointegrador.warehouse.configuration;
+package br.com.mercadolivre.projetointegrador.security.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

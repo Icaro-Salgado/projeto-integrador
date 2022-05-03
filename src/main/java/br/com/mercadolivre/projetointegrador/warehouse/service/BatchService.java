@@ -7,8 +7,8 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -75,7 +75,7 @@ public class BatchService {
     batch.setProduct(updatedBatch.getProduct());
     batch.setOrder_number(updatedBatch.getOrder_number());
     batch.setSection(updatedBatch.getSection());
-    batch.setSeller_id(updatedBatch.getSeller_id());
+    batch.setSeller(updatedBatch.getSeller());
     batch.setQuantity(updatedBatch.getQuantity());
 
     return batch;
@@ -91,5 +91,11 @@ public class BatchService {
 
     return batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(
         product, section, sortInfos, date);
+  }
+
+  public List<Batch> listBySellerId(final Long sellerId) {
+    LocalDate date = LocalDate.now().plusWeeks(minimumWeeksToAnnounce);
+
+    return batchRepository.findAllBySellerIdAndDueDateGreaterThan(sellerId, date);
   }
 }

@@ -2,6 +2,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
@@ -10,10 +11,11 @@ import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundExce
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.WarehouseMapper;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
+import br.com.mercadolivre.projetointegrador.warehouse.view.BatchView;
 import br.com.mercadolivre.projetointegrador.warehouse.view.SectionView;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,8 +40,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/warehouse")
-@Tag(name = "Warehouse")
-public class WarehouseController {
+@Tag(name = "[Warehouse] - Warehouse")
+public class WarehouseControllerWarehouse implements SecuredWarehouseRestController {
 
   private final WarehouseService warehouseService;
   private final WarehouseAssembler assembler;
@@ -74,7 +76,7 @@ public class WarehouseController {
     HttpHeaders headers = new HttpHeaders();
     headers.add(
         "Location",
-        linkTo(methodOn(WarehouseController.class).findById(created.getId()))
+        linkTo(methodOn(WarehouseControllerWarehouse.class).findById(created.getId()))
             .withSelfRel()
             .toString());
 
@@ -89,7 +91,7 @@ public class WarehouseController {
   }
 
   @GetMapping("/fresh-products/list")
-  @JsonView(SectionView.SectionBatches.class)
+  @JsonView(SectionView.SectionWithBatches.class)
   public ResponseEntity<SectionBatchesDTO> listStockProducts(
       @RequestParam(required = false) Long product,
       @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,
