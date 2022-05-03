@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -37,7 +38,10 @@ public class Batch {
   @JoinColumn(name = "section_id", nullable = false)
   private Section section;
 
-  @Column private Long seller_id;
+  @ManyToOne
+  @JoinColumn(name = "seller_id", nullable = false)
+  @JsonIgnoreProperties("password")
+  private AppUser seller;
 
   @Column private BigDecimal price;
 
@@ -49,7 +53,7 @@ public class Batch {
 
   @Column private LocalDate manufacturing_datetime;
 
-  @Column private LocalDate due_date;
+  @Column private LocalDate dueDate;
 
   @Column @CreatedDate private LocalDate created_at;
 }

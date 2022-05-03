@@ -54,7 +54,7 @@ public class InboundOrderControllerTests {
     productRepository.save(productMock);
 
     CreateBatchPayloadDTO batchMock =
-        CreateBatchPayloadDTO.builder().quantity(2).product_id(1L).build();
+        CreateBatchPayloadDTO.builder().seller_id(1L).quantity(2).product_id(1L).build();
 
     InboundOrderDTO objPayload =
         InboundOrderDTO.builder()
@@ -95,7 +95,7 @@ public class InboundOrderControllerTests {
         CreateBatchPayloadDTO.builder()
             .batch_number(mockedBatch.getBatchNumber())
             .product_id(mockedBatch.getProduct().getId())
-            .seller_id(mockedBatch.getSeller_id())
+            .seller_id(mockedBatch.getSeller().getId())
             .quantity(2)
             .build();
 
@@ -131,6 +131,7 @@ public class InboundOrderControllerTests {
             .price(BigDecimal.valueOf(112.99))
             .batch_number(mockedBatch.getBatchNumber())
             .product_id(1L)
+            .seller_id(mockedBatch.getSeller().getId())
             .build();
 
     InboundOrderDTO objPayload =
