@@ -68,7 +68,9 @@ public class AdController implements SecuredMarketplaceRestController {
       description = "Retorna lista de anúncios cadastrados.")
   @ApiResponses(value = {@ApiResponse(description = "Anúncios encontrados.", responseCode = "200")})
   @GetMapping
-  public ResponseEntity<List<Ad>> listAds(@RequestParam(required = false) String name, @RequestParam(required = false) CategoryEnum category) {
+  public ResponseEntity<List<Ad>> listAds(
+      @RequestParam(required = false) String name,
+      @RequestParam(required = false) CategoryEnum category) {
     if (name != null || category != null) {
       return ResponseEntity.ok(adService.listAds(name, category));
     }
