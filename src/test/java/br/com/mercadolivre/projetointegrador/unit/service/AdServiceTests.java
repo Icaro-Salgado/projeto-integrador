@@ -6,6 +6,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdBatchesRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.services.AdService;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +38,7 @@ public class AdServiceTests {
     Long[] batchesIds = new Long[] {1L, 2L, 3L};
     CreateOrUpdateAdDTO createAdDTO = new CreateOrUpdateAdDTO();
     createAdDTO.setBatchesId(List.of(batchesIds));
-    createAdDTO.setCategory("FS");
+    createAdDTO.setCategory(CategoryEnum.FS);
     createAdDTO.setPrice(BigDecimal.valueOf(9.90));
     createAdDTO.setDiscount(5);
     createAdDTO.setQuantity(999);
@@ -60,12 +61,39 @@ public class AdServiceTests {
   @DisplayName(
       "Given a string as \"toddy\", when call listAds without and with these string, should call on"
           + " repository findAll and findAdsByLikeName methods.")
-  public void listAds() {
+  public void listAdsWithNoFilter() {
     adService.listAds();
-    adService.listAds("toddy");
 
     Mockito.verify(adRepository, Mockito.times(1)).findAll();
+  }
+
+  @Test
+  @DisplayName(
+      "Given a string as \"toddy\", should call on" + " repository findAdsByLikeName method.")
+  public void listAdsWithNameFilter() {
+
+    adService.listAds("toddy", null);
+
     Mockito.verify(adRepository, Mockito.times(1)).findAdsByLikeName("toddy");
+  }
+
+  @Test
+  @DisplayName("Given only a Product category, should call on repository findAllByCategory method.")
+  public void listAdsWithCategoryFilter() {
+    adService.listAds(null, CategoryEnum.RF);
+
+    Mockito.verify(adRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.RF);
+  }
+
+  @Test
+  @DisplayName(
+      "Given a product category and name, should call on repository findAllByCategoryAndNameLike"
+          + " method")
+  public void listAdsWithCategoryAndNameFilter() {
+    adService.listAds("toddy", CategoryEnum.RF);
+
+    Mockito.verify(adRepository, Mockito.times(1))
+        .findAllByCategoryAndNameLike(CategoryEnum.RF, "toddy");
   }
 
   @Test
