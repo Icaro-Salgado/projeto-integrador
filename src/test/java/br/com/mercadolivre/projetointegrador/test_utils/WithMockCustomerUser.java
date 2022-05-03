@@ -9,9 +9,9 @@ import java.lang.annotation.RetentionPolicy;
 @WithSecurityContext(factory = CustomerUserSecurityContextFactory.class)
 public @interface WithMockCustomerUser {
 
-    String id() default "1";
+  String id() default "1";
 
-    String userName() default "springuser";
+  String userName() default "springuser";
 
-    String name() default "spring";
+  String name() default "spring";
 }

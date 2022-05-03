@@ -132,15 +132,11 @@ public class IntegrationTestUtils {
     return cart;
   }
 
-  public List<UserRole> createRoles(){
+  public List<UserRole> createRoles() {
     List<UserRole> roles = rolesRepository.findAll();
-    if(roles.isEmpty()){
+    if (roles.isEmpty()) {
       return rolesRepository.saveAll(
-              List.of(
-                      new UserRole(null, "CUSTOMER"),
-                      new UserRole(null, "MANAGER")
-              )
-      );
+          List.of(new UserRole(null, "CUSTOMER"), new UserRole(null, "MANAGER")));
     }
     return roles;
   }

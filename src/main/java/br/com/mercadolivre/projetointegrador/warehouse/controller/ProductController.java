@@ -76,7 +76,10 @@ public class ProductController {
     productService.createProduct(product);
 
     URI uri =
-        uriBuilder.path("/api/v1/warehouse/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
+        uriBuilder
+            .path("/api/v1/warehouse/fresh-products/{id}")
+            .buildAndExpand(product.getId())
+            .toUri();
 
     HttpHeaders headers = new HttpHeaders();
     headers.add("Location", uri.toString());
@@ -117,7 +120,10 @@ public class ProductController {
     productService.updateProduct(id, product);
 
     URI uri =
-        uriBuilder.path("/api/v1/warehouse/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
+        uriBuilder
+            .path("/api/v1/warehouse/fresh-products/{id}")
+            .buildAndExpand(product.getId())
+            .toUri();
 
     return ResponseEntity.noContent().location(uri).build();
   }
