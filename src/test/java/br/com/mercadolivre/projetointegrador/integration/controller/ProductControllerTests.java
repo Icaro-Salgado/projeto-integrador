@@ -157,9 +157,7 @@ public class ProductControllerTests {
 
     productRepository.save(fakeProduct);
     mockMvc
-        .perform(
-            MockMvcRequestBuilders.get(
-                    API_URL + "?category=" + fakeProduct.getCategory()))
+        .perform(MockMvcRequestBuilders.get(API_URL + "?category=" + fakeProduct.getCategory()))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
