@@ -1,7 +1,9 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionNotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
@@ -12,6 +14,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.service.validators.BatchD
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.SectionExistsValidator;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,6 +30,7 @@ public class WarehouseService {
   private final BatchRepository batchRepository;
   private final WarehouseValidatorExecutor warehouseValidatorExecutor;
   private final SectionRepository sectionRepository;
+  private final ProductService productService;
 
   public Warehouse createWarehouse(Warehouse warehouse) {
     return warehouseRepository.save(warehouse);
@@ -66,13 +70,28 @@ public class WarehouseService {
   // TODO: implements of controller
   public List<Batch> dueDateBatches(Long numberOfDays, Long sectionId) {
     SectionExistsValidator sectionExistsValidator =
-        new SectionExistsValidator(sectionId, sectionRepository);
+            new SectionExistsValidator(sectionId, sectionRepository);
     sectionExistsValidator.Validate();
 
     List<Batch> section =
-        batchRepository.findAllBySectionIdAndDueDateLessThan(
-            sectionId, LocalDate.now().plusDays(numberOfDays));
+            batchRepository.findAllBySectionIdAndDueDateLessThan(
+                    sectionId, LocalDate.now().plusDays(numberOfDays));
 
     return section;
+  }
+
+  public List<Batch> findProductOnManagerSection(
+      Long managerId, Long productId, SortTypeEnum sortType) throws RuntimeException {
+    Section managerSection =
+        sectionRepository
+            .findByManagerId(managerId)
+            .orElseThrow(
+                (() ->
+                    new SectionNotFoundException(
+                        "Não foi encontrada nenhuma seção vinculada ao usuário")));
+
+    Product product = productService.findById(productId);
+    return batchService.findBatchesByProductAndSection(
+        product, managerSection, Sort.by(Sort.Direction.ASC, sortType.field));
   }
 }
