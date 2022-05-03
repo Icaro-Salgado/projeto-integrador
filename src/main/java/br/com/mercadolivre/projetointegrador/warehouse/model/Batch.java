@@ -17,9 +17,7 @@ import java.time.LocalDate;
           name = "UniqueBatchAndSeller",
           columnNames = {"seller_id", "batchNumber"})
     },
-    indexes = {
-            @Index(name = "batchNumberIdx", columnList = "batchNumber")
-    })
+    indexes = {@Index(name = "batchNumberIdx", columnList = "batchNumber")})
 @Getter
 @Setter
 @Builder

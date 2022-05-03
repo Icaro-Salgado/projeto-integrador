@@ -19,21 +19,17 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ActiveProfiles(profiles = "test")
 @WithMockUser
 public class CategoryController {
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    private final String SECTION_URL = "/api/v1/fresh-products/categories";
+  private final String SECTION_URL = "/api/v1/fresh-products/categories";
 
-    @Test
-    @DisplayName("CategoryController - GET - api/v1/fresh-products/categories")
-    public void TestIfListAllCategories() throws Exception {
-        mockMvc.perform(
-                MockMvcRequestBuilders.get(SECTION_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").isNotEmpty());
-
-    }
+  @Test
+  @DisplayName("CategoryController - GET - api/v1/fresh-products/categories")
+  public void TestIfListAllCategories() throws Exception {
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(SECTION_URL).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").isNotEmpty());
+  }
 }

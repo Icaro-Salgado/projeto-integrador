@@ -42,6 +42,6 @@ public class CategoryController implements SecuredWarehouseRestController {
     public ResponseEntity<List<CategoryListDTO>> listCategories(){
         List<CategoryListDTO> categories = Arrays.stream(CategoryEnum.values()).map(val -> new CategoryListDTO(val.label(), val.name())).collect(Collectors.toList());
 
-        return ResponseEntity.ok(categories);
-    }
+    return ResponseEntity.ok(categories);
+  }
 }
