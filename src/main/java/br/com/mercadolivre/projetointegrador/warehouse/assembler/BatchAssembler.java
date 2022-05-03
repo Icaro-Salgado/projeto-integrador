@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.assembler;
 
-import br.com.mercadolivre.projetointegrador.warehouse.controller.BatchController;
+import br.com.mercadolivre.projetointegrador.warehouse.controller.BatchControllerWarehouse;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
@@ -25,7 +26,8 @@ public class BatchAssembler {
 
     Links links =
         Links.of(
-            linkTo(methodOn(BatchController.class).findBatchById(entity.getId())).withSelfRel());
+            linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(entity.getId()))
+                .withSelfRel());
 
     dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 
@@ -43,11 +45,29 @@ public class BatchAssembler {
     for (BatchResponseDTO dto : createdBatchesDTO) {
       Links links =
           Links.of(
-              linkTo(methodOn(BatchController.class).findBatchById(dto.getId())).withSelfRel());
+              linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId()))
+                  .withSelfRel());
 
       dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
     }
 
     return ResponseEntity.status(HttpStatus.CREATED).body(createdBatchesDTO);
+  }
+
+  public ResponseEntity<List<BatchResponseDTO>> toBatchResponse(
+      List<Batch> batchList, HttpStatus status) {
+    List<BatchResponseDTO> batchResponseDTOList = BatchMapper.INSTANCE.toResponseDTOList(batchList);
+
+    batchResponseDTOList.forEach(
+        batch -> {
+          Links links =
+              Links.of(
+                  linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(batch.getId()))
+                      .withSelfRel());
+
+          batch.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
+        });
+
+    return ResponseEntity.status(status).body(batchResponseDTOList);
   }
 }

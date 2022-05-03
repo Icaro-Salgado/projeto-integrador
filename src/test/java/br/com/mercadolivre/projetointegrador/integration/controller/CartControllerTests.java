@@ -4,7 +4,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.enums.CartStatusCodeEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomerUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -29,9 +29,9 @@ import static org.hamcrest.Matchers.hasSize;
 @ActiveProfiles(profiles = "test")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
-@WithMockCustomUser
+@WithMockCustomerUser
 public class CartControllerTests {
-  private final String PURCHASEORDER_URL = "/api/v1/fresh-products/orders";
+  private final String PURCHASEORDER_URL = "/api/v1/marketplace/fresh-products/orders";
   @Autowired private MockMvc mockMvc;
   @Autowired private IntegrationTestUtils integrationTestUtils;
   ObjectMapper objectMapper =
@@ -51,7 +51,7 @@ public class CartControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(purchaseOrder)))
         .andExpect(MockMvcResultMatchers.status().isCreated())
-        .andExpect(MockMvcResultMatchers.content().string("35.0"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.totalPrice").value("35.0"));
   }
 
   @Test

@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
 
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
@@ -28,8 +29,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/warehouse")
-@Tag(name = "Warehouse")
-public class WarehouseController {
+@Tag(name = "[Warehouse] - Warehouse")
+public class WarehouseControllerWarehouse implements SecuredWarehouseRestController {
 
   private final WarehouseService warehouseService;
   private final WarehouseAssembler assembler;
@@ -63,7 +64,7 @@ public class WarehouseController {
     HttpHeaders headers = new HttpHeaders();
     headers.add(
         "Location",
-        linkTo(methodOn(WarehouseController.class).findById(created.getId()))
+        linkTo(methodOn(WarehouseControllerWarehouse.class).findById(created.getId()))
             .withSelfRel()
             .toString());
 

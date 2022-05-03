@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateSectionPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
@@ -23,9 +24,9 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/section")
-@Tag(name = "Section")
-public class SectionController {
+@RequestMapping("api/v1/warehouse/section")
+@Tag(name = "[Warehouse] - Section")
+public class SectionControllerWarehouse implements SecuredWarehouseRestController {
 
   private final SectionService sectionService;
   private final SectionAssembler assembler;
