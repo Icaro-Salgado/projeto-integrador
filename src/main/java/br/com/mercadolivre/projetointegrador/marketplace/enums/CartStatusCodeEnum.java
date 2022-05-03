@@ -13,17 +13,4 @@ public enum CartStatusCodeEnum {
 
     return false;
   }
-
-  public static CartStatusCodeEnum switchStatus(CartStatusCodeEnum cartStatus) {
-    CartStatusCodeEnum statusCodeEnum = null;
-    switch (cartStatus) {
-      case ABERTO:
-        statusCodeEnum = CartStatusCodeEnum.FINALIZADO;
-        break;
-      case FINALIZADO:
-        statusCodeEnum = CartStatusCodeEnum.ABERTO;
-        break;
-    }
-    return statusCodeEnum;
-  }
 }

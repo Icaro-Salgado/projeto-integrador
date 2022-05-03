@@ -44,24 +44,4 @@ public class CartService {
     }
     return total;
   }
-
-  public Cart changeStatus(Long id, String status)
-      throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
-    if (!CartStatusCodeEnum.contains(status)) {
-      throw new InvalidStatusCodeException("Verifique o status informado.");
-    }
-    Cart cart = getCart(id);
-    CartStatusCodeEnum statusCode = CartStatusCodeEnum.valueOf(status);
-    cart.setStatusCode(statusCode);
-
-    updateCart(id, cart);
-    return cart;
-  }
-
-  public Cart switchStatus(Long id) throws NotFoundException, JsonProcessingException {
-    Cart cart = getCart(id);
-    cart.setStatusCode(CartStatusCodeEnum.switchStatus(cart.getStatusCode()));
-    updateCart(id, cart);
-    return cart;
-  }
 }

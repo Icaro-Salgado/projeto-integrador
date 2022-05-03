@@ -34,7 +34,6 @@ public class CartServiceTests {
   @BeforeEach
   public void createMockCart() {
     cart = new Cart();
-    cart.setStatusCode(CartStatusCodeEnum.ABERTO);
 
     CartProductDTO cartProduct = new CartProductDTO();
     cartProduct.setProductId(1L);
@@ -79,38 +78,9 @@ public class CartServiceTests {
 
     Cart foundCart = cartService.getCart(1L);
 
-    Assertions.assertEquals(foundCart.getStatusCode(), cart.getStatusCode());
     Assertions.assertEquals(
         foundCart.getProducts().get(0).getQuantity(), cart.getProducts().get(0).getQuantity());
     Assertions.assertEquals(
         foundCart.getProducts().get(0).getUnitPrice(), cart.getProducts().get(0).getUnitPrice());
-  }
-
-  @Test
-  @DisplayName(
-      "Given a new status code, when call changeStatus, then the statusCode should be updated.")
-  public void shoudUpdateStatus()
-      throws NotFoundException, JsonProcessingException, InvalidStatusCodeException {
-
-    Mockito.when(redisRepository.get(Mockito.any()))
-        .thenReturn(objectMapper.writeValueAsString(cart));
-
-    Cart updatedCart = cartService.changeStatus(1L, "FINALIZADO");
-
-    Assertions.assertEquals(CartStatusCodeEnum.FINALIZADO, updatedCart.getStatusCode());
-  }
-
-  @Test
-  @DisplayName("Given a Cart, when call switchStatus, then the statusCode should be switched.")
-  public void shouldSwitchStatus() throws JsonProcessingException, NotFoundException {
-
-    Mockito.when(redisRepository.get(Mockito.any()))
-        .thenReturn(objectMapper.writeValueAsString(cart));
-
-    CartStatusCodeEnum currentStatus = cart.getStatusCode();
-
-    Cart switchedStatusCart = cartService.switchStatus(1L);
-
-    Assertions.assertNotEquals(currentStatus, switchedStatusCart.getStatusCode());
   }
 }
