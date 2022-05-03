@@ -95,27 +95,30 @@ public class WarehouseController {
     return assembler.toResponse(warehouse, HttpStatus.CREATED, null);
   }
 
-  @Operation(summary = "RETORNA LOTES A VENCER DE UMA DADA SEÇÃO", description = "Retorna uma lista de lotes que se encontram em uma" +
-          " seção específica e que a váliidade dos produtos é menor que os dias especificados")
+  @Operation(
+      summary = "RETORNA LOTES A VENCER DE UMA DADA SEÇÃO",
+      description =
+          "Retorna uma lista de lotes que se encontram em uma seção específica e que a váliidade"
+              + " dos produtos é menor que os dias especificados")
   @ApiResponses(
-          value = {
-                  @ApiResponse(
-                          responseCode = "200",
-                          description = "Consulta realizada com sucesso",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = CreateBatchPayloadDTO.class))
-                          }),
-                  @ApiResponse(
-                          responseCode = "400",
-                          description = "Dados inválidos!",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = ErrorDTO.class))
-                          })
-          })
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Consulta realizada com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = CreateBatchPayloadDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Dados inválidos!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping("/fresh-products/duedate")
   public ResponseEntity<List<BatchResponseDTO>> findDueDateBatches(
       @RequestParam(name = "numb_days") String numberOfDays,
@@ -126,28 +129,31 @@ public class WarehouseController {
     return batchAssembler.toCreatedResponse(batches);
   }
 
-  @Operation(summary = "RETORNA LOTES A VENCER COM PRODUTOS DE UMA DADA CATEGORIA", description = "Retorna uma " +
-          "lista de lotes que se encontram em uma determinada categoria, a válidade dos produtos é menor " +
-          "que os dias especificados, e o resultado e ordenado de forma crescente ou decrecente")
+  @Operation(
+      summary = "RETORNA LOTES A VENCER COM PRODUTOS DE UMA DADA CATEGORIA",
+      description =
+          "Retorna uma lista de lotes que se encontram em uma determinada categoria, a válidade dos"
+              + " produtos é menor que os dias especificados, e o resultado e ordenado de forma"
+              + " crescente ou decrecente")
   @ApiResponses(
-          value = {
-                  @ApiResponse(
-                          responseCode = "200",
-                          description = "Consulta realizada com sucesso",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = CreateBatchPayloadDTO.class))
-                          }),
-                  @ApiResponse(
-                          responseCode = "400",
-                          description = "Dados inválidos!",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = ErrorDTO.class))
-                          })
-          })
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Consulta realizada com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = CreateBatchPayloadDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Dados inválidos!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping("/fresh-products/duedate-batches")
   public ResponseEntity<List<BatchResponseDTO>> findDueDateBatchesByCategory(
       @RequestParam(name = "numb_days") String numberOfDays,
