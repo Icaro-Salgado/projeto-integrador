@@ -167,8 +167,10 @@ public class ProductController {
       })
   @GetMapping
   @JsonView(ProductView.List.class)
-  public ResponseEntity<List<ProductDTO>> getAll(@RequestParam(required = false) CategoryEnum category) {
-    List<Product> products = category != null ? productService.findAllByCategory(category)  : productService.findAll();
+  public ResponseEntity<List<ProductDTO>> getAll(
+      @RequestParam(required = false) CategoryEnum category) {
+    List<Product> products =
+        category != null ? productService.findAllByCategory(category) : productService.findAll();
 
     HttpStatus status = products.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
 

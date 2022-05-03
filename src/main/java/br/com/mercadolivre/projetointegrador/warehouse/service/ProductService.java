@@ -51,7 +51,7 @@ public class ProductService {
     return productRepository.findAll();
   }
 
-  public List<Product> findAllByCategory(CategoryEnum category){
+  public List<Product> findAllByCategory(CategoryEnum category) {
     return productRepository.findAllByCategory(category);
   }
 

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTests {
@@ -120,9 +119,10 @@ public class ProductServiceTests {
 
   @Test
   @DisplayName("Given a category, should return a product list")
-  public void shouldFindAllProductsByCategory(){
+  public void shouldFindAllProductsByCategory() {
     List<Product> expected = List.of(newTestProduct);
-    Mockito.when(productRepository.findAllByCategory(Mockito.any(CategoryEnum.class))).thenReturn(expected);
+    Mockito.when(productRepository.findAllByCategory(Mockito.any(CategoryEnum.class)))
+        .thenReturn(expected);
 
     List<Product> result = productService.findAllByCategory(CategoryEnum.FS);
 
@@ -132,9 +132,10 @@ public class ProductServiceTests {
 
   @Test
   @DisplayName("Given a category, should return a product list even if dont find any result")
-  public void shouldFindAllProductsByCategoryAndReturnEmptyList(){
+  public void shouldFindAllProductsByCategoryAndReturnEmptyList() {
 
-    Mockito.when(productRepository.findAllByCategory(Mockito.any(CategoryEnum.class))).thenReturn(Collections.emptyList());
+    Mockito.when(productRepository.findAllByCategory(Mockito.any(CategoryEnum.class)))
+        .thenReturn(Collections.emptyList());
 
     List<Product> result = productService.findAllByCategory(CategoryEnum.FS);
 
