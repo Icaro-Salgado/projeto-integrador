@@ -92,6 +92,7 @@ public class IntegrationTestUtils {
             .order_number(123)
             .batchNumber(9595)
             .quantity(10)
+            .dueDate(LocalDate.now().plusMonths(10))
             .build();
 
     return batchRepository.save(batch);
