@@ -61,15 +61,39 @@ public class AdServiceTests {
   @DisplayName(
       "Given a string as \"toddy\", when call listAds without and with these string, should call on"
           + " repository findAll and findAdsByLikeName methods.")
-  public void listAds() {
+  public void listAdsWithNoFilter() {
     adService.listAds();
-    adService.listAds("toddy", null);
-    adService.listAds(null, CategoryEnum.RF);
-    adService.listAds("toddy", CategoryEnum.RF);
 
     Mockito.verify(adRepository, Mockito.times(1)).findAll();
+  }
+
+  @Test
+  @DisplayName(
+          "Given a string as \"toddy\", should call on"
+                  + " repository findAdsByLikeName method.")
+  public void listAdsWithNameFilter() {
+
+    adService.listAds("toddy", null);
+
     Mockito.verify(adRepository, Mockito.times(1)).findAdsByLikeName("toddy");
+  }
+
+  @Test
+  @DisplayName(
+          "Given only a Product category, should call on repository findAllByCategory method.")
+  public void listAdsWithCategoryFilter() {
+    adService.listAds(null, CategoryEnum.RF);
+
+
     Mockito.verify(adRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.RF);
+  }
+
+  @Test
+  @DisplayName(
+          "Given a product category and name, should call on repository findAllByCategoryAndNameLike method")
+  public void listAdsWithCategoryAndNameFilter() {
+    adService.listAds("toddy", CategoryEnum.RF);
+
     Mockito.verify(adRepository, Mockito.times(1)).findAllByCategoryAndNameLike(CategoryEnum.RF, "toddy");
   }
 
