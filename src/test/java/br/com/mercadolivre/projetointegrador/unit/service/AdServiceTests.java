@@ -38,7 +38,7 @@ public class AdServiceTests {
     Long[] batchesIds = new Long[] {1L, 2L, 3L};
     CreateOrUpdateAdDTO createAdDTO = new CreateOrUpdateAdDTO();
     createAdDTO.setBatchesId(List.of(batchesIds));
-    createAdDTO.setCategory("FS");
+    createAdDTO.setCategory(CategoryEnum.FS);
     createAdDTO.setPrice(BigDecimal.valueOf(9.90));
     createAdDTO.setDiscount(5);
     createAdDTO.setQuantity(999);

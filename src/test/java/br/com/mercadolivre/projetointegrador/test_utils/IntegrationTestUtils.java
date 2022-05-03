@@ -174,7 +174,7 @@ public class IntegrationTestUtils {
     adDTO.setQuantity(10);
     adDTO.setPrice(BigDecimal.valueOf(10.0));
     adDTO.setDiscount(0);
-    adDTO.setCategory("FS");
+    adDTO.setCategory(CategoryEnum.FS);
 
     return adDTO;
   }
