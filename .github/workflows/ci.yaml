@@ -1,8 +1,6 @@
 name: ci-java
 
-on:
-  push:
-
+on: push
 jobs:
   container-job:
     name: Build and Run Tests
