@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/marketplace/ads")
 @AllArgsConstructor
-@Tag(name = "Ad")
+@Tag(name = "[Marketplace] - Ad")
 public class AdController implements SecuredMarketplaceRestController {
   AdService adService;
   AppUserRepository tokenService;

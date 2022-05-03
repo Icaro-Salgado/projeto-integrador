@@ -27,7 +27,7 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/marketplace/fresh-products/orders")
-@Tag(name = "Purchase Order")
+@Tag(name = "[Marketplace] - Purchase Order")
 public class CartController implements SecuredMarketplaceRestController {
   CartService cartService;
 

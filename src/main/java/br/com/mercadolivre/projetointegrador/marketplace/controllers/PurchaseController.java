@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/customers/marketplace/purchases")
-@Tag(name = "Purchase")
+@Tag(name = "[Marketplace] - Purchase")
 public class PurchaseController implements SecuredMarketplaceRestController {
   PurchaseService purchaseService;
   TokenService tokenService;
