@@ -28,7 +28,7 @@ public class CategoryController implements SecuredWarehouseRestController {
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Ordem criada",
+            description = "Retorna a lista de categorias cadastradas",
             content = {
               @Content(
                   mediaType = "application/json",
