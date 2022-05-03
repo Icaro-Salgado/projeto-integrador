@@ -16,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -113,5 +115,31 @@ public class ProductServiceTests {
     Assertions.assertEquals("Produto " + 2 + " não encontrado.", thrown.getMessage());
 
     Mockito.verify(productRepository, Mockito.times(0)).delete(Mockito.any());
+  }
+
+  @Test
+  @DisplayName("Given a category, should return a product list")
+  public void shouldFindAllProductsByCategory() {
+    List<Product> expected = List.of(newTestProduct);
+    Mockito.when(productRepository.findAllByCategory(Mockito.any(CategoryEnum.class)))
+        .thenReturn(expected);
+
+    List<Product> result = productService.findAllByCategory(CategoryEnum.FS);
+
+    Mockito.verify(productRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.FS);
+    assertEquals(expected, result);
+  }
+
+  @Test
+  @DisplayName("Given a category, should return a product list even if dont find any result")
+  public void shouldFindAllProductsByCategoryAndReturnEmptyList() {
+
+    Mockito.when(productRepository.findAllByCategory(Mockito.any(CategoryEnum.class)))
+        .thenReturn(Collections.emptyList());
+
+    List<Product> result = productService.findAllByCategory(CategoryEnum.FS);
+
+    Mockito.verify(productRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.FS);
+    assertEquals(0, result.size());
   }
 }

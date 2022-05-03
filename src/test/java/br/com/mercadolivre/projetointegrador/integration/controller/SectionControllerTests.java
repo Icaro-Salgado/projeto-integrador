@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateSectionPayloadDTO;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,11 +25,11 @@ import java.math.BigDecimal;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
-@WithMockUser
+@WithMockManagerUser
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class SectionControllerTests {
 
-  private final String SECTION_URL = "/api/v1/section";
+  private final String SECTION_URL = "/api/v1/warehouse/section";
   ObjectMapper objectMapper = new ObjectMapper();
   @Autowired private MockMvc mockMvc;
   @Autowired private IntegrationTestUtils integrationTestUtils;
