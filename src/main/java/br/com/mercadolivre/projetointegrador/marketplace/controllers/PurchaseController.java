@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,19 +33,15 @@ public class PurchaseController implements SecuredMarketplaceRestController {
       value = {
         @ApiResponse(
             description = "Compra registrada.",
-            responseCode = "201",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = CreatePurchaseDTO.class))
-            })
+            responseCode = "201")
       })
   @PostMapping
-  public void createPurchase(
+  public ResponseEntity<Void> createPurchase(
       @RequestBody List<CreatePurchaseDTO> createPurchaseDTO, Authentication authentication) {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
 
     purchaseService.createMultiplePurchases(createPurchaseDTO, requestUser.getId());
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @Operation(summary = "RETORNA UMA COMPRA", description = "Retorna uma compra.")

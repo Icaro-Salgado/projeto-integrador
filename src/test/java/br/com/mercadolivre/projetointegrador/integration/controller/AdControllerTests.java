@@ -41,7 +41,7 @@ public class AdControllerTests {
   ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
-  @DisplayName("AdController - POST - api/v1/ads")
+  @DisplayName("AdController - POST - api/v1/marketplace/ads")
   public void testCreateAd() throws Exception {
 
     CreateOrUpdateAdDTO adDTO = integrationTestUtils.createAdDTO();
