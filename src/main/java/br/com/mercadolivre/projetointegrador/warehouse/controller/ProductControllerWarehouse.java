@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.ProductAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateOrUpdateProductDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
@@ -31,8 +32,8 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/warehouse/fresh-products")
-@Tag(name = "Product")
-public class ProductController {
+@Tag(name = "[Warehouse] - Product")
+public class ProductControllerWarehouse implements SecuredWarehouseRestController {
 
   private final ProductService productService;
   private final ProductAssembler productAssembler;

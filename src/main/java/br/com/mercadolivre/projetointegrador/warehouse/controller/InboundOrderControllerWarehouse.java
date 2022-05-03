@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
@@ -26,8 +27,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/warehouse/inboundorder")
 @RequiredArgsConstructor
-@Tag(name = "Inbound Order")
-public class InboundOrderController {
+@Tag(name = "[Warehouse] - Inbound Order")
+public class InboundOrderControllerWarehouse implements SecuredWarehouseRestController {
 
   private final WarehouseService warehouseService;
   private final InboundOrderMapper inboundOrderMapper;

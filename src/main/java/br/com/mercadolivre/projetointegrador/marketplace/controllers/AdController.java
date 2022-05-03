@@ -6,6 +6,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.services.AdService;
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredMarketplaceRestController;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/marketplace/ads")
 @AllArgsConstructor
-public class AdController {
+public class AdController implements SecuredMarketplaceRestController {
 
   AdService adService;
   AppUserRepository tokenService;

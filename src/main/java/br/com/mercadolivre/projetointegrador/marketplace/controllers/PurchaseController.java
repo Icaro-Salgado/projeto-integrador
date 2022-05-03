@@ -5,6 +5,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
 import br.com.mercadolivre.projetointegrador.marketplace.services.PurchaseService;
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.service.TokenService;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredMarketplaceRestController;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/customers/marketplace/purchases")
-public class PurchaseController {
+public class PurchaseController implements SecuredMarketplaceRestController {
 
   PurchaseService purchaseService;
   TokenService tokenService;

@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
@@ -21,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@Tag(name = "Batch")
+@Tag(name = "[Warehouse] - Batch")
 @RequestMapping("/api/v1/warehouse/batches")
-public class BatchController {
+public class BatchControllerWarehouse implements SecuredWarehouseRestController {
 
   private final BatchService batchService;
   private final BatchAssembler assembler;

@@ -6,6 +6,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundExce
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.services.CartService;
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredMarketplaceRestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import java.net.URI;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/marketplace/fresh-products/orders")
-public class CartController {
+public class CartController implements SecuredMarketplaceRestController {
 
   CartService cartService;
 

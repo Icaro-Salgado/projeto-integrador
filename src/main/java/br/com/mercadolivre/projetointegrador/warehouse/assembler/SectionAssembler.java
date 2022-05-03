@@ -1,6 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.assembler;
 
-import br.com.mercadolivre.projetointegrador.warehouse.controller.SectionController;
+import br.com.mercadolivre.projetointegrador.warehouse.controller.SectionControllerWarehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.SectionMapper;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
@@ -22,7 +22,7 @@ public class SectionAssembler {
     SectionResponseDTO dto = SectionMapper.INSTANCE.toDto(entity);
 
     Links links =
-        Links.of(linkTo(methodOn(SectionController.class).findById(entity.getId())).withSelfRel());
+        Links.of(linkTo(methodOn(SectionControllerWarehouse.class).findById(entity.getId())).withSelfRel());
 
     dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 
