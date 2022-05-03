@@ -25,7 +25,8 @@ public class WarehouseAssembler {
 
     Links links =
         Links.of(
-            linkTo(methodOn(WarehouseControllerWarehouse.class).findById(entity.getId())).withSelfRel());
+            linkTo(methodOn(WarehouseControllerWarehouse.class).findById(entity.getId()))
+                .withSelfRel());
 
     dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 

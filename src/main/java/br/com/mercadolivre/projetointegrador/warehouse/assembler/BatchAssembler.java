@@ -25,7 +25,8 @@ public class BatchAssembler {
 
     Links links =
         Links.of(
-            linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(entity.getId())).withSelfRel());
+            linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(entity.getId()))
+                .withSelfRel());
 
     dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 
@@ -43,7 +44,8 @@ public class BatchAssembler {
     for (BatchResponseDTO dto : createdBatchesDTO) {
       Links links =
           Links.of(
-              linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId())).withSelfRel());
+              linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId()))
+                  .withSelfRel());
 
       dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
     }

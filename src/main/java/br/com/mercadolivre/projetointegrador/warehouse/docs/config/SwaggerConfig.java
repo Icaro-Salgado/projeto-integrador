@@ -17,25 +17,24 @@ import java.util.stream.Collectors;
 
 @Configuration
 @SecurityScheme(
-        name = "WarehouseAuth",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        scheme = "bearer"
-)
+    name = "WarehouseAuth",
+    type = SecuritySchemeType.HTTP,
+    bearerFormat = "JWT",
+    scheme = "bearer")
 @SecurityScheme(
-        name = "MarketplaceAuth",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        scheme = "bearer"
-)
+    name = "MarketplaceAuth",
+    type = SecuritySchemeType.HTTP,
+    bearerFormat = "JWT",
+    scheme = "bearer")
 public class SwaggerConfig {
 
   @Bean
   public OpenApiCustomiser sortTagsAlphabetically() {
-    return openApi -> openApi.setTags(openApi.getTags()
-            .stream()
-            .sorted(Comparator.comparing(tag -> StringUtils.stripAccents(tag.getName())))
-            .collect(Collectors.toList()));
+    return openApi ->
+        openApi.setTags(
+            openApi.getTags().stream()
+                .sorted(Comparator.comparing(tag -> StringUtils.stripAccents(tag.getName())))
+                .collect(Collectors.toList()));
   }
 
   @Bean
