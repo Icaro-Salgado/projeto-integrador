@@ -2,8 +2,11 @@ package br.com.mercadolivre.projetointegrador.warehouse.service;
 
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,7 +65,7 @@ public class BatchService {
 
     batch.setBatchNumber(updatedBatch.getBatchNumber());
     batch.setPrice(updatedBatch.getPrice());
-    batch.setDue_date(updatedBatch.getDue_date());
+    batch.setDueDate(updatedBatch.getDueDate());
     batch.setManufacturing_datetime(updatedBatch.getManufacturing_datetime());
     batch.setProduct(updatedBatch.getProduct());
     batch.setOrder_number(updatedBatch.getOrder_number());
@@ -71,5 +74,15 @@ public class BatchService {
     batch.setQuantity(updatedBatch.getQuantity());
 
     return batch;
+  }
+
+  public List<Batch> findBatchesByProductAndSection(Product product, Section section) {
+    return batchRepository.findBatchByProductAndSection(product, section);
+  }
+
+  public List<Batch> findBatchesByProductAndSection(
+      Product product, Section section, Sort sortInfos) {
+
+    return batchRepository.findBatchByProductAndSection(product, section, sortInfos);
   }
 }

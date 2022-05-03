@@ -53,7 +53,7 @@ public class BatchControllerTests {
     batch.setBatchNumber(2);
     batch.setQuantity(250);
     batch.setManufacturing_datetime(LocalDate.parse("2022-01-01"));
-    batch.setDue_date(LocalDate.parse("2022-05-02"));
+    batch.setDueDate(LocalDate.parse("2022-05-02"));
 
     Batch created = batchRepository.save(batch);
 
@@ -67,6 +67,6 @@ public class BatchControllerTests {
         .andExpect(MockMvcResultMatchers.jsonPath("$.batchNumber").value(2))
         .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(250))
         .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturing_datetime").value("2022-01-01"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.due_date").value("2022-05-02"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.dueDate").value("2022-05-02"));
   }
 }

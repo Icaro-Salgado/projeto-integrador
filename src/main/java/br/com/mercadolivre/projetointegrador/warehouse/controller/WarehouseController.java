@@ -1,15 +1,24 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
-
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.WarehouseMapper;
+import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
+import br.com.mercadolivre.projetointegrador.warehouse.view.SectionView;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,9 +29,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 import java.util.List;
 
@@ -37,6 +48,8 @@ public class WarehouseController {
 
   private final WarehouseService warehouseService;
   private final WarehouseAssembler assembler;
+  private final SectionAssembler sectionAssembler;
+  private final BatchAssembler batchAssembler;
 
   @Operation(summary = "CRIA UM NOVO ARMAZÉM", description = "Cria um novo armazém/depósito ")
   @ApiResponses(
@@ -88,5 +101,36 @@ public class WarehouseController {
     List<Batch> section =
         warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
     return ResponseEntity.ok(section);
+  }
+
+  @GetMapping("/fresh-products/duedate-batches")
+  public ResponseEntity<List<BatchResponseDTO>> findDueDateBatchesByCategory(
+      @RequestParam(name = "numb_days") String numberOfDays,
+      @RequestParam(name = "category") CategoryEnum category,
+      @RequestParam(name = "order") String order) {
+
+    List<Batch> batches =
+        warehouseService.dueDateBatchesByCategory(Long.parseLong(numberOfDays), category, order);
+    return batchAssembler.toCreatedResponse(batches);
+  }
+
+  @GetMapping("/fresh-products/list")
+  @JsonView(SectionView.SectionBatches.class)
+  public ResponseEntity<SectionBatchesDTO> listStockProducts(
+      @RequestParam(required = false) Long product,
+      @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,
+      Authentication authentication)
+      throws NotFoundException {
+    AppUser requestUser = (AppUser) authentication.getPrincipal();
+    Long managerId = requestUser.getId();
+
+    if (product == null) {
+      throw new IllegalArgumentException("Informe o ID do produto");
+    }
+
+    List<Batch> batchProducts =
+        warehouseService.findProductOnManagerSection(managerId, product, sort);
+
+    return sectionAssembler.toSectionBatchesResponse(batchProducts, product, HttpStatus.OK);
   }
 }

@@ -119,7 +119,7 @@ public class BatchServiceTests {
     batch.setBatchNumber(2);
     batch.setQuantity(250);
     batch.setManufacturing_datetime(LocalDate.parse("2022-01-01"));
-    batch.setDue_date(LocalDate.parse("2022-05-02"));
+    batch.setDueDate(LocalDate.parse("2022-05-02"));
 
     batchService.updateBatch(1L, batch);
 
@@ -165,5 +165,20 @@ public class BatchServiceTests {
         Assertions.assertThrows(NotFoundException.class, () -> batchService.delete(1L));
 
     Assertions.assertEquals("Lote não encontrado", thrown.getMessage());
+  }
+
+  @Test
+  public void shouldCallFindBatchByProductAndSection() {
+    List<Batch> expectedBatch = List.of(new Batch());
+    Mockito.when(batchRepository.findBatchByProductAndSection(Mockito.any(), Mockito.any()))
+        .thenReturn(expectedBatch);
+
+    Product productParam = new Product();
+    Section sectionParam = new Section();
+    List<Batch> result = batchService.findBatchesByProductAndSection(productParam, sectionParam);
+
+    Mockito.verify(batchRepository, Mockito.times(1))
+        .findBatchByProductAndSection(productParam, sectionParam);
+    Assertions.assertEquals(expectedBatch, result);
   }
 }

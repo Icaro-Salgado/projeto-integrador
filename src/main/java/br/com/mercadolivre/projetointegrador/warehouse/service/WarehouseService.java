@@ -1,7 +1,10 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionNotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
@@ -12,6 +15,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.service.validators.BatchD
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.SectionExistsValidator;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,6 +31,7 @@ public class WarehouseService {
   private final BatchRepository batchRepository;
   private final WarehouseValidatorExecutor warehouseValidatorExecutor;
   private final SectionRepository sectionRepository;
+  private final ProductService productService;
 
   public Warehouse createWarehouse(Warehouse warehouse) {
     return warehouseRepository.save(warehouse);
@@ -63,7 +68,6 @@ public class WarehouseService {
     return addedBatches;
   }
 
-  // TODO: implements of controller
   public List<Batch> dueDateBatches(Long numberOfDays, Long sectionId) {
     SectionExistsValidator sectionExistsValidator =
         new SectionExistsValidator(sectionId, sectionRepository);
@@ -74,5 +78,37 @@ public class WarehouseService {
             sectionId, LocalDate.now().plusDays(numberOfDays));
 
     return section;
+  }
+
+  public List<Batch> dueDateBatchesByCategory(
+      Long numberofdays, CategoryEnum category, String order) {
+    List<Batch> batches = null;
+    if (order.equals("ASC")) {
+      batches =
+          batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(
+              LocalDate.now().plusDays(numberofdays), category);
+    } else if (order.equals("DESC")) {
+      batches =
+          batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
+              LocalDate.now().plusDays(numberofdays), category);
+    } else {
+      throw new IllegalArgumentException("Informe o seletor de ordenação (ASC ou DESC)");
+    }
+    return batches;
+  }
+
+  public List<Batch> findProductOnManagerSection(
+      Long managerId, Long productId, SortTypeEnum sortType) throws RuntimeException {
+    Section managerSection =
+        sectionRepository
+            .findByManagerId(managerId)
+            .orElseThrow(
+                (() ->
+                    new SectionNotFoundException(
+                        "Não foi encontrada nenhuma seção vinculada ao usuário")));
+
+    Product product = productService.findById(productId);
+    return batchService.findBatchesByProductAndSection(
+        product, managerSection, Sort.by(Sort.Direction.ASC, sortType.field));
   }
 }
