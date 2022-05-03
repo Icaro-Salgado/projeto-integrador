@@ -23,7 +23,9 @@ public class ProductAssembler {
     ProductDTO dto = ProductMapper.INSTANCE.toDto(entity);
 
     Links links =
-        Links.of(linkTo(methodOn(ProductControllerWarehouse.class).getById(entity.getId())).withSelfRel());
+        Links.of(
+            linkTo(methodOn(ProductControllerWarehouse.class).getById(entity.getId()))
+                .withSelfRel());
 
     dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 
@@ -35,7 +37,9 @@ public class ProductAssembler {
     ProductDTO dto = ProductMapper.INSTANCE.toDto(entity);
 
     Links links =
-        Links.of(linkTo(methodOn(ProductControllerWarehouse.class).getById(entity.getId())).withSelfRel());
+        Links.of(
+            linkTo(methodOn(ProductControllerWarehouse.class).getById(entity.getId()))
+                .withSelfRel());
 
     dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 
@@ -49,7 +53,8 @@ public class ProductAssembler {
         product -> {
           Links links =
               Links.of(
-                  linkTo(methodOn(ProductControllerWarehouse.class).getById(product.getId())).withSelfRel());
+                  linkTo(methodOn(ProductControllerWarehouse.class).getById(product.getId()))
+                      .withSelfRel());
 
           product.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
         });
