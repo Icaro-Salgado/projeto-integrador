@@ -1,8 +1,10 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.ProductAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateOrUpdateProductDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
@@ -30,9 +32,9 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/fresh-products")
-@Tag(name = "Product")
-public class ProductController {
+@RequestMapping("/api/v1/warehouse/fresh-products")
+@Tag(name = "[Warehouse] - Product")
+public class ProductControllerWarehouse implements SecuredWarehouseRestController {
 
   private final ProductService productService;
   private final ProductAssembler productAssembler;
@@ -76,7 +78,10 @@ public class ProductController {
     productService.createProduct(product);
 
     URI uri =
-        uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
+        uriBuilder
+            .path("/api/v1/warehouse/fresh-products/{id}")
+            .buildAndExpand(product.getId())
+            .toUri();
 
     HttpHeaders headers = new HttpHeaders();
     headers.add("Location", uri.toString());
@@ -117,7 +122,10 @@ public class ProductController {
     productService.updateProduct(id, product);
 
     URI uri =
-        uriBuilder.path("/api/v1/fresh-products/{id}").buildAndExpand(product.getId()).toUri();
+        uriBuilder
+            .path("/api/v1/warehouse/fresh-products/{id}")
+            .buildAndExpand(product.getId())
+            .toUri();
 
     return ResponseEntity.noContent().location(uri).build();
   }
@@ -166,9 +174,14 @@ public class ProductController {
       })
   @GetMapping
   @JsonView(ProductView.List.class)
-  public ResponseEntity<List<ProductDTO>> getAll() {
-    List<Product> products = productService.findAll();
-    return productAssembler.toResponse(products, HttpStatus.OK);
+  public ResponseEntity<List<ProductDTO>> getAll(
+      @RequestParam(required = false) CategoryEnum category) {
+    List<Product> products =
+        category != null ? productService.findAllByCategory(category) : productService.findAll();
+
+    HttpStatus status = products.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+
+    return productAssembler.toResponse(products, status);
   }
 
   @Operation(

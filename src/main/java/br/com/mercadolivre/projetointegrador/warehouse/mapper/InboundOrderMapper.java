@@ -1,5 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.mapper;
 
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
@@ -9,6 +11,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderD
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 public class InboundOrderMapper {
 
   @Autowired private ProductService productService;
+  @Autowired private AppUserRepository appUserRepository;
   @Autowired private SectionService sectionService;
 
   public InboundOrder toModel(InboundOrderDTO inboundOrderDTO) {
@@ -29,11 +33,16 @@ public class InboundOrderMapper {
             .map(
                 dtoBatch -> {
                   Product product = productService.findById(dtoBatch.getProduct_id());
+                  AppUser seller =
+                      appUserRepository
+                          .findById(dtoBatch.getSeller_id())
+                          .orElseThrow(
+                              () -> new UsernameNotFoundException("Vendedor não encontrado"));
 
                   return Batch.builder()
                       .product(product)
                       .section(section)
-                      .seller_id(dtoBatch.getSeller_id())
+                      .seller(seller)
                       .price(dtoBatch.getPrice())
                       .order_number(inboundOrderDTO.getOrderNumber())
                       .batchNumber(dtoBatch.getBatchNumber())

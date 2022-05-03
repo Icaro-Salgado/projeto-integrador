@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +27,7 @@ import java.util.Optional;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
-@WithMockUser
+@WithMockManagerUser
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class ProductControllerTests {
   ObjectMapper objectMapper = new ObjectMapper();
@@ -37,6 +37,8 @@ public class ProductControllerTests {
 
   @Autowired private BatchRepository batchRepository;
   @Autowired private IntegrationTestUtils integrationTestUtils;
+
+  private final String API_URL = "/api/v1/warehouse/fresh-products";
 
   @BeforeEach
   public void beforeEach() {
@@ -53,7 +55,7 @@ public class ProductControllerTests {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/fresh-products")
+            MockMvcRequestBuilders.post(API_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productToCreate)))
         .andExpect(MockMvcResultMatchers.status().isCreated())
@@ -69,7 +71,7 @@ public class ProductControllerTests {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/fresh-products")
+            MockMvcRequestBuilders.post(API_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productToCreate)))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -87,7 +89,7 @@ public class ProductControllerTests {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/fresh-products")
+            MockMvcRequestBuilders.post(API_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productMap)))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -101,7 +103,7 @@ public class ProductControllerTests {
     Product product = productRepository.save(fakeProduct);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/{id}", product.getId()))
+        .perform(MockMvcRequestBuilders.get(API_URL + "/{id}", product.getId()))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("new product"))
         .andExpect(
@@ -119,7 +121,7 @@ public class ProductControllerTests {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.put("/api/v1/fresh-products/{id}", created.getId())
+            MockMvcRequestBuilders.put(API_URL + "/{id}", created.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedProduct)))
         .andExpect(MockMvcResultMatchers.status().isNoContent())
@@ -140,10 +142,37 @@ public class ProductControllerTests {
 
     productRepository.save(fakeProduct);
     mockMvc
-        .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products"))
+        .perform(MockMvcRequestBuilders.get(API_URL))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("ProductController - GET - /api/v1/fresh-products?category={category}")
+  public void testFindAllByCategory() throws Exception {
+    List<Product> response = new ArrayList<>();
+    response.add(fakeProduct);
+
+    productRepository.save(fakeProduct);
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(API_URL + "?category=" + fakeProduct.getCategory()))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("ProductController - GET - /api/v1/fresh-products")
+  public void testFindAllWhenNotFindResult() throws Exception {
+    productRepository.deleteAll();
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(API_URL))
+        .andExpect(MockMvcResultMatchers.status().isNotFound())
+        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty())
         .andReturn();
   }
 
@@ -153,7 +182,7 @@ public class ProductControllerTests {
     Product newProduct = productRepository.save(fakeProduct);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/{id}", newProduct.getId()))
+        .perform(MockMvcRequestBuilders.delete(API_URL + "/{id}", newProduct.getId()))
         .andExpect(MockMvcResultMatchers.status().isNoContent());
 
     Optional<Product> productDeleted = productRepository.findById(newProduct.getId());

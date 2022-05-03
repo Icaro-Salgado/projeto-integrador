@@ -71,9 +71,9 @@ public class AdService {
 
   public void deleteAd(Long customerId, Long adId) throws UnauthorizedException {
     Ad ad = findAdById(adId);
-    if (ad.getSellerId().equals(customerId)) {
-      adRepository.delete(ad);
+    if (!ad.getSellerId().equals(customerId)) {
+      throw new UnauthorizedException("Não é permitido excluir o anúncio de outro usuário.");
     }
-    throw new UnauthorizedException("Não é permitido excluir o anúncio de outro usuário.");
+    adRepository.delete(ad);
   }
 }
