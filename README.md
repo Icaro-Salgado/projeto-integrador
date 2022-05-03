@@ -35,6 +35,8 @@ Para que as rotas respondam da maneira desejada é necessário ter um batch (lot
 
 E caso utilize o POSTMAN você pode importar a [collection](Doc/Projeto%20integrador.postman_collection.json) contida na pasta **doc**.
 
+As definições das rotas também estão documentas no Swagger que pode ser acessado pelo link:  
+http://localhost:8080/swagger-ui
 
 ## Membros do grupo
 
