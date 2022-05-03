@@ -2,7 +2,9 @@ package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
+import br.com.mercadolivre.projetointegrador.marketplace.model.AdPurchase;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.AdPurchaseRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.PurchaseRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
@@ -21,9 +23,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,6 +41,7 @@ public class PurchaseControllerTests {
   @Autowired private MockMvc mockMvc;
   @Autowired private PurchaseRepository purchaseRepository;
   @Autowired private AdRepository adRepository;
+  @Autowired private AdPurchaseRepository adPurchaseRepository;
   @Autowired private IntegrationTestUtils integrationTestUtils;
   ObjectMapper objectMapper = new ObjectMapper();
   Ad ad = new Ad();
@@ -59,14 +64,24 @@ public class PurchaseControllerTests {
   @DisplayName("PurchaseController - GET - /api/v1/customers/marketplace/purchases")
   public void testListCustomerPurchases() throws Exception {
 
+    Ad ad = integrationTestUtils.createAdDTO().DTOtoModel();
+    adRepository.save(ad);
+
     Purchase purchase = new Purchase();
     purchase.setBuyerId(1L);
-    List<Purchase> purchases = List.of(purchase);
-    purchaseRepository.saveAllAndFlush(purchases);
+    purchaseRepository.save(purchase);
+
+    AdPurchase adPurchase = new AdPurchase();
+    adPurchase.setId(1L);
+    adPurchase.setAd(ad);
+    adPurchase.setQuantity(10);
+    adPurchase.setPurchase(purchase);
+    adPurchaseRepository.save(adPurchase);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.get(PURCHASE_URL))
-        .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].buyerId").value(1));
+        .perform(MockMvcRequestBuilders.get(PURCHASE_URL + "/1"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].products[0].quantity").value(10))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].products[0].name").value("Fake Ad"));
   }
 }
