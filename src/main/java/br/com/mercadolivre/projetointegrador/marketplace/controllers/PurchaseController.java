@@ -1,11 +1,15 @@
 package br.com.mercadolivre.projetointegrador.marketplace.controllers;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseResponseDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
+import br.com.mercadolivre.projetointegrador.marketplace.services.CartService;
 import br.com.mercadolivre.projetointegrador.marketplace.services.PurchaseService;
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.service.TokenService;
 import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredMarketplaceRestController;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,9 +17,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,6 +32,7 @@ import java.util.List;
 public class PurchaseController implements SecuredMarketplaceRestController {
   PurchaseService purchaseService;
   TokenService tokenService;
+  CartService cartService;
 
   @Operation(summary = "SALVA UMA COMPRA", description = "Registra uma compra.")
   @ApiResponses(
@@ -39,11 +47,14 @@ public class PurchaseController implements SecuredMarketplaceRestController {
             })
       })
   @PostMapping
-  public void createPurchase(
-      @RequestBody List<CreatePurchaseDTO> createPurchaseDTO, Authentication authentication) {
+  public ResponseEntity<Void> createPurchase(Authentication authentication, UriComponentsBuilder uriBuilder) throws NotFoundException, JsonProcessingException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
 
-    purchaseService.createMultiplePurchases(createPurchaseDTO, requestUser.getId());
+    purchaseService.createPurchase(requestUser.getId());
+    cartService.clearCart(requestUser.getId());
+
+    URI uri = uriBuilder.path("/api/v1/customers/marketplace/purchases/{id}").buildAndExpand(requestUser.getId()).toUri();
+    return ResponseEntity.created(uri).build();
   }
 
   @Operation(summary = "RETORNA UMA COMPRA", description = "Retorna uma compra.")
@@ -58,10 +69,15 @@ public class PurchaseController implements SecuredMarketplaceRestController {
                   schema = @Schema(implementation = Purchase.class))
             })
       })
-  @GetMapping
-  public List<Purchase> listCustomerPurchases(Authentication authentication) {
-    AppUser requestUser = (AppUser) authentication.getPrincipal();
-
-    return purchaseService.listAllPurchases(requestUser.getId());
+  @GetMapping("/{id}")
+  public ResponseEntity<List<PurchaseResponseDTO>> listCustomerPurchases(
+          @PathVariable Long id) {
+    return ResponseEntity.ok(purchaseService.listAllPurchases(id));
   }
+
+//  public ResponseEntity<Void> payment(
+//          @Authenticate
+//  ) {
+//
+//  }
 }
