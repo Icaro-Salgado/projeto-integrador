@@ -1,7 +1,7 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
@@ -25,7 +25,7 @@ import java.time.LocalDate;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
-@WithMockCustomUser
+@WithMockManagerUser
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class BatchControllerTests {
 
@@ -36,6 +36,8 @@ public class BatchControllerTests {
   @Autowired private ProductRepository productRepository;
 
   @Autowired private IntegrationTestUtils integrationTestUtils;
+
+  private final String API_URL = "/api/v1/warehouse/batches";
 
   @Test
   @DisplayName("BatchController - GET - /api/v1/batches/{id}")
@@ -58,7 +60,7 @@ public class BatchControllerTests {
     Batch created = batchRepository.save(batch);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.get("/api/v1/batches/{id}", created.getId()))
+        .perform(MockMvcRequestBuilders.get(API_URL + "/{id}", created.getId()))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(
             MockMvcResultMatchers.jsonPath("$.section_id").value(created.getSection().getId()))
@@ -77,8 +79,7 @@ public class BatchControllerTests {
     Batch batch = integrationTestUtils.createBatch();
 
     mockMvc
-        .perform(
-            MockMvcRequestBuilders.get("/api/v1/batches/ad/{sellerId}", batch.getSeller().getId()))
+        .perform(MockMvcRequestBuilders.get(API_URL + "/ad/{sellerId}", batch.getSeller().getId()))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
   }

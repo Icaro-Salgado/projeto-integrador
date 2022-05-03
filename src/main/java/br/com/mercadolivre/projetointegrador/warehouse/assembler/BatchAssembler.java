@@ -1,6 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.assembler;
 
-import br.com.mercadolivre.projetointegrador.warehouse.controller.BatchController;
+import br.com.mercadolivre.projetointegrador.warehouse.controller.BatchControllerWarehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
@@ -26,7 +26,8 @@ public class BatchAssembler {
 
     Links links =
         Links.of(
-            linkTo(methodOn(BatchController.class).findBatchById(entity.getId())).withSelfRel());
+            linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(entity.getId()))
+                .withSelfRel());
 
     dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
 
@@ -44,7 +45,8 @@ public class BatchAssembler {
     for (BatchResponseDTO dto : createdBatchesDTO) {
       Links links =
           Links.of(
-              linkTo(methodOn(BatchController.class).findBatchById(dto.getId())).withSelfRel());
+              linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId()))
+                  .withSelfRel());
 
       dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
     }
@@ -60,7 +62,7 @@ public class BatchAssembler {
         batch -> {
           Links links =
               Links.of(
-                  linkTo(methodOn(BatchController.class).findBatchById(batch.getId()))
+                  linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(batch.getId()))
                       .withSelfRel());
 
           batch.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));

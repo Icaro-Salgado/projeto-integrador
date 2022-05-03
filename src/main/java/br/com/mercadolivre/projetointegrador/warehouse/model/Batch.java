@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.model;
 
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

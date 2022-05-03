@@ -6,8 +6,9 @@ import br.com.mercadolivre.projetointegrador.marketplace.exceptions.InvalidStatu
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.services.CartService;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredMarketplaceRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,10 +26,9 @@ import java.net.URI;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/fresh-products/orders")
-@Tag(name = "Purchase Order")
-public class CartController {
-
+@RequestMapping("/api/v1/marketplace/fresh-products/orders")
+@Tag(name = "[Marketplace] - Purchase Order")
+public class CartController implements SecuredMarketplaceRestController {
   CartService cartService;
 
   @Operation(summary = "SALVA UM CARRINHO NO COMPRAS", description = "Cria um carrinho de compras")
@@ -56,7 +56,7 @@ public class CartController {
 
     URI uri =
         uriBuilder
-            .path("/api/v1/fresh-products/orders/{id}")
+            .path("/api/v1/marketplace/fresh-products/orders/{id}")
             .buildAndExpand(requestUser.getId())
             .toUri();
 

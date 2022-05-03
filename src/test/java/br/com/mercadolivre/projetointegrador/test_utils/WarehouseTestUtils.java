@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 

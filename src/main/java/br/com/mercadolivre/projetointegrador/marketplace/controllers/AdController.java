@@ -4,8 +4,9 @@ import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreateOrUpdateAdDT
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.UnauthorizedException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.services.AdService;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.AppUserRepository;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredMarketplaceRestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,11 +22,10 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/ads")
+@RequestMapping("/api/v1/marketplace/ads")
 @AllArgsConstructor
-@Tag(name = "Ad")
-public class AdController {
-
+@Tag(name = "[Marketplace] - Ad")
+public class AdController implements SecuredMarketplaceRestController {
   AdService adService;
   AppUserRepository tokenService;
 

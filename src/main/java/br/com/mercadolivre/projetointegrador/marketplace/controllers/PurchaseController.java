@@ -3,8 +3,9 @@ package br.com.mercadolivre.projetointegrador.marketplace.controllers;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
 import br.com.mercadolivre.projetointegrador.marketplace.services.PurchaseService;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
-import br.com.mercadolivre.projetointegrador.warehouse.service.TokenService;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.service.TokenService;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredMarketplaceRestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,10 +20,9 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/customers/purchases")
-@Tag(name = "Purchase")
-public class PurchaseController {
-
+@RequestMapping("/api/v1/customers/marketplace/purchases")
+@Tag(name = "[Marketplace] - Purchase")
+public class PurchaseController implements SecuredMarketplaceRestController {
   PurchaseService purchaseService;
   TokenService tokenService;
 

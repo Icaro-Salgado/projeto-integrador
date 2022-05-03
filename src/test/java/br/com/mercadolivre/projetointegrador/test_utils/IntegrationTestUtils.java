@@ -4,6 +4,10 @@ import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.model.UserRole;
+import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
+import br.com.mercadolivre.projetointegrador.security.repository.RolesRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.*;
@@ -30,6 +34,8 @@ public class IntegrationTestUtils {
   @Autowired private ProductRepository productRepository;
 
   @Autowired private BatchRepository batchRepository;
+
+  @Autowired private RolesRepository rolesRepository;
 
   @Autowired private RedisRepository redisRepository;
 
@@ -131,6 +137,15 @@ public class IntegrationTestUtils {
     redisRepository.setEx("1", 3600L, cartAsString);
 
     return cart;
+  }
+
+  public List<UserRole> createRoles() {
+    List<UserRole> roles = rolesRepository.findAll();
+    if (roles.isEmpty()) {
+      return rolesRepository.saveAll(
+          List.of(new UserRole(null, "CUSTOMER"), new UserRole(null, "MANAGER")));
+    }
+    return roles;
   }
 
   public AppUser createUser() {

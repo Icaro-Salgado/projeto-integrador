@@ -1,12 +1,13 @@
-package br.com.mercadolivre.projetointegrador.warehouse.controller;
+package br.com.mercadolivre.projetointegrador.security.controller;
 
+import br.com.mercadolivre.projetointegrador.enums.UserOrigin;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.service.AuthenticationService;
+import br.com.mercadolivre.projetointegrador.security.service.TokenService;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.LoginDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.RegisterDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.StandardError;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.AppUserMapper;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
-import br.com.mercadolivre.projetointegrador.warehouse.service.AuthenticationService;
-import br.com.mercadolivre.projetointegrador.warehouse.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 @Tag(name = "Autenticador")
 public class AuthenticationController {
@@ -57,8 +58,8 @@ public class AuthenticationController {
                   schema = @Schema(implementation = StandardError.class))
             })
       })
-  @PostMapping
-  public ResponseEntity<?> login(@RequestBody @Valid LoginDTO loginDTO) {
+  @PostMapping("/auth")
+  public ResponseEntity<String> login(@RequestBody @Valid LoginDTO loginDTO) {
     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
         new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
 
@@ -71,8 +72,10 @@ public class AuthenticationController {
   }
 
   @Operation(
-      summary = "REGISTRA O USUARIO",
-      description = "Registra o usuario com email, password, name e username")
+      summary = "REGISTRA O USUARIO WAREHOUSE",
+      description =
+          "Registra o usuario para acesso aos serviços de warehouse, com email, password, name e"
+              + " username")
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -92,9 +95,46 @@ public class AuthenticationController {
                   schema = @Schema(implementation = StandardError.class))
             })
       })
-  @PostMapping("/register")
-  public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO registerDTO) {
-    AppUser created = authService.registerUser(AppUserMapper.INSTANCE.toModel(registerDTO));
+  @PostMapping("/warehouse/auth/register")
+  public ResponseEntity<?> registerWarehouseUser(@RequestBody @Valid RegisterDTO registerDTO) {
+    AppUser created =
+        authService.registerUser(AppUserMapper.INSTANCE.toModel(registerDTO), UserOrigin.WAREHOUSE);
+
+    if (created == null) {
+      return ResponseEntity.badRequest().build();
+    }
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  @Operation(
+      summary = "REGISTRA O USUARIO MARKETPLACE",
+      description =
+          "Registra o usuario para acesso aos serviços de marketplace, com email, password, name e"
+              + " username")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "Registro efetuado com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = LoginDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Registro não autorizado",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = StandardError.class))
+            })
+      })
+  @PostMapping("/marketplace/auth/register")
+  public ResponseEntity<?> registerMarketplaceUser(@RequestBody @Valid RegisterDTO registerDTO) {
+    AppUser created =
+        authService.registerUser(
+            AppUserMapper.INSTANCE.toModel(registerDTO), UserOrigin.MARKETPLACE);
 
     if (created == null) {
       return ResponseEntity.badRequest().build();
