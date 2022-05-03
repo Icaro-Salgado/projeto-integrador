@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.marketplace.dtos;
 
+import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,4 +30,15 @@ public class CreateOrUpdateAdDTO {
   private int discount;
 
   private String category;
+
+  public Ad DTOtoModel() {
+    Ad ad = new Ad();
+    ad.setName(name);
+    ad.setPrice(price);
+    ad.setCategory(category);
+    ad.setDiscount(discount);
+    ad.setQuantity(quantity);
+
+    return ad;
+  }
 }
