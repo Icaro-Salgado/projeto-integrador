@@ -76,7 +76,6 @@ public class PurchaseControllerTests {
     adPurchase.setPurchase(purchase);
     adPurchaseRepository.save(adPurchase);
 
-
     mockMvc
         .perform(MockMvcRequestBuilders.get(PURCHASE_URL + "/1"))
         .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
