@@ -25,6 +25,8 @@ public class AdPurchase {
   @JoinColumn(name = "purchase_id", referencedColumnName = "id", nullable = false)
   private Purchase purchase;
 
+  private String statusCode;
+
   private Integer quantity;
 
   private BigDecimal price;
