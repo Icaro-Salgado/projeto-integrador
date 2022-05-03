@@ -159,7 +159,7 @@ public class ProductControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                "/api/v1/fresh-products?category=" + fakeProduct.getCategory()))
+                    API_URL + "?category=" + fakeProduct.getCategory()))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
@@ -171,7 +171,7 @@ public class ProductControllerTests {
   public void testFindAllWhenNotFindResult() throws Exception {
     productRepository.deleteAll();
     mockMvc
-        .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products"))
+        .perform(MockMvcRequestBuilders.get(API_URL))
         .andExpect(MockMvcResultMatchers.status().isNotFound())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty())
