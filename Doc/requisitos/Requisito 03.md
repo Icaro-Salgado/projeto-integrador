@@ -32,7 +32,7 @@
 Para os endpoints auxiliares, utilzados para a criação os registros iniciais, consulte a documentação do [requisito 01](Requisito%2001.md).
 
 ## Diagrama de classes
-![image](https://user-images.githubusercontent.com/101267189/166071492-0a17c75d-1c26-4824-a6d6-76c90b151af8.png)
+![image](./Diagrams/Diagramas-Requisito%203.png)
 
 
 ## ENDPOINTS DO CONTRATO CRIADOS
