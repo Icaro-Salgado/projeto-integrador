@@ -85,11 +85,11 @@ public class WarehouseService {
 
     if (order.equals("ASC")) {
       return batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(
-              LocalDate.now().plusDays(numberofdays), category);
+          LocalDate.now().plusDays(numberofdays), category);
     }
     if (order.equals("DESC")) {
       return batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
-              LocalDate.now().plusDays(numberofdays), category);
+          LocalDate.now().plusDays(numberofdays), category);
     }
     throw new IllegalArgumentException("Informe o seletor de ordenação (ASC ou DESC)");
   }
