@@ -57,7 +57,9 @@ public class SectionAssembler {
 
                       Links links =
                           Links.of(
-                              linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId()))
+                              linkTo(
+                                      methodOn(BatchControllerWarehouse.class)
+                                          .findBatchById(dto.getId()))
                                   .withSelfRel());
                       dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
                       return dto;

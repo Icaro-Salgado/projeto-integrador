@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.response;
 
-import br.com.mercadolivre.projetointegrador.warehouse.view.BatchView;
 import br.com.mercadolivre.projetointegrador.warehouse.view.SectionView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;

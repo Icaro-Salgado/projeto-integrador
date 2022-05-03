@@ -42,6 +42,7 @@ public class BatchResponseDTO {
 
   @JsonView(BatchView.BatchSection.class)
   private LocalDate dueDate;
+
   private LocalDate created_at;
   private List<Map<String, String>> links;
 }

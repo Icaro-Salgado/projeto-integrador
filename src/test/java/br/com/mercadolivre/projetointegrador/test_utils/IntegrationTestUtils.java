@@ -107,7 +107,6 @@ public class IntegrationTestUtils {
 
   public List<Batch> createMultipleBatchesOnSameWarehouse() {
 
-
     List<Batch> batchesToCreate = new ArrayList<>();
 
     Section section = createSection();
@@ -125,7 +124,7 @@ public class IntegrationTestUtils {
               .batchNumber(5 - i)
               .quantity(random.nextInt(350))
               .dueDate(LocalDate.now().plusWeeks(10))
-                  .manufacturing_datetime(LocalDate.now())
+              .manufacturing_datetime(LocalDate.now())
               .build());
     }
 
