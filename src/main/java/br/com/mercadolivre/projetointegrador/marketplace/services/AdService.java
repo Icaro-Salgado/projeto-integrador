@@ -59,11 +59,13 @@ public class AdService {
   }
 
   public List<Ad> listAds(String name, CategoryEnum category) {
-    if(name != null && category != null){
+    if (name != null && category != null) {
       return this.adRepository.findAllByCategoryAndNameLike(category, name);
     }
 
-    return name != null ?  this.adRepository.findAdsByLikeName(name) : adRepository.findAllByCategory(category);
+    return name != null
+        ? this.adRepository.findAdsByLikeName(name)
+        : adRepository.findAllByCategory(category);
   }
 
   public List<Ad> listAdsByCustomerId(Long id) {

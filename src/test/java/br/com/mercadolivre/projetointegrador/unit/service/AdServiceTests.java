@@ -70,7 +70,8 @@ public class AdServiceTests {
     Mockito.verify(adRepository, Mockito.times(1)).findAll();
     Mockito.verify(adRepository, Mockito.times(1)).findAdsByLikeName("toddy");
     Mockito.verify(adRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.RF);
-    Mockito.verify(adRepository, Mockito.times(1)).findAllByCategoryAndNameLike(CategoryEnum.RF, "toddy");
+    Mockito.verify(adRepository, Mockito.times(1))
+        .findAllByCategoryAndNameLike(CategoryEnum.RF, "toddy");
   }
 
   @Test
