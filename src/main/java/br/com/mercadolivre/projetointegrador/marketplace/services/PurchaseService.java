@@ -61,25 +61,27 @@ public class PurchaseService {
     purchaseRepository.save(purchase);
   }
 
-  public PurchaseResponseDTO listAllPurchases(Long customerId) throws NotFoundException {
-    Purchase purchase = purchaseRepository.findByBuyerId(customerId).orElse(null);
-    if (purchase == null) {
-      throw new NotFoundException("Compra não localizada.");
+  public List<PurchaseResponseDTO> listAllPurchases(Long customerId) {
+    List<Purchase> purchases = purchaseRepository.findAllByBuyerId(customerId);
+    List<PurchaseResponseDTO> purchasesResponse = new ArrayList<>();
+
+    for (Purchase purchase: purchases) {
+      List<AdPurchase> adPurchases = adPurchaseRepository.findAllByPurchase(purchase);
+
+      List<PurchaseProductResponseDTO> products = adPurchases.stream().map(p -> {
+        Ad ad = p.getAd();
+        return new PurchaseProductResponseDTO(ad.getName(), ad.getPrice(), p.getQuantity(), ad.getCategory());
+      }).collect(Collectors.toList());
+
+      PurchaseResponseDTO purchaseResponse = new PurchaseResponseDTO();
+      purchaseResponse.setPurchaseId(purchase.getId());
+      purchaseResponse.setStatusCode(purchase.getStatusCode());
+      purchaseResponse.setProducts(products);
+      purchaseResponse.setTotal(purchase.getTotal());
+
+      purchasesResponse.add(purchaseResponse);
     }
 
-    List<AdPurchase> adPurchases = adPurchaseRepository.findAllByPurchase(purchase);
-
-    List<PurchaseProductResponseDTO> products = adPurchases.stream().map(p -> {
-      Ad ad = p.getAd();
-      return new PurchaseProductResponseDTO(ad.getName(), ad.getPrice(), ad.getQuantity(), ad.getCategory());
-    }).collect(Collectors.toList());
-
-    PurchaseResponseDTO response = new PurchaseResponseDTO();
-    response.setPurchaseId(purchase.getId());
-    response.setStatusCode(purchase.getStatusCode());
-    response.setProducts(products);
-    response.setTotal(purchase.getTotal());
-
-    return response;
+    return purchasesResponse;
   }
 }
