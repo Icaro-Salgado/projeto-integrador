@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.security.controller;
 
+import br.com.mercadolivre.projetointegrador.enums.UserOrigin;
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.service.AuthenticationService;
 import br.com.mercadolivre.projetointegrador.security.service.TokenService;
@@ -71,8 +72,8 @@ public class AuthenticationController {
     }
 
     @Operation(
-            summary = "REGISTRA O USUARIO",
-            description = "Registra o usuario manager com email, password, name e username")
+            summary = "REGISTRA O USUARIO WAREHOUSE",
+            description = "Registra o usuario para acesso aos serviços de warehouse, com email, password, name e username")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -94,7 +95,7 @@ public class AuthenticationController {
             })
     @PostMapping("/warehouse/auth/register")
     public ResponseEntity<?> registerWarehouseUser(@RequestBody @Valid RegisterDTO registerDTO) {
-        AppUser created = authService.registerUser(AppUserMapper.INSTANCE.toModel(registerDTO), "MANAGER");
+        AppUser created = authService.registerUser(AppUserMapper.INSTANCE.toModel(registerDTO), UserOrigin.WAREHOUSE);
 
         if (created == null) {
             return ResponseEntity.badRequest().build();
@@ -102,9 +103,32 @@ public class AuthenticationController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
+    @Operation(
+            summary = "REGISTRA O USUARIO MARKETPLACE",
+            description = "Registra o usuario para acesso aos serviços de marketplace, com email, password, name e username")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Registro efetuado com sucesso",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(implementation = LoginDTO.class))
+                            }),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Registro não autorizado",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(implementation = StandardError.class))
+                            })
+            })
     @PostMapping("/marketplace/auth/register")
     public ResponseEntity<?> registerMarketplaceUser(@RequestBody @Valid RegisterDTO registerDTO) {
-        AppUser created = authService.registerUser(AppUserMapper.INSTANCE.toModel(registerDTO), "CUSTOMER");
+        AppUser created = authService.registerUser(AppUserMapper.INSTANCE.toModel(registerDTO), UserOrigin.MARKETPLACE);
 
         if (created == null) {
             return ResponseEntity.badRequest().build();

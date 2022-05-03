@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.security.service;
 
+import br.com.mercadolivre.projetointegrador.enums.UserOrigin;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.model.UserRole;
@@ -22,8 +23,8 @@ public class AuthenticationService implements UserDetailsService {
   private final PasswordEncoder passwordEncoder;
   private final RolesRepository rolesRepository;
 
-  public AppUser registerUser(AppUser user, String roleName) {
-    UserRole role = rolesRepository.findByName(roleName).orElseThrow(() -> new NotFoundException("Role não encontrada"));
+  public AppUser registerUser(AppUser user, UserOrigin origin) {
+    UserRole role = rolesRepository.findByName(origin.getRole()).orElseThrow(() -> new NotFoundException("Role não encontrada"));
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 
     user.getAuthorities().add(role);

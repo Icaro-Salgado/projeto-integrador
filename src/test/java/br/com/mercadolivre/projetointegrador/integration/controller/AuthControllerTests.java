@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
+import br.com.mercadolivre.projetointegrador.enums.UserOrigin;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomerUser;
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
@@ -60,7 +61,7 @@ public class AuthControllerTests {
   }
 
   @Test
-  public void shouldRegisterNewUser() throws Exception {
+  public void shouldRegisterNewWarehouseUser() throws Exception {
     integrationTestUtils.createRoles();
     Random random = new Random();
     RegisterDTO registerDTO = new RegisterDTO(random.nextInt() + "mocked@email.com", random.nextInt() + "mocked", random.nextInt() + "mockedUser", "123");
@@ -71,6 +72,9 @@ public class AuthControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(registerDTO)))
         .andExpect(MockMvcResultMatchers.status().isCreated());
+
+    AppUser created = appUserRepository.findByEmail(registerDTO.getEmail()).orElse(new AppUser());
+    Assertions.assertEquals(UserOrigin.WAREHOUSE.getRole(), created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
   }
 
   @Test
@@ -110,7 +114,7 @@ public class AuthControllerTests {
 
     AppUser created = appUserRepository.findByEmail(registerDTO.getEmail()).orElse(new AppUser());
 
-    Assertions.assertEquals("CUSTOMER", created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
+    Assertions.assertEquals(UserOrigin.MARKETPLACE.getRole(), created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
   }
 
   @Test
