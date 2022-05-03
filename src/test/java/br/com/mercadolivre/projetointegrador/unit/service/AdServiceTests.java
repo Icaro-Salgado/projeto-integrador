@@ -69,8 +69,7 @@ public class AdServiceTests {
 
   @Test
   @DisplayName(
-          "Given a string as \"toddy\", should call on"
-                  + " repository findAdsByLikeName method.")
+      "Given a string as \"toddy\", should call on" + " repository findAdsByLikeName method.")
   public void listAdsWithNameFilter() {
 
     adService.listAds("toddy", null);
@@ -79,22 +78,22 @@ public class AdServiceTests {
   }
 
   @Test
-  @DisplayName(
-          "Given only a Product category, should call on repository findAllByCategory method.")
+  @DisplayName("Given only a Product category, should call on repository findAllByCategory method.")
   public void listAdsWithCategoryFilter() {
     adService.listAds(null, CategoryEnum.RF);
-
 
     Mockito.verify(adRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.RF);
   }
 
   @Test
   @DisplayName(
-          "Given a product category and name, should call on repository findAllByCategoryAndNameLike method")
+      "Given a product category and name, should call on repository findAllByCategoryAndNameLike"
+          + " method")
   public void listAdsWithCategoryAndNameFilter() {
     adService.listAds("toddy", CategoryEnum.RF);
 
-    Mockito.verify(adRepository, Mockito.times(1)).findAllByCategoryAndNameLike(CategoryEnum.RF, "toddy");
+    Mockito.verify(adRepository, Mockito.times(1))
+        .findAllByCategoryAndNameLike(CategoryEnum.RF, "toddy");
   }
 
   @Test
