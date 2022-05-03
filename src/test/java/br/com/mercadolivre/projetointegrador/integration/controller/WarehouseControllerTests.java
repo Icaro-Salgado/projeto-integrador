@@ -179,9 +179,9 @@ public class WarehouseControllerTests {
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
 
-    for (Integer i = 0; i < batch.size(); i++) {
+    for (int i = 0; i < batch.size(); i++) {
       String value =
-          JsonPath.read(contentAsString, "batchStock[".concat(i.toString()).concat("]dueDate"))
+          JsonPath.read(contentAsString, "batchStock[".concat(Integer.toString(i)).concat("]dueDate"))
               .toString();
 
       Assertions.assertEquals(value, batchNumbers.get(i).toString());

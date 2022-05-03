@@ -6,18 +6,24 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BatchService {
 
-  BatchRepository batchRepository;
-  ProductService productService;
+  private final BatchRepository batchRepository;
+  private final ProductService productService;
+
+  @Value("${ad.minimumWeeks}")
+  private Integer minimumWeeksToAnnounce;
 
   public void createBatch(Batch batch) throws NotFoundException {
     productService.findById(batch.getProduct().getId());
@@ -82,7 +88,8 @@ public class BatchService {
 
   public List<Batch> findBatchesByProductAndSection(
       Product product, Section section, Sort sortInfos) {
+    LocalDate date = LocalDate.now().plusWeeks(minimumWeeksToAnnounce);
 
-    return batchRepository.findBatchByProductAndSection(product, section, sortInfos);
+    return batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(product, section, sortInfos, date);
   }
 }

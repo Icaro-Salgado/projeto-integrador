@@ -6,10 +6,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = ProductMapper.class)
 public interface BatchMapper {
   BatchMapper INSTANCE = Mappers.getMapper(BatchMapper.class);
 
   @Mapping(source = "section.id", target = "section_id")
+  @Mapping(source = "dueDate", target = "dueDate")
   BatchResponseDTO toResponseDTO(Batch batch);
 }
