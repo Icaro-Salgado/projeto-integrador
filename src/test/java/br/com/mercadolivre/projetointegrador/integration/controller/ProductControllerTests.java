@@ -148,6 +148,33 @@ public class ProductControllerTests {
   }
 
   @Test
+  @DisplayName("ProductController - GET - /api/v1/fresh-products?category={category}")
+  public void testFindAllByCategory() throws Exception {
+    List<Product> response = new ArrayList<>();
+    response.add(fakeProduct);
+
+    productRepository.save(fakeProduct);
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products?category="+fakeProduct.getCategory()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+            .andReturn();
+  }
+
+  @Test
+  @DisplayName("ProductController - GET - /api/v1/fresh-products")
+  public void testFindAllWhenNotFindResult() throws Exception {
+    productRepository.deleteAll();
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products"))
+            .andExpect(MockMvcResultMatchers.status().isNotFound())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty())
+            .andReturn();
+  }
+
+  @Test
   @DisplayName("ProductController - DELETE - /api/v1/fresh-products/{id}")
   public void testDeleteProduct() throws Exception {
     Product newProduct = productRepository.save(fakeProduct);
