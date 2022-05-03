@@ -5,7 +5,6 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -90,6 +89,7 @@ public class BatchService {
       Product product, Section section, Sort sortInfos) {
     LocalDate date = LocalDate.now().plusWeeks(minimumWeeksToAnnounce);
 
-    return batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(product, section, sortInfos, date);
+    return batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(
+        product, section, sortInfos, date);
   }
 }

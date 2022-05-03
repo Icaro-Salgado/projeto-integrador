@@ -176,16 +176,23 @@ public class BatchServiceTests {
   @Test
   public void shouldCallFindBatchByProductAndSection() {
     List<Batch> expectedBatch = List.of(new Batch());
-    Mockito.when(batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+    Mockito.when(
+            batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(
+                Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
         .thenReturn(expectedBatch);
 
     Product productParam = new Product();
     Section sectionParam = new Section();
     Sort sort = Sort.by(Sort.Direction.ASC, "some");
-    List<Batch> result = batchService.findBatchesByProductAndSection(productParam, sectionParam, sort);
+    List<Batch> result =
+        batchService.findBatchesByProductAndSection(productParam, sectionParam, sort);
 
     Mockito.verify(batchRepository, Mockito.times(1))
-        .findBatchByProductAndSectionAndDueDateGreaterThan(Mockito.eq(productParam), Mockito.eq(sectionParam), Mockito.eq(sort), Mockito.any(LocalDate.class));
+        .findBatchByProductAndSectionAndDueDateGreaterThan(
+            Mockito.eq(productParam),
+            Mockito.eq(sectionParam),
+            Mockito.eq(sort),
+            Mockito.any(LocalDate.class));
     Assertions.assertEquals(expectedBatch, result);
   }
 }
