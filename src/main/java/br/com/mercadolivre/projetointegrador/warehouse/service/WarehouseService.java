@@ -82,19 +82,16 @@ public class WarehouseService {
 
   public List<Batch> dueDateBatchesByCategory(
       Long numberofdays, CategoryEnum category, String order) {
-    List<Batch> batches = null;
+
     if (order.equals("ASC")) {
-      batches =
-          batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(
+      return batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(
               LocalDate.now().plusDays(numberofdays), category);
-    } else if (order.equals("DESC")) {
-      batches =
-          batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
-              LocalDate.now().plusDays(numberofdays), category);
-    } else {
-      throw new IllegalArgumentException("Informe o seletor de ordenação (ASC ou DESC)");
     }
-    return batches;
+    if (order.equals("DESC")) {
+      return batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
+              LocalDate.now().plusDays(numberofdays), category);
+    }
+    throw new IllegalArgumentException("Informe o seletor de ordenação (ASC ou DESC)");
   }
 
   public List<Batch> findProductOnManagerSection(
