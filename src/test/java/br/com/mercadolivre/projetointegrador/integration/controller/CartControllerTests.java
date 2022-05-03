@@ -64,8 +64,6 @@ public class CartControllerTests {
         .perform(MockMvcRequestBuilders.get(PURCHASEORDER_URL + "/1"))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(
-            MockMvcResultMatchers.jsonPath("$.statusCode").value(cart.getStatusCode().toString()))
-        .andExpect(
             MockMvcResultMatchers.jsonPath("$.totalPrice").value(cart.getTotalPrice().toString()))
         .andExpect(MockMvcResultMatchers.jsonPath("$.date").value(cart.getDate().toString()))
         .andExpect(MockMvcResultMatchers.jsonPath("$.products", hasSize(1)))
@@ -74,55 +72,5 @@ public class CartControllerTests {
         .andExpect(
             MockMvcResultMatchers.jsonPath("$.products[0].unitPrice")
                 .value(cart.getProducts().get(0).getUnitPrice().toString()));
-  }
-
-  @Test
-  @DisplayName("CartController - GET - api/v1/fresh-products/orders")
-  public void testShowOrderAuthenticated() throws Exception {
-
-    Cart cart = integrationTestUtils.createCart();
-
-    mockMvc
-        .perform(MockMvcRequestBuilders.get(PURCHASEORDER_URL))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(
-            MockMvcResultMatchers.jsonPath("$.statusCode").value(cart.getStatusCode().toString()))
-        .andExpect(
-            MockMvcResultMatchers.jsonPath("$.totalPrice").value(cart.getTotalPrice().toString()))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.date").value(cart.getDate().toString()))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.products", hasSize(1)))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].productId").value(1))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].quantity").value(5))
-        .andExpect(
-            MockMvcResultMatchers.jsonPath("$.products[0].unitPrice")
-                .value(cart.getProducts().get(0).getUnitPrice().toString()));
-  }
-
-  @Test
-  @DisplayName("CartController - PUT - api/v1/fresh-products/orders/{buyerId}?status=FINALIZADO")
-  public void testUpdateOrderStatus() throws Exception {
-
-    integrationTestUtils.createCart();
-
-    mockMvc
-        .perform(MockMvcRequestBuilders.put(PURCHASEORDER_URL + "?status=FINALIZADO"))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(
-            MockMvcResultMatchers.jsonPath("$.statusCode")
-                .value(CartStatusCodeEnum.FINALIZADO.toString()));
-  }
-
-  @Test
-  @DisplayName("CartController - PATCH - api/v1/fresh-products/orders/status")
-  public void testSwitchStatus() throws Exception {
-
-    integrationTestUtils.createCart();
-
-    mockMvc
-        .perform(MockMvcRequestBuilders.patch(PURCHASEORDER_URL + "/status"))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(
-            MockMvcResultMatchers.jsonPath("$.statusCode")
-                .value(CartStatusCodeEnum.FINALIZADO.toString()));
   }
 }
