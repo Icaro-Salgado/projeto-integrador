@@ -16,7 +16,8 @@ import java.time.LocalDate;
       @UniqueConstraint(
           name = "UniqueBatchAndSeller",
           columnNames = {"seller_id", "batchNumber"})
-    })
+    },
+    indexes = {@Index(name = "batchNumberIdx", columnList = "batchNumber")})
 @Getter
 @Setter
 @Builder
