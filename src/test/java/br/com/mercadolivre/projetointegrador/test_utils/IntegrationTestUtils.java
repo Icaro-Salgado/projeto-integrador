@@ -146,9 +146,8 @@ public class IntegrationTestUtils {
           List.of(new UserRole(null, "CUSTOMER"), new UserRole(null, "MANAGER")));
     }
     return roles;
-
   }
-  
+
   public AppUser createUser() {
     Random random = new Random();
     int randomWithNextInt = random.nextInt();

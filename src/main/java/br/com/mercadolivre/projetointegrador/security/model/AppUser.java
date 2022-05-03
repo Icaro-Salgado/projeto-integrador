@@ -51,7 +51,7 @@ public class AppUser implements UserDetails {
 
   @Override
   public Collection<UserRole> getAuthorities() {
-    if(roles == null) {
+    if (roles == null) {
       roles = new HashSet<>();
     }
     return roles;
