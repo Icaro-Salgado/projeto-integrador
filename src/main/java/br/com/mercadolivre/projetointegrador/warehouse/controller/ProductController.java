@@ -3,6 +3,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.controller;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.ProductAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateOrUpdateProductDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
@@ -166,9 +167,12 @@ public class ProductController {
       })
   @GetMapping
   @JsonView(ProductView.List.class)
-  public ResponseEntity<List<ProductDTO>> getAll() {
-    List<Product> products = productService.findAll();
-    return productAssembler.toResponse(products, HttpStatus.OK);
+  public ResponseEntity<List<ProductDTO>> getAll(@RequestParam(required = false) CategoryEnum category) {
+    List<Product> products = category != null ? productService.findAllByCategory(category)  : productService.findAll();
+
+    HttpStatus status = products.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
+
+    return productAssembler.toResponse(products, status);
   }
 
   @Operation(
