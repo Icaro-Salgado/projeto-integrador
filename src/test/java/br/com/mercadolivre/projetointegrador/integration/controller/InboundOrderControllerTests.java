@@ -47,14 +47,14 @@ public class InboundOrderControllerTests {
 
   @Test
   public void TestIfInboundOrderIsCreated() throws Exception {
-
+    integrationTestUtils.createRoles();
+    integrationTestUtils.createUser();
     Section mockSection = integrationTestUtils.createSection();
 
-    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
-    productRepository.save(productMock);
+    Product productMock = integrationTestUtils.createProduct();
 
     CreateBatchPayloadDTO batchMock =
-        CreateBatchPayloadDTO.builder().seller_id(1L).quantity(2).product_id(1L).build();
+        CreateBatchPayloadDTO.builder().seller_id(1L).quantity(2).product_id(productMock.getId()).build();
 
     InboundOrderDTO objPayload =
         InboundOrderDTO.builder()
