@@ -69,9 +69,6 @@ public class WarehouseService {
   }
 
   public List<Batch> dueDateBatches(Long numberOfDays, Long sectionId) {
-    SectionExistsValidator sectionExistsValidator =
-        new SectionExistsValidator(sectionId, sectionRepository);
-    sectionExistsValidator.Validate();
 
     List<Batch> section =
         batchRepository.findAllBySectionIdAndDueDateLessThan(

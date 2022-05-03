@@ -13,6 +13,7 @@ import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
+import br.com.mercadolivre.projetointegrador.warehouse.service.validators.SectionExistsValidator;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,97 +31,118 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class WarehouseTest {
 
-  @Mock private BatchService batchService;
+    @Mock
+    private BatchService batchService;
 
-  @Mock private SectionRepository sectionRepository;
+    @Mock
+    private SectionRepository sectionRepository;
 
-  @Mock private WarehouseValidatorExecutor warehouseValidatorExecutor;
+    @Mock
+    private SectionExistsValidator sectionExistsValidator;
 
-  @Mock private ProductService productService;
+    @Mock
+    private WarehouseValidatorExecutor warehouseValidatorExecutor;
 
-  @Mock private BatchRepository batchRepository;
+    @Mock
+    private ProductService productService;
 
-  @InjectMocks private WarehouseService warehouseService;
+    @Mock
+    private BatchRepository batchRepository;
 
-  @Test
-  public void TestIfSaveBatchInSection() throws NotFoundException {
+    @InjectMocks
+    private WarehouseService warehouseService;
 
-    List<Batch> expected = WarehouseTestUtils.getBatch();
+    @Test
+    public void TestIfSaveBatchInSection() throws NotFoundException {
 
-    Mockito.doNothing().when(batchService).createBatch(Mockito.any());
+        List<Batch> expected = WarehouseTestUtils.getBatch();
 
-    List<Batch> result = warehouseService.saveBatchInSection(WarehouseTestUtils.getInboundOrder());
-    assertEquals(expected, result);
-  }
+        Mockito.doNothing().when(batchService).createBatch(Mockito.any());
 
-  @Test
-  public void TestIfupdateBatchInSection() throws NotFoundException {
+        List<Batch> result = warehouseService.saveBatchInSection(WarehouseTestUtils.getInboundOrder());
+        assertEquals(expected, result);
+    }
 
-    List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
+    @Test
+    public void TestIfupdateBatchInSection() throws NotFoundException {
 
-    Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any()))
-        .thenAnswer(i -> i.getArgument(0));
+        List<Batch> expected = List.of(WarehouseTestUtils.getBatch1(), WarehouseTestUtils.getBatch2());
 
-    List<Batch> result =
-        warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
+        Mockito.when(batchService.updateBatchByBatchNumber(Mockito.any()))
+                .thenAnswer(i -> i.getArgument(0));
 
-    assertEquals(expected, result);
-  }
+        List<Batch> result =
+                warehouseService.updateBatchInSection(WarehouseTestUtils.getInboundOrder());
 
-  @Test
-  public void TestIfFindBatchesOnManagerSection() {
-    Section expectedSection = new Section();
-    Product expectedProduct = new Product();
-    Mockito.when(sectionRepository.findByManagerId(Mockito.anyLong()))
-        .thenReturn(Optional.of(expectedSection));
-    Mockito.when(productService.findById(Mockito.anyLong())).thenReturn(expectedProduct);
+        assertEquals(expected, result);
+    }
 
-    assertDoesNotThrow(() -> warehouseService.findProductOnManagerSection(1L, 1L, SortTypeEnum.C));
-    Mockito.verify(batchService, Mockito.times(1))
-        .findBatchesByProductAndSection(
-            Mockito.eq(expectedProduct), Mockito.eq(expectedSection), Mockito.any());
-  }
+    @Test
+    public void TestIfFindBatchesOnManagerSection() {
+        Section expectedSection = new Section();
+        Product expectedProduct = new Product();
+        Mockito.when(sectionRepository.findByManagerId(Mockito.anyLong()))
+                .thenReturn(Optional.of(expectedSection));
+        Mockito.when(productService.findById(Mockito.anyLong())).thenReturn(expectedProduct);
 
-  @Test
-  public void TestIfFindBatchesOnManagerSectionThrowsError() {
-    Mockito.when(sectionRepository.findByManagerId(Mockito.anyLong())).thenReturn(Optional.empty());
+        assertDoesNotThrow(() -> warehouseService.findProductOnManagerSection(1L, 1L, SortTypeEnum.C));
+        Mockito.verify(batchService, Mockito.times(1))
+                .findBatchesByProductAndSection(
+                        Mockito.eq(expectedProduct), Mockito.eq(expectedSection), Mockito.any());
+    }
 
-    assertThrows(
-        SectionNotFoundException.class,
-        () -> warehouseService.findProductOnManagerSection(1L, 1L, SortTypeEnum.C));
-  }
+    @Test
+    public void TestIfFindBatchesOnManagerSectionThrowsError() {
+        Mockito.when(sectionRepository.findByManagerId(Mockito.anyLong())).thenReturn(Optional.empty());
 
-  @Test
-  public void TestIfDueDateBatchesByCategory() {
-    List<Batch> expected = WarehouseTestUtils.getBatch();
-    Mockito.when(
-            batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(
-                Mockito.any(), Mockito.any()))
-        .thenReturn(expected);
-    List<Batch> testBatch = warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "ASC");
-    assertEquals(expected, testBatch);
-  }
+        assertThrows(
+                SectionNotFoundException.class,
+                () -> warehouseService.findProductOnManagerSection(1L, 1L, SortTypeEnum.C));
+    }
 
-  @Test
-  public void TestIfDueDateBatchesByCategoryDesc() {
-    List<Batch> expected = WarehouseTestUtils.getBatch();
-    Mockito.when(
-            batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
-                Mockito.any(), Mockito.any()))
-        .thenReturn(expected);
-    List<Batch> testBatch = warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "DESC");
-    assertEquals(expected, testBatch);
-  }
+    @Test
+    public void TestIfDueDateBatchesByCategory() {
+        List<Batch> expected = WarehouseTestUtils.getBatch();
+        Mockito.when(
+                batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(
+                        Mockito.any(), Mockito.any()))
+                .thenReturn(expected);
+        List<Batch> testBatch = warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "ASC");
+        assertEquals(expected, testBatch);
+    }
 
-  @Test
-  public void TestIfDueDateBatchesByCategoryAssertThrows() {
-    IllegalArgumentException exception =
-        Assertions.assertThrows(
-            IllegalArgumentException.class,
-            () -> {
-              warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "ERR");
-            });
+    @Test
+    public void TestIfDueDateBatchesByCategoryDesc() {
+        List<Batch> expected = WarehouseTestUtils.getBatch();
+        Mockito.when(
+                batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
+                        Mockito.any(), Mockito.any()))
+                .thenReturn(expected);
+        List<Batch> testBatch = warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "DESC");
+        assertEquals(expected, testBatch);
+    }
 
-    Assertions.assertEquals("Informe o seletor de ordenação (ASC ou DESC)", exception.getMessage());
-  }
+    @Test
+    public void TestIfDueDateBatchesByCategoryAssertThrows() {
+        IllegalArgumentException exception =
+                Assertions.assertThrows(
+                        IllegalArgumentException.class,
+                        () -> {
+                            warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "ERR");
+                        });
+
+        Assertions.assertEquals("Informe o seletor de ordenação (ASC ou DESC)", exception.getMessage());
+    }
+
+    @Test
+    public void TestIfDueDateBatchesBySection() {
+        List<Batch> expected = WarehouseTestUtils.getBatch();
+        Mockito.when(
+                batchRepository.findAllBySectionIdAndDueDateLessThan(
+                        Mockito.any(), Mockito.any()))
+                .thenReturn(expected);
+        List<Batch> testBatch = warehouseService.dueDateBatches(10l, 1l);
+        assertEquals(expected, testBatch);
+    }
+
 }
