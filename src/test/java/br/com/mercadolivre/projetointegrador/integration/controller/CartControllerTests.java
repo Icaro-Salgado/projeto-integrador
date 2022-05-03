@@ -51,7 +51,7 @@ public class CartControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(purchaseOrder)))
         .andExpect(MockMvcResultMatchers.status().isCreated())
-        .andExpect(MockMvcResultMatchers.content().string("35.0"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.totalPrice").value("35.0"));
   }
 
   @Test
