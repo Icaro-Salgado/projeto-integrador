@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.marketplace.controllers;
 
-import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseResponseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
@@ -18,7 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
