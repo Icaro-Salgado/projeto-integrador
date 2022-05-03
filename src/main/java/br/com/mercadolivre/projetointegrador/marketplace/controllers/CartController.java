@@ -2,7 +2,6 @@ package br.com.mercadolivre.projetointegrador.marketplace.controllers;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderResponseDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.exceptions.InvalidStatusCodeException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.services.CartService;

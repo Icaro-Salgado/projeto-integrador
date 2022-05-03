@@ -1,8 +1,6 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CartStatusCodeEnum;
-import br.com.mercadolivre.projetointegrador.marketplace.exceptions.InvalidStatusCodeException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;

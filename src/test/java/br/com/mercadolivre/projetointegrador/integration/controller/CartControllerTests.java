@@ -1,7 +1,6 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CartStatusCodeEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;

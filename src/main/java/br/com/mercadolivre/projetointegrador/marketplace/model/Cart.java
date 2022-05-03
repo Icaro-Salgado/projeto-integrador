@@ -1,7 +1,6 @@
 package br.com.mercadolivre.projetointegrador.marketplace.model;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CartStatusCodeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
