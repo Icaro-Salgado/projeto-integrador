@@ -7,6 +7,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.services.AdService;
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredMarketplaceRestController;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -67,9 +68,9 @@ public class AdController implements SecuredMarketplaceRestController {
       description = "Retorna lista de anúncios cadastrados.")
   @ApiResponses(value = {@ApiResponse(description = "Anúncios encontrados.", responseCode = "200")})
   @GetMapping
-  public ResponseEntity<List<Ad>> listAds(@RequestParam(required = false) String name) {
-    if (name != null) {
-      return ResponseEntity.ok(adService.listAds(name));
+  public ResponseEntity<List<Ad>> listAds(@RequestParam(required = false) String name, @RequestParam(required = false) CategoryEnum category) {
+    if (name != null || category != null) {
+      return ResponseEntity.ok(adService.listAds(name, category));
     }
 
     return ResponseEntity.ok(adService.listAds());

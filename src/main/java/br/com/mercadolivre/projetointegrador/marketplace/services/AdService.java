@@ -6,6 +6,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.model.AdBatch;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdBatchesRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,14 @@ public class AdService {
 
   public List<Ad> listAds(String name) {
     return this.adRepository.findAdsByLikeName(name);
+  }
+
+  public List<Ad> listAds(String name, CategoryEnum category) {
+    if(name != null && category != null){
+      return this.adRepository.findAllByCategoryAndNameLike(category, name);
+    }
+
+    return name != null ?  this.adRepository.findAdsByLikeName(name) : adRepository.findAllByCategory(category);
   }
 
   public List<Ad> listAdsByCustomerId(Long id) {
