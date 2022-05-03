@@ -29,13 +29,8 @@ public class AdService {
       propagation = Propagation.REQUIRED,
       isolation = Isolation.SERIALIZABLE)
   public Ad createAd(Long sellerId, CreateOrUpdateAdDTO createAdDTO) {
-    Ad ad = new Ad();
+    Ad ad = createAdDTO.DTOtoModel();
     ad.setSellerId(sellerId);
-    ad.setName(createAdDTO.getName());
-    ad.setQuantity(createAdDTO.getQuantity());
-    ad.setPrice(createAdDTO.getPrice());
-    ad.setDiscount(createAdDTO.getDiscount());
-    ad.setCategory(createAdDTO.getCategory());
 
     List<Long> batchesId = createAdDTO.getBatchesId();
     adRepository.save(ad);

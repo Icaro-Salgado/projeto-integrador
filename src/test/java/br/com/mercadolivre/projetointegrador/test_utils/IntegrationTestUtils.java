@@ -1,8 +1,12 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreateOrUpdateAdDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.model.UserRole;
@@ -40,6 +44,8 @@ public class IntegrationTestUtils {
   @Autowired private RedisRepository redisRepository;
 
   @Autowired private AppUserRepository appUserRepository;
+
+  @Autowired private AdRepository adRepository;
 
   ObjectMapper objectMapper =
       new ObjectMapper()
@@ -164,4 +170,29 @@ public class IntegrationTestUtils {
   }
 
   public void resetDatabase() {}
+
+  public CreateOrUpdateAdDTO createAdDTO() {
+    CreateOrUpdateAdDTO adDTO = new CreateOrUpdateAdDTO();
+    adDTO.setBatchesId(List.of(1L, 2L, 3L));
+    adDTO.setName("Fake Ad");
+    adDTO.setQuantity(10);
+    adDTO.setPrice(BigDecimal.valueOf(10.0));
+    adDTO.setDiscount(0);
+    adDTO.setCategory(CategoryEnum.FS);
+
+    return adDTO;
+  }
+
+  public List<CreatePurchaseDTO> createPurchases() {
+    Ad ad = createAdDTO().DTOtoModel();
+    ad.setSellerId(1L);
+    adRepository.save(ad);
+
+    CreatePurchaseDTO purchase = new CreatePurchaseDTO();
+    purchase.setAdId(1L);
+    purchase.setQuantity(10);
+    List<CreatePurchaseDTO> purchases = List.of(purchase);
+
+    return purchases;
+  }
 }
