@@ -79,8 +79,7 @@ public class BatchControllerTests {
     Batch batch = integrationTestUtils.createBatch();
 
     mockMvc
-        .perform(
-            MockMvcRequestBuilders.get(API_URL + "/ad/{sellerId}", batch.getSeller().getId()))
+        .perform(MockMvcRequestBuilders.get(API_URL + "/ad/{sellerId}", batch.getSeller().getId()))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
   }

@@ -1,6 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.assembler;
 
-
 import br.com.mercadolivre.projetointegrador.warehouse.controller.BatchControllerWarehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
