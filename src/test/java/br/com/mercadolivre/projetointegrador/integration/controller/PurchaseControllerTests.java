@@ -23,11 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -78,10 +76,11 @@ public class PurchaseControllerTests {
     adPurchase.setPurchase(purchase);
     adPurchaseRepository.save(adPurchase);
 
+
     mockMvc
         .perform(MockMvcRequestBuilders.get(PURCHASE_URL + "/1"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].products[0].quantity").value(10))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[0].products[0].name").value("Fake Ad"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].products[0].quantity").value(10))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].products[0].name").value("Fake Ad"));
   }
 }
