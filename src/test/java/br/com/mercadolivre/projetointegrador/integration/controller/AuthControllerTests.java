@@ -79,7 +79,9 @@ public class AuthControllerTests {
         .andExpect(MockMvcResultMatchers.status().isCreated());
 
     AppUser created = appUserRepository.findByEmail(registerDTO.getEmail()).orElse(new AppUser());
-    Assertions.assertEquals(UserOrigin.WAREHOUSE.getRole(), created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
+    Assertions.assertEquals(
+        UserOrigin.WAREHOUSE.getRole(),
+        created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
   }
 
   @Test
@@ -120,7 +122,9 @@ public class AuthControllerTests {
 
     AppUser created = appUserRepository.findByEmail(registerDTO.getEmail()).orElse(new AppUser());
 
-    Assertions.assertEquals(UserOrigin.MARKETPLACE.getRole(), created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
+    Assertions.assertEquals(
+        UserOrigin.MARKETPLACE.getRole(),
+        created.getAuthorities().stream().findFirst().orElse(new UserRole()).getName());
   }
 
   @Test

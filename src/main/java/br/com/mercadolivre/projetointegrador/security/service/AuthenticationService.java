@@ -24,7 +24,10 @@ public class AuthenticationService implements UserDetailsService {
   private final RolesRepository rolesRepository;
 
   public AppUser registerUser(AppUser user, UserOrigin origin) {
-    UserRole role = rolesRepository.findByName(origin.getRole()).orElseThrow(() -> new NotFoundException("Role não encontrada"));
+    UserRole role =
+        rolesRepository
+            .findByName(origin.getRole())
+            .orElseThrow(() -> new NotFoundException("Role não encontrada"));
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 
     user.getAuthorities().add(role);
