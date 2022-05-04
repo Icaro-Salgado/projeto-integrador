@@ -45,16 +45,17 @@ public class BatchService {
     batches.sort(Comparator.comparing(Batch::getDueDate));
 
     final int[] quantityCopy = {quantity};
-    batches.forEach(b -> {
-      int result = b.getQuantity() - quantityCopy[0];
-      if (result < 0) {
-        quantityCopy[0] = Math.abs(result);
-        b.setQuantity(0);
-      } else {
-        quantityCopy[0] = 0;
-        b.setQuantity(result);
-      }
-    });
+    batches.forEach(
+        b -> {
+          int result = b.getQuantity() - quantityCopy[0];
+          if (result < 0) {
+            quantityCopy[0] = Math.abs(result);
+            b.setQuantity(0);
+          } else {
+            quantityCopy[0] = 0;
+            b.setQuantity(result);
+          }
+        });
 
     batchRepository.saveAll(batches);
   }

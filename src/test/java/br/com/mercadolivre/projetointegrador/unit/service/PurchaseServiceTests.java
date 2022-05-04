@@ -36,11 +36,9 @@ public class PurchaseServiceTests {
 
   @Mock AdPurchaseRepository adPurchaseRepository;
 
-  @Mock
-  AdBatchesRepository adBatchesRepository;
+  @Mock AdBatchesRepository adBatchesRepository;
 
-  @Mock
-  BatchService batchService;
+  @Mock BatchService batchService;
 
   @Mock PurchaseRepository purchaseRepository;
 
@@ -54,7 +52,8 @@ public class PurchaseServiceTests {
   @DisplayName(
       "Given an valid order, when call createPurchase, then purchaseRepository.save and"
           + " adPurchaseRepository.saveAll should be called with right arguments")
-  public void createPurchase() throws NotFoundException, JsonProcessingException, OutOfStockException {
+  public void createPurchase()
+      throws NotFoundException, JsonProcessingException, OutOfStockException {
     Cart mockCart = new Cart();
     List<CartProductDTO> products = new ArrayList<>();
     products.add(new CartProductDTO(1L, 10, BigDecimal.valueOf(11.90)));
@@ -88,7 +87,8 @@ public class PurchaseServiceTests {
 
     purchaseService.createPurchase(10L);
     Mockito.verify(adBatchesRepository, Mockito.times(2)).findAllByAd(Mockito.any());
-    Mockito.verify(batchService, Mockito.times(2)).reduceBatchQuantity(Mockito.any(), Mockito.any());
+    Mockito.verify(batchService, Mockito.times(2))
+        .reduceBatchQuantity(Mockito.any(), Mockito.any());
     Mockito.verify(adPurchaseRepository, Mockito.times(1)).saveAll(adPurchases);
     Mockito.verify(purchaseRepository, Mockito.times(1)).save(purchase);
   }

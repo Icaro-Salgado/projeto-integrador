@@ -37,7 +37,8 @@ public class AdService {
     ad.setSellerId(sellerId);
 
     List<Integer> batchesId = createAdDTO.getBatchesId();
-    Integer quantity = batchRepository.findAllByBatchNumberIn(batchesId).stream()
+    Integer quantity =
+        batchRepository.findAllByBatchNumberIn(batchesId).stream()
             .map(Batch::getQuantity)
             .reduce(0, Integer::sum);
 

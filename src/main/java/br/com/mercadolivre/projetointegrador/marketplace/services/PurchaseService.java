@@ -39,7 +39,8 @@ public class PurchaseService {
       rollbackFor = Exception.class,
       propagation = Propagation.REQUIRED,
       isolation = Isolation.SERIALIZABLE)
-  public void createPurchase(Long buyerId) throws NotFoundException, JsonProcessingException, OutOfStockException {
+  public void createPurchase(Long buyerId)
+      throws NotFoundException, JsonProcessingException, OutOfStockException {
     Cart cart = cartService.getCart(buyerId);
 
     Purchase purchase = new Purchase();
@@ -52,7 +53,10 @@ public class PurchaseService {
     for (CartProductDTO product : cart.getProducts()) {
       Ad ad = adService.findAdById(product.getProductId());
       adService.reduceAdQuantity(product.getProductId(), product.getQuantity());
-      List<Integer> batchesIds = adBatchesRepository.findAllByAd(ad).stream().map(AdBatch::getBatchId).collect(Collectors.toList());
+      List<Integer> batchesIds =
+          adBatchesRepository.findAllByAd(ad).stream()
+              .map(AdBatch::getBatchId)
+              .collect(Collectors.toList());
       batchService.reduceBatchQuantity(batchesIds, product.getQuantity());
 
       AdPurchase adPurchase = new AdPurchase();

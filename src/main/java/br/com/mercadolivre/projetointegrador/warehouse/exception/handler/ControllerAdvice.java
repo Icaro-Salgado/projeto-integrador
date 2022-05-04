@@ -22,7 +22,12 @@ public class ControllerAdvice {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
   }
 
-  @ExceptionHandler(value = {InvalidCategoryException.class, ProductAlreadyExists.class, OutOfStockException.class})
+  @ExceptionHandler(
+      value = {
+        InvalidCategoryException.class,
+        ProductAlreadyExists.class,
+        OutOfStockException.class
+      })
   public ResponseEntity<ErrorDTO> badRequestParams(Exception e) {
     ErrorDTO error = new ErrorDTO();
     error.setError("Parâmetros inválidos.");

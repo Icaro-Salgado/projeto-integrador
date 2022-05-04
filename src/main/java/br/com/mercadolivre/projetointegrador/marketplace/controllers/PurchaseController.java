@@ -45,7 +45,7 @@ public class PurchaseController implements SecuredMarketplaceRestController {
   @PostMapping
   public ResponseEntity<Void> createPurchase(
       Authentication authentication, UriComponentsBuilder uriBuilder)
-          throws NotFoundException, JsonProcessingException, OutOfStockException {
+      throws NotFoundException, JsonProcessingException, OutOfStockException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
 
     purchaseService.createPurchase(requestUser.getId());

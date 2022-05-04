@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface AdBatchesRepository extends JpaRepository<AdBatch, Long> {
-    List<AdBatch> findAllByAd(Ad ad);
+  List<AdBatch> findAllByAd(Ad ad);
 }

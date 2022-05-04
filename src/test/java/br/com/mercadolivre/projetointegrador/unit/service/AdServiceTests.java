@@ -8,7 +8,6 @@ import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository
 import br.com.mercadolivre.projetointegrador.marketplace.services.AdService;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -30,8 +29,7 @@ public class AdServiceTests {
 
   @Mock AdBatchesRepository adBatchesRepository;
 
-  @Mock
-  BatchRepository batchRepository;
+  @Mock BatchRepository batchRepository;
 
   @InjectMocks AdService adService;
 
