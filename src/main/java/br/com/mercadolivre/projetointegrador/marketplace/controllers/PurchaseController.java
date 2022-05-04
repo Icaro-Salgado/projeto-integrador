@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +36,11 @@ public class PurchaseController implements SecuredMarketplaceRestController {
   CartService cartService;
 
   @Operation(summary = "SALVA UMA COMPRA", description = "Registra uma compra.")
-  @ApiResponses(value = {@ApiResponse(description = "Compra registrada.", responseCode = "201")})
+  @ApiResponses(value = {
+      @ApiResponse(description = "Compra registrada.", responseCode = "201"),
+      @ApiResponse(description = "Carrinho não encontrado", responseCode = "404")
+    }
+  )
   @PostMapping
   public ResponseEntity<Void> createPurchase(
       Authentication authentication, UriComponentsBuilder uriBuilder)
@@ -73,20 +76,13 @@ public class PurchaseController implements SecuredMarketplaceRestController {
   }
 
   @Operation(
-    summary = "ALTERA O STATUS DE UMA COMPRA",
-    description = "Modifica o Status da compra com id informado na URL."
+    summary = "ALTERA O STATUS DE UMA COMPRA", description = "Modifica o Status da compra com id informado na URL."
   )
   @ApiResponses(
     value = {
-      @ApiResponse(
-        description = "Compra finalizada",
-        responseCode = "200"
-      ),
-      @ApiResponse(
-        description = "Compra não encontrada",
-        responseCode = "404"
-      )
-
+      @ApiResponse(description = "Compra finalizada", responseCode = "200"),
+      @ApiResponse(description = "Compra não encontrada", responseCode = "404"),
+      @ApiResponse(description = "Não autorizado", responseCode = "403")
     }
   )
   @PutMapping("/{buyerId}/{purchaseId}")
