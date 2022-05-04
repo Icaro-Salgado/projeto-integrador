@@ -21,14 +21,17 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
+@ActiveProfiles(profiles = "test")
 public class IntegrationTestUtils {
 
   @Autowired private WarehouseRepository warehouseRepository;
@@ -45,6 +48,7 @@ public class IntegrationTestUtils {
 
   @Autowired private AppUserRepository appUserRepository;
 
+  private final Random random = new Random();
   @Autowired private AdRepository adRepository;
 
   ObjectMapper objectMapper =
@@ -86,7 +90,7 @@ public class IntegrationTestUtils {
   }
 
   public Product createProduct() {
-    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
+    Product productMock = new Product("teste", CategoryEnum.FS, null);
     return productRepository.save(productMock);
   }
 
@@ -104,6 +108,32 @@ public class IntegrationTestUtils {
             .build();
 
     return batchRepository.save(batch);
+  }
+
+  public List<Batch> createMultipleBatchesOnSameWarehouse() {
+
+    List<Batch> batchesToCreate = new ArrayList<>();
+
+    Section section = createSection();
+    AppUser seller = createUser();
+    Product product = createProduct();
+
+    for (int i = 0; i < 5; i++) {
+      batchesToCreate.add(
+          Batch.builder()
+              .product(product)
+              .section(section)
+              .seller(seller)
+              .price(BigDecimal.valueOf(10 * i + 1))
+              .order_number(i)
+              .batchNumber(5 - i)
+              .quantity(random.nextInt(350))
+              .dueDate(LocalDate.now().plusWeeks(10))
+              .manufacturing_datetime(LocalDate.now())
+              .build());
+    }
+
+    return batchRepository.saveAll(batchesToCreate);
   }
 
   public Batch createBatch(Section section) {
@@ -155,7 +185,6 @@ public class IntegrationTestUtils {
   }
 
   public AppUser createUser() {
-    Random random = new Random();
     int randomWithNextInt = random.nextInt();
 
     AppUser user =

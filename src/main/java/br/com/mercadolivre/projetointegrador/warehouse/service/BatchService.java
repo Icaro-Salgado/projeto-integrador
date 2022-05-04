@@ -2,10 +2,13 @@ package br.com.mercadolivre.projetointegrador.warehouse.service;
 
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -97,6 +100,18 @@ public class BatchService {
     batch.setQuantity(updatedBatch.getQuantity());
 
     return batch;
+  }
+
+  public List<Batch> findBatchesByProductAndSection(Product product, Section section) {
+    return batchRepository.findBatchByProductAndSection(product, section);
+  }
+
+  public List<Batch> findBatchesByProductAndSection(
+      Product product, Section section, Sort sortInfos) {
+    LocalDate date = LocalDate.now().plusWeeks(minimumWeeksToAnnounce);
+
+    return batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(
+        product, section, sortInfos, date);
   }
 
   public List<Batch> listBySellerId(final Long sellerId) {
