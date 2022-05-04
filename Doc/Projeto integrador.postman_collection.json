@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 7,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-11-01\"\n        }\n        \n    ]\n}",
+							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 2,\n    \"sectionCode\": 2,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 9,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-11-01\"\n        },\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 10,\n            \"quantity\": 20,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-11-01\"\n        }\n        \n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -251,6 +251,30 @@
 									"key": "sort",
 									"value": "F"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - Get product location and total quantity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/warehouse/fresh-products/location/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"fresh-products",
+								"location",
+								"1"
 							]
 						}
 					},
