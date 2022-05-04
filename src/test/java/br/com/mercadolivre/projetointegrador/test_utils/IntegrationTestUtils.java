@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 @Component
 @ActiveProfiles(profiles = "test")
 public class IntegrationTestUtils {
@@ -156,16 +155,16 @@ public class IntegrationTestUtils {
 
   public Batch createBatch(Product product) {
     Batch batch =
-            Batch.builder()
-                    .product(product)
-                    .section(createSection())
-                    .seller(createUser())
-                    .price(BigDecimal.TEN)
-                    .order_number(123)
-                    .batchNumber(9595)
-                    .quantity(10)
-                    .dueDate(LocalDate.now().plusWeeks(10))
-                    .build();
+        Batch.builder()
+            .product(product)
+            .section(createSection())
+            .seller(createUser())
+            .price(BigDecimal.TEN)
+            .order_number(123)
+            .batchNumber(9595)
+            .quantity(10)
+            .dueDate(LocalDate.now().plusWeeks(10))
+            .build();
 
     return batchRepository.save(batch);
   }
