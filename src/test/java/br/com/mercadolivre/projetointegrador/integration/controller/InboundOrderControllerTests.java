@@ -28,7 +28,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,10 +56,14 @@ public class InboundOrderControllerTests {
 
     CreateBatchPayloadDTO batchMock =
         CreateBatchPayloadDTO.builder()
-            .seller_id(1L)
-            .quantity(2)
-            .product_id(productMock.getId())
-            .build();
+                .seller_id(1L)
+                .quantity(2)
+                .batchNumber(new Random().nextInt())
+                .product_id(productMock.getId())
+                .due_date(LocalDate.now().plusMonths(10))
+                .manufacturing_datetime(LocalDate.now())
+                .price(BigDecimal.valueOf(199.99))
+                .build();
 
     InboundOrderDTO objPayload =
         InboundOrderDTO.builder()
@@ -99,6 +105,9 @@ public class InboundOrderControllerTests {
             .batchNumber(mockedBatch.getBatchNumber())
             .product_id(mockedBatch.getProduct().getId())
             .seller_id(mockedBatch.getSeller().getId())
+            .due_date(LocalDate.now().plusMonths(10))
+            .manufacturing_datetime(LocalDate.now())
+            .price(BigDecimal.valueOf(199.99))
             .quantity(2)
             .build();
 
