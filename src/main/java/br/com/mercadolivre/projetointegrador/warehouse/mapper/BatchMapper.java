@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(uses = ProductMapper.class)
+@Mapper(uses = {ProductMapper.class, AppUserMapper.class})
 public interface BatchMapper {
   BatchMapper INSTANCE = Mappers.getMapper(BatchMapper.class);
 

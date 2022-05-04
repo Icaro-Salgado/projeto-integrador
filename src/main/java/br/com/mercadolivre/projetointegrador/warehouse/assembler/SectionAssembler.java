@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,8 @@ public class SectionAssembler {
   public ResponseEntity<SectionBatchesDTO> toSectionBatchesResponse(
       List<Batch> entities, Long productId, HttpStatus status) {
     if (entities.isEmpty()) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(new SectionBatchesDTO(null, null, productId, Collections.emptyList()));
     }
 
     Section section = entities.get(0).getSection();

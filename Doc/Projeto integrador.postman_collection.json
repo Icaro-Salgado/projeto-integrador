@@ -6,81 +6,598 @@
 	},
 	"item": [
 		{
-			"name": "Create warehouse",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"warehouse\",\n    \"location\": {\n        \"country\": \"Brazil\",\n        \"state\": \"SP\",\n        \"city\": \"Osasco\",\n        \"neighborhood\": \"Bomfim\",\n        \"street\": \"Av. das Nações Unidas\",\n        \"number\": 3,\n        \"zipcode\": 6233200\n    }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Warehouse",
+			"item": [
+				{
+					"name": "[WAREHOUSE] - Create warehouse",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"warehouse\",\n    \"location\": {\n        \"country\": \"Brazil\",\n        \"state\": \"SP\",\n        \"city\": \"Osasco\",\n        \"neighborhood\": \"Bomfim\",\n        \"street\": \"Av. das Nações Unidas\",\n        \"number\": 3,\n        \"zipcode\": \"06233200\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/warehouse",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse"
+							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - Create section",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"warehouseId\": 1,\n    \"managerId\": 1,\n    \"minimumTemperature\": 12.22,\n    \"maximumTemperature\": 20.00,\n    \"capacity\": 10,\n    \"productCategory\": \"FS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/warehouse/section",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"section"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - Create product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":  \"Alface\",\n    \"category\": \"FS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/warehouse/fresh-products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"fresh-products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - Create inboudOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 11,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-10-01\"\n        }\n        \n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/warehouse/inboundorder",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"inboundorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - Update inboudOrder",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderNumber\": 999,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 888,\n            \"quantity\": 2000,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/inboundorder",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"inboundorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - Get batch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/warehouse/batches/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"batches",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - List categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/warehouse/fresh-products/categories",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"fresh-products",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - Get batches to Ad by seller ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/warehouse/batches/ad/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"batches",
+								"ad",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - List batch stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/warehouse/fresh-products/list?product=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"fresh-products",
+								"list"
+							],
+							"query": [
+								{
+									"key": "product",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{warehouse_token}}",
+						"type": "string"
+					},
+					{
+						"key": "password",
+						"value": "{{warehouse_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
 					}
 				},
-				"url": {
-					"raw": "localhost:8080/api/v1/warehouse",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"warehouse"
-					]
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Create section",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"warehouseId\": 1,\n    \"managerId\": 1,\n    \"minimumTemperature\": 12.22,\n    \"maximumTemperature\": 20.00,\n    \"capacity\": 10,\n    \"productCategory\": \"FS\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Marketplace",
+			"item": [
+				{
+					"name": "[MARKETPLACE] - Create Ad",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchesId\": [1],\n    \"name\": \"Novo anùncio\",\n    \"quantity\": 1,\n    \"price\": 199.90,\n    \"discount\": 0,\n    \"category\": \"FS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/marketplace/ads",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"marketplace",
+								"ads"
+							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - List Ads",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/marketplace/ads",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"marketplace",
+								"ads"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "FS",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - Find Ad by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/marketplace/ads/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"marketplace",
+								"ads",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - Find Ad by logged seller",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/marketplace/ads/seller",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"marketplace",
+								"ads",
+								"seller"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - Delete Ad by lD",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/marketplace/ads/1/delete",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"marketplace",
+								"ads",
+								"1",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - Save a shopping cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"products\": [\n        {\n            \"productId\": 1,\n            \"quantity\": 3,\n            \"unitPrice\": 199.90\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/marketplace/fresh-products/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"marketplace",
+								"fresh-products",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - Get order by buyer ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/marketplace/fresh-products/orders/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"marketplace",
+								"fresh-products",
+								"orders",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - Save a purchase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/customers/marketplace/purchases",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"marketplace",
+								"purchases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - List current user purchases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/customers/marketplace/purchases/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"marketplace",
+								"purchases",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[MARKETPLACE] - Update purchase status by buyer Id and Purchase ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/customers/marketplace/purchases/2/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"marketplace",
+								"purchases",
+								"2",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{marketplace_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
 					}
 				},
-				"url": {
-					"raw": "localhost:8080/api/v1/section",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"section"
-					]
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Create product",
+			"name": "[AUTH] - Register warehouse user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjUxMjY2MTI1fQ.6LwwikQj6JyOIXAT0off7lbZp1TW5c-f6vcTkofrzWrtMZ4SINp9r1vvnTJq3hl7DfSuPNtKHlRh6wl3WWNj7w",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":  \"Leite 3\",\n    \"category\": \"FS\"\n}",
+					"raw": "{\n    \"email\": \"warehouse@email.com\",\n    \"name\": \"Warehouse Manager\",\n    \"userName\": \"wrhmng\",\n    \"password\": \"123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -88,7 +605,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/v1/fresh-products",
+					"raw": "localhost:8080/api/v1/warehouse/auth/register",
 					"host": [
 						"localhost"
 					],
@@ -96,93 +613,7 @@
 					"path": [
 						"api",
 						"v1",
-						"fresh-products"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update inboudOrder",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderNumber\": 999,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 888,\n            \"quantity\": 2000,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/v1/inboundorder",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"inboundorder"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create inboudOrder",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 2,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 8,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n        \n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/v1/inboundorder",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"inboundorder"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Register User",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"email@email.com\",\n    \"name\": \"Pedro Henrique Levada Soares\",\n    \"userName\": \"pedroLSoares\",\n    \"password\": \"123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/v1/auth/register",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
+						"warehouse",
 						"auth",
 						"register"
 					]
@@ -191,13 +622,59 @@
 			"response": []
 		},
 		{
-			"name": "User auth",
+			"name": "[AUTH] - Register marketplace user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"marketplace@email.com\",\n    \"name\": \"Marketplace Customer\",\n    \"userName\": \"mktpcustmr\",\n    \"password\": \"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/marketplace/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"marketplace",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[AUTH] - Marketplace user login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.text();",
+							"pm.collectionVariables.set(\"marketplace_token\", responseJson);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"email@email.com\",\n    \"password\": \"123\"\n}",
+					"raw": "{\n    \"email\": \"marketplace@email.com\",\n    \"password\": \"123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -220,12 +697,42 @@
 			"response": []
 		},
 		{
-			"name": "Get batch",
+			"name": "[AUTH] - Warehouse user login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.text();",
+							"pm.collectionVariables.set(\"warehouse_token\", responseJson);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(pm);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"warehouse@email.com\",\n    \"password\": \"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "localhost:8080/api/v1/batches/1",
+					"raw": "localhost:8080/api/v1/auth",
 					"host": [
 						"localhost"
 					],
@@ -233,24 +740,13 @@
 					"path": [
 						"api",
 						"v1",
-						"batches",
-						"1"
+						"auth"
 					]
 				}
 			},
 			"response": []
 		}
 	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjUxMzI4NDg3fQ.2kCMUZshIMK-oM4O2PSdls9xk4vZnmBbOP3jLS4HbnQQOyBJrDvG924xZld13c5zRreoLtte7JCBb9R_eh5IkA",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -269,6 +765,16 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "warehouse_token",
+			"value": "null"
+		},
+		{
+			"key": "marketplace_token",
+			"value": "null"
 		}
 	]
 }
