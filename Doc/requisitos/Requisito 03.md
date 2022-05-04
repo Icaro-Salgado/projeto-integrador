@@ -27,6 +27,14 @@
 - O produto não deve estar vencido ou prestes a expirar(mínimo 3 semanas).
 - **OBSERVAÇÃO: substituir as variáveis ${TOKEN} para o resultado de autenticação**
 
+
+## SETUP INICIAL DO WAREHOUSE
+Na raíz do projeto execute o seguinte comando.
+```shell
+./Doc/requisitos/setup.sh
+```
+
+
 ## ENDPOINTS AUXILIARES CRIADOS
 
 Para os endpoints auxiliares, utilzados para a criação os registros iniciais, consulte a documentação do [requisito 01](Requisito%2001.md).
