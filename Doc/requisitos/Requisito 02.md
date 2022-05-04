@@ -43,7 +43,7 @@ java -jar ./target/projeto-integrador-0.0.1-SNAPSHOT.jar
 ```
 Depois, execute o seguinte comando para preparar o banco:
 ```shell
-./Doc/requisitos/setup_req02.sh
+./Doc/requisitos/setup.sh
 ```
 
 ### Autenticar o usuário

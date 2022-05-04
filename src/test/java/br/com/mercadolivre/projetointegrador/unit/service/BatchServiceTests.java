@@ -15,6 +15,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
@@ -175,6 +176,28 @@ public class BatchServiceTests {
   }
 
   @Test
+  public void shouldCallFindBatchByProductAndSection() {
+    List<Batch> expectedBatch = List.of(new Batch());
+    Mockito.when(
+            batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(
+                Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+        .thenReturn(expectedBatch);
+
+    Product productParam = new Product();
+    Section sectionParam = new Section();
+    Sort sort = Sort.by(Sort.Direction.ASC, "some");
+    List<Batch> result =
+        batchService.findBatchesByProductAndSection(productParam, sectionParam, sort);
+
+    Mockito.verify(batchRepository, Mockito.times(1))
+        .findBatchByProductAndSectionAndDueDateGreaterThan(
+            Mockito.eq(productParam),
+            Mockito.eq(sectionParam),
+            Mockito.eq(sort),
+            Mockito.any(LocalDate.class));
+    Assertions.assertEquals(expectedBatch, result);
+  }
+
   @DisplayName("Given a seller id, should return all relate batches")
   public void shouldReturnListOfBatches() {
     List<Batch> batchList = WarehouseTestUtils.getBatch();

@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.marketplace.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class AdBatch {
 
   @Id
@@ -21,5 +23,5 @@ public class AdBatch {
   private Ad ad;
 
   @Column(name = "batch_id")
-  private Long batchId;
+  private Integer batchId;
 }

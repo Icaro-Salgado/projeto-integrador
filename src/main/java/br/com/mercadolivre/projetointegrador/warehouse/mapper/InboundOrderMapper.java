@@ -45,7 +45,7 @@ public class InboundOrderMapper {
                       .seller(seller)
                       .price(dtoBatch.getPrice())
                       .order_number(inboundOrderDTO.getOrderNumber())
-                      .batchNumber(dtoBatch.getBatch_number())
+                      .batchNumber(dtoBatch.getBatchNumber())
                       .quantity(dtoBatch.getQuantity())
                       .manufacturing_datetime(dtoBatch.getManufacturing_datetime())
                       .dueDate(dtoBatch.getDue_date())

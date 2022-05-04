@@ -49,7 +49,6 @@ curl -X POST http://localhost:8080/api/v1/auth -H "Content-Type: application/jso
   "password": "123456"
 }'
 ```
-Nota: Nas próximas requisições, feita a autenticação acima, seu _buyerId_ será 2.
 ## Preparando o ambiente para testar o requisito 04
 
 ### Listando a localidade(Armazén) e o estoque total de um produto
