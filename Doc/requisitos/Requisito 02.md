@@ -97,5 +97,5 @@ curl http://localhost:8080/api/v1/customers/marketplace/purchases/{id} -H "Autho
 
 ### Alterando status da compra
 ```bash
-curl -X PUT http://localhost:8080/api/v1/customers/marketplace/purchases/{purchaseId} -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json"
+curl -X PUT http://localhost:8080/api/v1/customers/marketplace/purchases/{buyerId}/{purchaseId} -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json"
 ```
