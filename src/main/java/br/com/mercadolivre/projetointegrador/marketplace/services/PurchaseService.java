@@ -4,14 +4,14 @@ import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseProductResponseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseResponseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.enums.PurchaseStatusCodeEnum;
+import br.com.mercadolivre.projetointegrador.marketplace.exceptions.OutOfStockException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.UnauthorizedException;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
-import br.com.mercadolivre.projetointegrador.marketplace.model.AdPurchase;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
+import br.com.mercadolivre.projetointegrador.marketplace.model.*;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.AdBatchesRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdPurchaseRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.PurchaseRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.service.BatchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,9 @@ import java.util.stream.Collectors;
 public class PurchaseService {
 
   AdService adService;
+  BatchService batchService;
   CartService cartService;
+  AdBatchesRepository adBatchesRepository;
   AdPurchaseRepository adPurchaseRepository;
   PurchaseRepository purchaseRepository;
 
@@ -37,7 +39,7 @@ public class PurchaseService {
       rollbackFor = Exception.class,
       propagation = Propagation.REQUIRED,
       isolation = Isolation.SERIALIZABLE)
-  public void createPurchase(Long buyerId) throws NotFoundException, JsonProcessingException {
+  public void createPurchase(Long buyerId) throws NotFoundException, JsonProcessingException, OutOfStockException {
     Cart cart = cartService.getCart(buyerId);
 
     Purchase purchase = new Purchase();
@@ -49,6 +51,9 @@ public class PurchaseService {
 
     for (CartProductDTO product : cart.getProducts()) {
       Ad ad = adService.findAdById(product.getProductId());
+      adService.reduceAdQuantity(product.getProductId(), product.getQuantity());
+      List<Integer> batchesIds = adBatchesRepository.findAllByAd(ad).stream().map(AdBatch::getBatchId).collect(Collectors.toList());
+      batchService.reduceBatchQuantity(batchesIds, product.getQuantity());
 
       AdPurchase adPurchase = new AdPurchase();
       adPurchase.setAd(ad);

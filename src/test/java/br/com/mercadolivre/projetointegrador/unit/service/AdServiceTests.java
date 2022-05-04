@@ -8,6 +8,8 @@ import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository
 import br.com.mercadolivre.projetointegrador.marketplace.services.AdService;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,9 @@ public class AdServiceTests {
 
   @Mock AdBatchesRepository adBatchesRepository;
 
+  @Mock
+  BatchRepository batchRepository;
+
   @InjectMocks AdService adService;
 
   @Test
@@ -35,20 +40,18 @@ public class AdServiceTests {
       "Given valid values with three batches_ids, when call adService.createAd, then should call"
           + " adRepository one time and adBatchesRespository three times.")
   public void testCreateAd() {
-    Long[] batchesIds = new Long[] {1L, 2L, 3L};
+    Integer[] batchesIds = new Integer[] {1, 2, 3};
     CreateOrUpdateAdDTO createAdDTO = new CreateOrUpdateAdDTO();
     createAdDTO.setBatchesId(List.of(batchesIds));
     createAdDTO.setCategory(CategoryEnum.FS);
     createAdDTO.setPrice(BigDecimal.valueOf(9.90));
     createAdDTO.setDiscount(5);
-    createAdDTO.setQuantity(999);
 
     adService.createAd(1L, createAdDTO);
 
     Ad ad = new Ad();
     ad.setSellerId(1L);
     ad.setName(createAdDTO.getName());
-    ad.setQuantity(createAdDTO.getQuantity());
     ad.setPrice(createAdDTO.getPrice());
     ad.setDiscount(createAdDTO.getDiscount());
     ad.setCategory(createAdDTO.getCategory());

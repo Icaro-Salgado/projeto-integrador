@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,25 @@ public class BatchService {
       throw new NotFoundException("Lote não encontrado");
     }
     return optionalBatch.get();
+  }
+
+  public void reduceBatchQuantity(List<Integer> batchesIds, Integer quantity) {
+    List<Batch> batches = batchRepository.findAllByBatchNumberIn(batchesIds);
+    batches.sort(Comparator.comparing(Batch::getDueDate));
+
+    final int[] quantityCopy = {quantity};
+    batches.forEach(b -> {
+      int result = b.getQuantity() - quantityCopy[0];
+      if (result < 0) {
+        quantityCopy[0] = Math.abs(result);
+        b.setQuantity(0);
+      } else {
+        quantityCopy[0] = 0;
+        b.setQuantity(result);
+      }
+    });
+
+    batchRepository.saveAll(batches);
   }
 
   public void updateBatch(Long id, Batch updatedBatch) throws NotFoundException {

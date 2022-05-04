@@ -17,7 +17,7 @@ import java.util.List;
 public class CreateOrUpdateAdDTO {
 
   @NotEmpty(message = "O produto deve pertencer a pelo menos um lote.")
-  private List<Long> batchesId;
+  private List<Integer> batchesId;
 
   @NotEmpty(message = "O campo nome deve ser preenchido.")
   private String name;

@@ -2,6 +2,7 @@ package br.com.mercadolivre.projetointegrador.marketplace.controllers;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseResponseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
+import br.com.mercadolivre.projetointegrador.marketplace.exceptions.OutOfStockException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.UnauthorizedException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
 import br.com.mercadolivre.projetointegrador.marketplace.services.CartService;
@@ -44,7 +45,7 @@ public class PurchaseController implements SecuredMarketplaceRestController {
   @PostMapping
   public ResponseEntity<Void> createPurchase(
       Authentication authentication, UriComponentsBuilder uriBuilder)
-      throws NotFoundException, JsonProcessingException {
+          throws NotFoundException, JsonProcessingException, OutOfStockException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
 
     purchaseService.createPurchase(requestUser.getId());
