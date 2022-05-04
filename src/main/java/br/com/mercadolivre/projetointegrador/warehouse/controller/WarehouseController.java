@@ -126,7 +126,7 @@ public class WarehouseController {
 
     List<Batch> batches =
         warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
-    return batchAssembler.toCreatedResponse(batches);
+    return batchAssembler.toRespondOk(batches);
   }
 
   @Operation(
