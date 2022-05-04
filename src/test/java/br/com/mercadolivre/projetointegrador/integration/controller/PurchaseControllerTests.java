@@ -3,7 +3,6 @@ package br.com.mercadolivre.projetointegrador.integration.controller;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.model.AdPurchase;
-import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Purchase;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdPurchaseRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository;
@@ -45,7 +44,6 @@ public class PurchaseControllerTests {
   @Autowired private AdPurchaseRepository adPurchaseRepository;
   @Autowired private IntegrationTestUtils integrationTestUtils;
   ObjectMapper objectMapper = new ObjectMapper();
-  Ad ad = new Ad();
 
   @BeforeEach
   public void createPurchase() {
@@ -68,7 +66,7 @@ public class PurchaseControllerTests {
   @DisplayName("PurchaseController - POST - /api/v1/marketplace/purchases")
   public void testCreatePurchase() throws Exception {
 
-    Cart cart = integrationTestUtils.createCart();
+    integrationTestUtils.createCart();
 
     List<CreatePurchaseDTO> purchases = integrationTestUtils.createPurchases();
 
@@ -98,5 +96,19 @@ public class PurchaseControllerTests {
     mockMvc
       .perform(MockMvcRequestBuilders.put(PURCHASE_URL + "/1/1"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value("FINALIZADO"));
+  }
+
+  @Test
+  @DisplayName("PurchaseController - NotFoundException")
+  public void testPurchaseNotFound() throws Exception {
+
+    List<CreatePurchaseDTO> purchases = integrationTestUtils.createPurchases();
+
+    mockMvc
+      .perform(
+        MockMvcRequestBuilders.post(PURCHASE_URL)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(objectMapper.writeValueAsString(purchases)))
+      .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }
