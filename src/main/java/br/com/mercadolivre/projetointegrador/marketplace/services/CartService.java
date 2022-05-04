@@ -34,6 +34,10 @@ public class CartService {
     return objectMapper.readValue(cartAsString, Cart.class);
   }
 
+  public void clearCart(Long id) {
+    redisRepository.del(String.valueOf(id));
+  }
+
   private BigDecimal totalPrice(Cart cart) {
     BigDecimal total = BigDecimal.ZERO;
     for (CartProductDTO product : cart.getProducts()) {
