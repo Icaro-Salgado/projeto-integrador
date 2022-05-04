@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "96f37bbe-f110-4882-bcc0-5ed6318f327c",
+		"_postman_id": "4cfc9731-cdd9-443c-8b76-d7868e40c576",
 		"name": "Projeto integrador",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 8,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n        \n    ]\n}",
+							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 7,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-11-01\"\n        }\n        \n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -218,6 +218,39 @@
 								"batches",
 								"ad",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[WAREHOUSE] - Get batch stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/warehouse/fresh-products/list?product=1&sort=F",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"warehouse",
+								"fresh-products",
+								"list"
+							],
+							"query": [
+								{
+									"key": "product",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "F"
+								}
 							]
 						}
 					},

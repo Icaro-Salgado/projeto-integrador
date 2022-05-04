@@ -26,4 +26,10 @@ public class Product {
   @Column private CategoryEnum category;
 
   @Column @CreatedDate private Date created_at;
+
+  public Product(String name, CategoryEnum category, Date created_at) {
+    this.name = name;
+    this.category = category;
+    this.created_at = created_at;
+  }
 }

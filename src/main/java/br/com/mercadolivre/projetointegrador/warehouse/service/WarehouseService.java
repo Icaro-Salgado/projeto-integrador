@@ -1,15 +1,17 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.SectionNotFoundException;
+import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.WarehouseNotFoundException;
-import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.BatchDuplicatedValidator;
 import br.com.mercadolivre.projetointegrador.warehouse.service.validators.WarehouseValidatorExecutor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class WarehouseService {
   private final BatchService batchService;
   private final BatchRepository batchRepository;
   private final WarehouseValidatorExecutor warehouseValidatorExecutor;
+  private final SectionRepository sectionRepository;
+  private final ProductService productService;
 
   public Warehouse createWarehouse(Warehouse warehouse) {
     return warehouseRepository.save(warehouse);
@@ -57,5 +61,20 @@ public class WarehouseService {
       addedBatches.add(batchService.updateBatchByBatchNumber(batch));
     }
     return addedBatches;
+  }
+
+  public List<Batch> findProductOnManagerSection(
+      Long managerId, Long productId, SortTypeEnum sortType) throws RuntimeException {
+    Section managerSection =
+        sectionRepository
+            .findByManagerId(managerId)
+            .orElseThrow(
+                (() ->
+                    new SectionNotFoundException(
+                        "Não foi encontrada nenhuma seção vinculada ao usuário")));
+
+    Product product = productService.findById(productId);
+    return batchService.findBatchesByProductAndSection(
+        product, managerSection, Sort.by(Sort.Direction.ASC, sortType.field));
   }
 }
