@@ -243,4 +243,51 @@ public class WarehouseControllerTests {
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
   }
+
+  @Test
+  @WithMockCustomUser
+  public void shouldListDueDateBatch() throws Exception {
+    Batch batch = integrationTestUtils.dueDateFiveDays();
+
+    mockMvc
+            .perform(
+                    MockMvcRequestBuilders.get(
+                            SECTION_URL.concat(
+                                    "/fresh-products/duedate-batches?numb_days=10&category="
+                                            + batch.getProduct().getCategory() + "&order=ASC"))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+  }
+
+  @Test
+  @WithMockCustomUser
+  public void shouldFailListDueDateBatch() throws Exception {
+    Batch batch = integrationTestUtils.dueDateFifteenDays();
+
+    mockMvc
+            .perform(
+                    MockMvcRequestBuilders.get(
+                            SECTION_URL.concat(
+                                    "/fresh-products/duedate-batches?numb_days=10&category="
+                                            + batch.getProduct().getCategory() + "&order=ASC"))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+  }
+
+  @Test
+  @WithMockCustomUser
+  public void shouldFailListDueDateBatchByCategory() throws Exception {
+    Batch batch = integrationTestUtils.dueDateFiveDays();
+
+    mockMvc
+            .perform(
+                    MockMvcRequestBuilders.get(
+                            SECTION_URL.concat(
+                                    "/fresh-products/duedate-batches?numb_days=10&category=FF&order=ASC"))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+  }
 }

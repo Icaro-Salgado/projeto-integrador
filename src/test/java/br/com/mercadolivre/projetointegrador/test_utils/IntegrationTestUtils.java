@@ -109,10 +109,37 @@ public class IntegrationTestUtils {
             .quantity(10)
             .dueDate(LocalDate.now().plusDays(10l))
             .build();
-
     return batchRepository.save(batch);
   }
 
+  public Batch dueDateFiveDays() {
+    Batch batch =
+            Batch.builder()
+                    .product(createProduct())
+                    .section(createSection())
+                    .seller_id(1L)
+                    .price(BigDecimal.TEN)
+                    .order_number(123)
+                    .batchNumber(9595)
+                    .quantity(10)
+                    .dueDate(LocalDate.now().plusDays(5l))
+                    .build();
+    return batchRepository.save(batch);
+  }
+  public Batch dueDateFifteenDays() {
+    Batch batch =
+            Batch.builder()
+                    .product(createProduct())
+                    .section(createSection())
+                    .seller_id(1L)
+                    .price(BigDecimal.TEN)
+                    .order_number(123)
+                    .batchNumber(9595)
+                    .quantity(10)
+                    .dueDate(LocalDate.now().plusDays(15l))
+                    .build();
+    return batchRepository.save(batch);
+  }
   public List<Batch> createMultipleBatchesOnSameWarehouse() {
 
     Random random = new Random();

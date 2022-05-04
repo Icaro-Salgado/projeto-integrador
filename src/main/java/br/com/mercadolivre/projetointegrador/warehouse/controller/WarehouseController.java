@@ -162,7 +162,7 @@ public class WarehouseController {
 
     List<Batch> batches =
         warehouseService.dueDateBatchesByCategory(Long.parseLong(numberOfDays), category, order);
-    return batchAssembler.toCreatedResponse(batches);
+    return batchAssembler.toRespondOk(batches);
   }
 
   @GetMapping("/fresh-products/list")
