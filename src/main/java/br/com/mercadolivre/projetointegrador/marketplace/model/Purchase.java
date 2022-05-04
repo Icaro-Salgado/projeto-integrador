@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -20,4 +21,9 @@ public class Purchase {
 
   @Column(name = "buyer_id")
   private Long buyerId;
+
+  @Column(name = "status_code")
+  private String statusCode;
+
+  private BigDecimal total;
 }
