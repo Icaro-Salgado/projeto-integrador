@@ -3,7 +3,9 @@ package br.com.mercadolivre.projetointegrador.marketplace.services;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseProductResponseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseResponseDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.enums.PurchaseStatusCodeEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
+import br.com.mercadolivre.projetointegrador.marketplace.exceptions.UnauthorizedException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.model.AdPurchase;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
@@ -42,7 +44,7 @@ public class PurchaseService {
     List<AdPurchase> adPurchases = new ArrayList<>();
 
     purchase.setBuyerId(buyerId);
-    purchase.setStatusCode("ABERTO");
+    purchase.setStatusCode(PurchaseStatusCodeEnum.ABERTO);
     purchase.setTotal(cart.getTotalPrice());
 
     for (CartProductDTO product : cart.getProducts()) {
@@ -61,32 +63,55 @@ public class PurchaseService {
     purchaseRepository.save(purchase);
   }
 
+  private List<PurchaseProductResponseDTO> getProducts(Purchase purchase) {
+    List<AdPurchase> adPurchases = adPurchaseRepository.findAllByPurchase(purchase);
+
+    return adPurchases.stream()
+        .map(
+            p -> {
+              Ad ad = p.getAd();
+              return new PurchaseProductResponseDTO(
+                  ad.getName(), ad.getPrice(), p.getQuantity(), ad.getCategory());
+            })
+        .collect(Collectors.toList());
+  }
+
   public List<PurchaseResponseDTO> listAllPurchases(Long customerId) {
     List<Purchase> purchases = purchaseRepository.findAllByBuyerId(customerId);
     List<PurchaseResponseDTO> purchasesResponse = new ArrayList<>();
 
     for (Purchase purchase : purchases) {
-      List<AdPurchase> adPurchases = adPurchaseRepository.findAllByPurchase(purchase);
+      List<PurchaseProductResponseDTO> products = getProducts(purchase);
 
-      List<PurchaseProductResponseDTO> products =
-          adPurchases.stream()
-              .map(
-                  p -> {
-                    Ad ad = p.getAd();
-                    return new PurchaseProductResponseDTO(
-                        ad.getName(), ad.getPrice(), p.getQuantity(), ad.getCategory());
-                  })
-              .collect(Collectors.toList());
-
-      PurchaseResponseDTO purchaseResponse = new PurchaseResponseDTO();
-      purchaseResponse.setPurchaseId(purchase.getId());
-      purchaseResponse.setStatusCode(purchase.getStatusCode());
+      PurchaseResponseDTO purchaseResponse = new PurchaseResponseDTO().modelToDTO(purchase);
       purchaseResponse.setProducts(products);
-      purchaseResponse.setTotal(purchase.getTotal());
 
       purchasesResponse.add(purchaseResponse);
     }
 
     return purchasesResponse;
+  }
+
+  public Purchase findPurchaseById(Long id) throws NotFoundException {
+    Purchase purchase = purchaseRepository.findById(id).orElse(null);
+    if (purchase == null) {
+      throw new NotFoundException("Compra não encontrada.");
+    }
+    return purchase;
+  }
+
+  public PurchaseResponseDTO changeStatus(Long purchaseId, Long buyerId)
+      throws NotFoundException, UnauthorizedException {
+    Purchase purchase = findPurchaseById(purchaseId);
+    if (buyerId != purchase.getBuyerId()) {
+      throw new UnauthorizedException("Essa compra não pertence ao usário indicado.");
+    }
+    purchase.setStatusCode(PurchaseStatusCodeEnum.FINALIZADO);
+    purchaseRepository.save(purchase);
+
+    PurchaseResponseDTO purchaseResponse = new PurchaseResponseDTO().modelToDTO(purchase);
+    purchaseResponse.setProducts(getProducts(purchase));
+
+    return purchaseResponse;
   }
 }
