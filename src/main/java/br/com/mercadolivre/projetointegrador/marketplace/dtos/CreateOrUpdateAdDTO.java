@@ -22,7 +22,6 @@ public class CreateOrUpdateAdDTO {
   @NotEmpty(message = "O campo nome deve ser preenchido.")
   private String name;
 
-  @Min(value = 1, message = "Deve conter ao menos um produto para ser vendido.")
   private int quantity;
 
   private BigDecimal price;
