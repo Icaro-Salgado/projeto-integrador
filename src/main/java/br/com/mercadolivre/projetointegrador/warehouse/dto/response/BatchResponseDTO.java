@@ -1,7 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.dto.response;
 
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.view.BatchView;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -16,33 +16,26 @@ import java.util.Map;
 @NoArgsConstructor
 public class BatchResponseDTO {
 
+  @JsonView(BatchView.BatchAd.class)
   private Long id;
 
-  private Product product;
+  @JsonView(BatchView.BatchAd.class)
+  private ProductResponseDTO product;
+
   private Long section_id;
-  private Long seller_id;
+  private UserResponseDTO seller;
+
+  @JsonView(BatchView.BatchAd.class)
   private BigDecimal price;
+
   private Integer order_number;
   private Integer batchNumber;
+
+  @JsonView(BatchView.BatchAd.class)
   private Integer quantity;
+
   private LocalDate manufacturing_datetime;
-  private LocalDate due_date;
+  private LocalDate dueDate;
   private LocalDate created_at;
-
   private List<Map<String, String>> links;
-
-  public static BatchResponseDTO fromModel(Batch batch) {
-    return BatchResponseDTO.builder()
-        .product(batch.getProduct())
-        .section_id(batch.getSection().getId())
-        .seller_id(batch.getSeller_id())
-        .price(batch.getPrice())
-        .order_number(batch.getOrder_number())
-        .batchNumber(batch.getBatchNumber())
-        .quantity(batch.getQuantity())
-        .manufacturing_datetime(batch.getManufacturing_datetime())
-        .due_date(batch.getDue_date())
-        .created_at(batch.getCreated_at())
-        .build();
-  }
 }
