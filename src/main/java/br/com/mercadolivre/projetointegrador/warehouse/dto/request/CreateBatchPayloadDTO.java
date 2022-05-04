@@ -3,9 +3,7 @@ package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
 
 import javax.validation.constraints.DecimalMin;
@@ -25,11 +23,12 @@ public class CreateBatchPayloadDTO {
   @NotNull private Long product_id;
   @NotNull private Long seller_id;
 
-  @NotNull @DecimalMin(value = "0.0")
-  @Digits (integer = 10, fraction = 2)
-  private BigDecimal price;
   @NotNull
-  private Integer batchNumber;
+  @DecimalMin(value = "0.0")
+  @Digits(integer = 10, fraction = 2)
+  private BigDecimal price;
+
+  @NotNull private Integer batchNumber;
 
   @NotNull
   @Min(1)

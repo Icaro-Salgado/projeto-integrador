@@ -76,7 +76,8 @@ public class InboundOrderControllerWarehouse implements SecuredWarehouseRestCont
       })
   @PostMapping
   public ResponseEntity<List<BatchResponseDTO>> addInboundOrder(
-          @RequestBody @Valid InboundOrderDTO dto, Authentication authentication) throws NotFoundException {
+      @RequestBody @Valid InboundOrderDTO dto, Authentication authentication)
+      throws NotFoundException {
     AppUser requestUser = (AppUser) authentication.getPrincipal();
     InboundOrder inboundOrderToSave = inboundOrderMapper.toModel(dto);
     inboundOrderToSave.setManagerId(requestUser.getId());

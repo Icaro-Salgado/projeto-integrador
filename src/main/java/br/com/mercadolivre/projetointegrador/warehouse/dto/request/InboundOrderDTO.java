@@ -14,13 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class InboundOrderDTO {
 
-  @NotNull
-  private Integer orderNumber;
-  @NotNull
-  private Long warehouseCode;
-  @NotNull
-  private Long sectionCode;
-  @NotEmpty
-  @Valid
-  private List<CreateBatchPayloadDTO> batches;
+  @NotNull private Integer orderNumber;
+  @NotNull private Long warehouseCode;
+  @NotNull private Long sectionCode;
+  @NotEmpty @Valid private List<CreateBatchPayloadDTO> batches;
 }

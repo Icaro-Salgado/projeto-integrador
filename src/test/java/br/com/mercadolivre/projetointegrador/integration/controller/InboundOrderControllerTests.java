@@ -56,14 +56,14 @@ public class InboundOrderControllerTests {
 
     CreateBatchPayloadDTO batchMock =
         CreateBatchPayloadDTO.builder()
-                .seller_id(1L)
-                .quantity(2)
-                .batchNumber(new Random().nextInt())
-                .product_id(productMock.getId())
-                .due_date(LocalDate.now().plusMonths(10))
-                .manufacturing_datetime(LocalDate.now())
-                .price(BigDecimal.valueOf(199.99))
-                .build();
+            .seller_id(1L)
+            .quantity(2)
+            .batchNumber(new Random().nextInt())
+            .product_id(productMock.getId())
+            .due_date(LocalDate.now().plusMonths(10))
+            .manufacturing_datetime(LocalDate.now())
+            .price(BigDecimal.valueOf(199.99))
+            .build();
 
     InboundOrderDTO objPayload =
         InboundOrderDTO.builder()
