@@ -12,7 +12,9 @@ import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.model.UserRole;
 import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
 import br.com.mercadolivre.projetointegrador.security.repository.RolesRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductInWarehouseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -90,7 +92,7 @@ public class IntegrationTestUtils {
   }
 
   public Product createProduct() {
-    Product productMock = new Product("teste", CategoryEnum.FS, null);
+    Product productMock = new Product("teste" + new Random().nextInt(), CategoryEnum.FS, null);
     return productRepository.save(productMock);
   }
 
@@ -146,6 +148,22 @@ public class IntegrationTestUtils {
             .order_number(123)
             .batchNumber(9595)
             .quantity(10)
+            .build();
+
+    return batchRepository.save(batch);
+  }
+
+  public Batch createBatch(Product product) {
+    Batch batch =
+        Batch.builder()
+            .product(product)
+            .section(createSection())
+            .seller(createUser())
+            .price(BigDecimal.TEN)
+            .order_number(123)
+            .batchNumber(9595)
+            .quantity(10)
+            .dueDate(LocalDate.now().plusWeeks(10))
             .build();
 
     return batchRepository.save(batch);
@@ -223,5 +241,38 @@ public class IntegrationTestUtils {
     List<CreatePurchaseDTO> purchases = List.of(purchase);
 
     return purchases;
+  }
+
+  public ErrorDTO createProductNotFoundError(Product product) {
+    ErrorDTO errorDTO = new ErrorDTO();
+
+    errorDTO.setError("Não encontrado");
+    errorDTO.setMessage("Produto " + product.getId() + " não encontrado.");
+
+    return errorDTO;
+  }
+
+  public ProductInWarehouse createProductInWarehouse(Product product) {
+    ProductInWarehouse productInWarehouse = new ProductInWarehouse();
+    Batch batch = createBatch(product);
+    Warehouse warehouse = batch.getSection().getWarehouse();
+
+    productInWarehouse.setWarehouseId(warehouse.getId());
+    productInWarehouse.setProductQty(batch.getQuantity());
+
+    return productInWarehouse;
+  }
+
+  public ProductInWarehouseDTO createProductsInWarehouse() {
+    Product product = createProduct();
+
+    List<ProductInWarehouse> productInWarehouseList = new ArrayList<>();
+    productInWarehouseList.add(createProductInWarehouse(product));
+
+    ProductInWarehouseDTO dto = new ProductInWarehouseDTO();
+    dto.setProductId(product.getId());
+    dto.setWarehouses(productInWarehouseList);
+
+    return dto;
   }
 }

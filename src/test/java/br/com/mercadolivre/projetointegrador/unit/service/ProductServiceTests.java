@@ -1,9 +1,12 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
+import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.ProductInWarehouses;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import org.junit.jupiter.api.Assertions;
@@ -19,13 +22,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTests {
 
   @Mock private ProductRepository productRepository;
+
+  @Mock private BatchRepository batchRepository;
 
   @InjectMocks private ProductService productService;
 
@@ -63,6 +67,32 @@ public class ProductServiceTests {
     Product result = productService.findById(1L);
 
     assertEquals(newTestProduct, result);
+  }
+
+  @Test
+  @DisplayName(
+      "Given an existing product, when call find product in warehouse method, "
+          + "then return a exact product and all their locations(warehouses)")
+  public void shouldReturnAListOfWarehousesThatContainASpecificProduct() throws NotFoundException {
+
+    ProductInWarehouses expectedProduct = WarehouseTestUtils.getProductInWarehouse();
+    Mockito.when(batchRepository.findAllByProductId(1L)).thenReturn(WarehouseTestUtils.getBatch());
+
+    ProductInWarehouses founded = productService.findProductInWarehouse(1L);
+
+    assertEquals(expectedProduct.getProductId(), founded.getProductId());
+  }
+
+  @Test
+  @DisplayName(
+      "Given a non existing product, when a call find product in warehouse method, the throw an"
+          + " error")
+  public void shouldThrownNotFoundExceptionWhenTheProductDoesExistsInWarehouse() {
+    Exception thrown =
+        Assertions.assertThrows(
+            NotFoundException.class, () -> productService.findProductInWarehouse(10L));
+
+    Assertions.assertEquals("Produto " + 10 + " não encontrado.", thrown.getMessage());
   }
 
   @Test

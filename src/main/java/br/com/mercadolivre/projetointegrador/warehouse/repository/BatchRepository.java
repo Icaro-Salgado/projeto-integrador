@@ -20,6 +20,8 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 
   List<Batch> findAllBySection_IdIn(List<Long> ids);
 
+  List<Batch> findAllByProductId(Long id);
+
   List<Batch> findBatchByProductAndSection(Product product, Section section);
 
   List<Batch> findBatchByProductAndSectionAndDueDateGreaterThan(
