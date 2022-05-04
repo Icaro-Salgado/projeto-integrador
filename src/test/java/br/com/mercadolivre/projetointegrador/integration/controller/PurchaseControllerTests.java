@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -32,6 +33,7 @@ import static org.hamcrest.Matchers.hasSize;
 @ActiveProfiles(profiles = "test")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @WithMockCustomerUser
 public class PurchaseControllerTests {
 
@@ -42,26 +44,9 @@ public class PurchaseControllerTests {
   @Autowired private AdPurchaseRepository adPurchaseRepository;
   @Autowired private IntegrationTestUtils integrationTestUtils;
   ObjectMapper objectMapper = new ObjectMapper();
-  Ad ad = new Ad();
 
-  @Test
-  @DisplayName("PurchaseController - POST - /api/v1/marketplace/purchases")
-  public void testCreatePurchase() throws Exception {
-
-    List<CreatePurchaseDTO> purchases = integrationTestUtils.createPurchases();
-
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.post(PURCHASE_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(purchases)))
-        .andExpect(MockMvcResultMatchers.status().isCreated());
-  }
-
-  @Test
-  @DisplayName("PurchaseController - GET - /api/v1/customers/marketplace/purchases")
-  public void testListCustomerPurchases() throws Exception {
-
+  @BeforeEach
+  public void createPurchase() {
     Ad ad = integrationTestUtils.createAdDTO().DTOtoModel();
     adRepository.save(ad);
 
@@ -75,11 +60,56 @@ public class PurchaseControllerTests {
     adPurchase.setQuantity(10);
     adPurchase.setPurchase(purchase);
     adPurchaseRepository.save(adPurchase);
+  }
+
+  @Test
+  @DisplayName("PurchaseController - POST - /api/v1/marketplace/purchases")
+  public void testCreatePurchase() throws Exception {
+
+    integrationTestUtils.createCart();
+
+    List<CreatePurchaseDTO> purchases = integrationTestUtils.createPurchases();
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(PURCHASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(purchases)))
+        .andExpect(MockMvcResultMatchers.status().isCreated());
+  }
+
+  @Test
+  @DisplayName("PurchaseController - GET - /api/v1/customers/marketplace/purchases/{id}")
+  public void testListCustomerPurchases() throws Exception {
 
     mockMvc
         .perform(MockMvcRequestBuilders.get(PURCHASE_URL + "/1"))
         .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].products[0].quantity").value(10))
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].products[0].name").value("Fake Ad"));
+  }
+
+  @Test
+  @DisplayName(
+      "PurchaseController - PUT - /api/v1/customer/marketplace/purchases/{buyerId}/{purchaseId}")
+  public void testUpdatePurchaseStatus() throws Exception {
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.put(PURCHASE_URL + "/1/1"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value("FINALIZADO"));
+  }
+
+  @Test
+  @DisplayName("PurchaseController - NotFoundException")
+  public void testPurchaseNotFound() throws Exception {
+
+    List<CreatePurchaseDTO> purchases = integrationTestUtils.createPurchases();
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(PURCHASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(purchases)))
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }

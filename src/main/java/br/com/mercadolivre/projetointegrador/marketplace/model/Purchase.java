@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.marketplace.model;
 
+import br.com.mercadolivre.projetointegrador.marketplace.enums.PurchaseStatusCodeEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class Purchase {
   private Long buyerId;
 
   @Column(name = "status_code")
-  private String statusCode;
+  private PurchaseStatusCodeEnum statusCode;
 
   private BigDecimal total;
 }

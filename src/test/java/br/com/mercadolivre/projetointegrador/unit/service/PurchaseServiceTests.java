@@ -1,7 +1,10 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseResponseDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.enums.PurchaseStatusCodeEnum;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
+import br.com.mercadolivre.projetointegrador.marketplace.exceptions.UnauthorizedException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.model.AdPurchase;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
@@ -12,6 +15,7 @@ import br.com.mercadolivre.projetointegrador.marketplace.services.AdService;
 import br.com.mercadolivre.projetointegrador.marketplace.services.CartService;
 import br.com.mercadolivre.projetointegrador.marketplace.services.PurchaseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +56,7 @@ public class PurchaseServiceTests {
 
     Purchase purchase = new Purchase();
     purchase.setBuyerId(10L);
-    purchase.setStatusCode("ABERTO");
+    purchase.setStatusCode(PurchaseStatusCodeEnum.ABERTO);
     purchase.setTotal(mockCart.getTotalPrice());
 
     List<AdPurchase> adPurchases = new ArrayList<>();
@@ -85,7 +89,7 @@ public class PurchaseServiceTests {
   public void listPurchases() {
     Purchase purchase = new Purchase();
     purchase.setBuyerId(10L);
-    purchase.setStatusCode("ABERTO");
+    purchase.setStatusCode(PurchaseStatusCodeEnum.ABERTO);
     purchase.setTotal(BigDecimal.valueOf(11.90));
 
     Mockito.when(purchaseRepository.findAllByBuyerId(Mockito.any())).thenReturn(List.of(purchase));
@@ -96,5 +100,23 @@ public class PurchaseServiceTests {
 
     Mockito.verify(purchaseRepository, Mockito.times(1)).findAllByBuyerId(10L);
     Mockito.verify(adPurchaseRepository, Mockito.times(1)).findAllByPurchase(purchase);
+  }
+
+  @Test
+  @DisplayName(
+      "Given a new status code, when call changeStatus, then the statusCode should be updated.")
+  public void shouldUpdateStatusCode() throws NotFoundException, UnauthorizedException {
+
+    Purchase purchase = new Purchase();
+    purchase.setBuyerId(10L);
+    purchase.setStatusCode(PurchaseStatusCodeEnum.ABERTO);
+    purchase.setTotal(BigDecimal.valueOf(11.90));
+
+    Mockito.when(purchaseRepository.findById(Mockito.any()))
+        .thenReturn(java.util.Optional.of(purchase));
+
+    PurchaseResponseDTO purchaseResponse = purchaseService.changeStatus(1L, 10L);
+
+    Assertions.assertEquals(PurchaseStatusCodeEnum.FINALIZADO, purchaseResponse.getStatusCode());
   }
 }
