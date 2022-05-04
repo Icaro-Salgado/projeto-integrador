@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/fresh-products/categories")
+@RequestMapping("/api/v1/warehouse/fresh-products/categories")
 @Tag(name = "[Warehouse] - Categories")
 public class CategoryController implements SecuredWarehouseRestController {
 

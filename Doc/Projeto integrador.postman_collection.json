@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 11,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-10-01\"\n        }\n        \n    ]\n}",
+							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batch_number\": 8,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-06-01\"\n        }\n        \n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -222,34 +222,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "[WAREHOUSE] - List batch stock",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8080/api/v1/warehouse/fresh-products/list?product=1",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"warehouse",
-								"fresh-products",
-								"list"
-							],
-							"query": [
-								{
-									"key": "product",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			],
 			"auth": {
@@ -346,7 +318,7 @@
 								},
 								{
 									"key": "category",
-									"value": "FS",
+									"value": null,
 									"disabled": true
 								}
 							]
@@ -503,7 +475,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/customers/marketplace/purchases/2",
+							"raw": "localhost:8080/api/v1/customers/marketplace/purchases/1",
 							"host": [
 								"localhost"
 							],
@@ -514,7 +486,7 @@
 								"customers",
 								"marketplace",
 								"purchases",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -523,10 +495,10 @@
 				{
 					"name": "[MARKETPLACE] - Update purchase status by buyer Id and Purchase ID",
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/v1/customers/marketplace/purchases/2/1",
+							"raw": "localhost:8080/api/v1/customers/marketplace/purchases/1/1",
 							"host": [
 								"localhost"
 							],
@@ -537,7 +509,7 @@
 								"customers",
 								"marketplace",
 								"purchases",
-								"2",
+								"1",
 								"1"
 							]
 						}

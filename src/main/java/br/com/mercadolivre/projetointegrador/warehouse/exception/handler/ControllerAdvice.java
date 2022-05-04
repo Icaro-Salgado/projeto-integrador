@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.exception.handler;
 
+import br.com.mercadolivre.projetointegrador.marketplace.exceptions.OutOfStockException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.UnauthorizedException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
@@ -21,7 +22,12 @@ public class ControllerAdvice {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
   }
 
-  @ExceptionHandler(value = {InvalidCategoryException.class, ProductAlreadyExists.class})
+  @ExceptionHandler(
+      value = {
+        InvalidCategoryException.class,
+        ProductAlreadyExists.class,
+        OutOfStockException.class
+      })
   public ResponseEntity<ErrorDTO> badRequestParams(Exception e) {
     ErrorDTO error = new ErrorDTO();
     error.setError("Parâmetros inválidos.");
