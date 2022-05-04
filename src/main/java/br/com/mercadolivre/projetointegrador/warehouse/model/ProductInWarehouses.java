@@ -10,6 +10,6 @@ import java.util.List;
 @Builder
 public class ProductInWarehouses {
 
-   private Long productId;
-   private List<ProductInWarehouse> warehouses;
+  private Long productId;
+  private List<ProductInWarehouse> warehouses;
 }

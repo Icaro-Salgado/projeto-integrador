@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductInWarehouseDTO {
-    private Long productId;
-    List<ProductInWarehouse> warehouses;
-
+  private Long productId;
+  List<ProductInWarehouse> warehouses;
 }

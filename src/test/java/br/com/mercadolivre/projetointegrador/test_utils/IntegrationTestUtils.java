@@ -29,12 +29,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summingInt;
 
 @Component
 @ActiveProfiles(profiles = "test")
@@ -231,32 +228,31 @@ public class IntegrationTestUtils {
     return purchases;
   }
 
-  public ErrorDTO createProductNotFoundError(Product product){
+  public ErrorDTO createProductNotFoundError(Product product) {
     ErrorDTO errorDTO = new ErrorDTO();
 
     errorDTO.setError("Não encontrado");
-    errorDTO.setMessage("Produto " + product.getId() +" não encontrado.");
+    errorDTO.setMessage("Produto " + product.getId() + " não encontrado.");
 
     return errorDTO;
   }
 
-  public ProductInWarehouse createProductInWarehouse(){
-      ProductInWarehouse productInWarehouse = new ProductInWarehouse();
-      Batch batch = createBatch();
-      Warehouse warehouse = batch.getSection().getWarehouse();
+  public ProductInWarehouse createProductInWarehouse() {
+    ProductInWarehouse productInWarehouse = new ProductInWarehouse();
+    Batch batch = createBatch();
+    Warehouse warehouse = batch.getSection().getWarehouse();
 
-      productInWarehouse.setWarehouseId(warehouse.getId());
-      productInWarehouse.setProductQty(batch.getQuantity());
+    productInWarehouse.setWarehouseId(warehouse.getId());
+    productInWarehouse.setProductQty(batch.getQuantity());
 
-      return productInWarehouse;
+    return productInWarehouse;
   }
 
-  public ProductInWarehouseDTO createProductsInWarehouse(){
+  public ProductInWarehouseDTO createProductsInWarehouse() {
     Product product = createProduct();
 
     List<ProductInWarehouse> productInWarehouseList = new ArrayList<>();
     productInWarehouseList.add(createProductInWarehouse());
-
 
     ProductInWarehouseDTO dto = new ProductInWarehouseDTO();
     dto.setProductId(product.getId());

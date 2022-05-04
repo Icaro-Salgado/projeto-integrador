@@ -19,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -69,29 +68,32 @@ public class ProductServiceTests {
 
     assertEquals(newTestProduct, result);
   }
+
   @Test
-  @DisplayName("Given an existing product, when call find product in warehouse method, " +
-          "then return a exact product and all their locations(warehouses)")
-  public void shouldReturnAListOfWarehousesThatContainASpecificProduct() throws NotFoundException{
+  @DisplayName(
+      "Given an existing product, when call find product in warehouse method, "
+          + "then return a exact product and all their locations(warehouses)")
+  public void shouldReturnAListOfWarehousesThatContainASpecificProduct() throws NotFoundException {
 
     ProductInWarehouses expectedProduct = WarehouseTestUtils.getProductInWarehouse();
     Mockito.when(batchRepository.findAllByProductId(1L)).thenReturn(WarehouseTestUtils.getBatch());
 
     ProductInWarehouses founded = productService.findProductInWarehouse(1L);
 
-    assertEquals(expectedProduct.getProductId(),founded.getProductId());
+    assertEquals(expectedProduct.getProductId(), founded.getProductId());
   }
 
-
   @Test
-  @DisplayName("Given a non existing product, when a call find product in warehouse method, the throw an error")
-  public void shouldThrownNotFoundExceptionWhenTheProductDoesExistsInWarehouse(){
+  @DisplayName(
+      "Given a non existing product, when a call find product in warehouse method, the throw an"
+          + " error")
+  public void shouldThrownNotFoundExceptionWhenTheProductDoesExistsInWarehouse() {
     Exception thrown =
-            Assertions.assertThrows(NotFoundException.class, () -> productService.findProductInWarehouse(10L));
+        Assertions.assertThrows(
+            NotFoundException.class, () -> productService.findProductInWarehouse(10L));
 
     Assertions.assertEquals("Produto " + 10 + " não encontrado.", thrown.getMessage());
   }
-
 
   @Test
   @DisplayName(

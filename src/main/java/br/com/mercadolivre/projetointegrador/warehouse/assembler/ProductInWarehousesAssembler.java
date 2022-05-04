@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductInWarehousesAssembler {
-    public ResponseEntity<ProductInWarehouseDTO> toResponse(ProductInWarehouses entity){
-        ProductInWarehouseDTO dto = ProductInWarehouseMapper.INSTANCE.toDTO(entity);
+  public ResponseEntity<ProductInWarehouseDTO> toResponse(ProductInWarehouses entity) {
+    ProductInWarehouseDTO dto = ProductInWarehouseMapper.INSTANCE.toDTO(entity);
 
-        return ResponseEntity.ok(dto);
-    }
+    return ResponseEntity.ok(dto);
+  }
 }

@@ -188,30 +188,32 @@ public class ProductControllerWarehouse implements SecuredWarehouseRestControlle
     return productAssembler.toResponse(products, status);
   }
 
-
-@Operation(summary = "OBTEM TODAS AS LOCALIDADES DE UM PRODUTO", description = "Obtem todas as localidades de um produto informado")
-@ApiResponses(
-    value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Produto encontrado",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ProductInWarehouses.class))
-                    }),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Produto não encontrado",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorDTO.class))
-                    })
-    })
+  @Operation(
+      summary = "OBTEM TODAS AS LOCALIDADES DE UM PRODUTO",
+      description = "Obtem todas as localidades de um produto informado")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Produto encontrado",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ProductInWarehouses.class))
+            }),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Produto não encontrado",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping("/location/{id}")
-  public ResponseEntity<ProductInWarehouseDTO> productInWarehouse(@PathVariable Long id) throws NotFoundException {
-     return productInWarehousesAssembler.toResponse(productService.findProductInWarehouse(id));
+  public ResponseEntity<ProductInWarehouseDTO> productInWarehouse(@PathVariable Long id)
+      throws NotFoundException {
+    return productInWarehousesAssembler.toResponse(productService.findProductInWarehouse(id));
   }
 
   @Operation(

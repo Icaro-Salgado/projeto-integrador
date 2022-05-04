@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface ProductInWarehouseMapper {
-    ProductInWarehouseMapper INSTANCE = Mappers.getMapper(ProductInWarehouseMapper.class);
+  ProductInWarehouseMapper INSTANCE = Mappers.getMapper(ProductInWarehouseMapper.class);
 
-    public ProductInWarehouseDTO toDTO(ProductInWarehouses model);
+  public ProductInWarehouseDTO toDTO(ProductInWarehouses model);
 }

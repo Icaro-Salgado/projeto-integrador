@@ -112,31 +112,24 @@ public class WarehouseTestUtils {
         .build();
   }
 
-  public static ProductInWarehouses getProductInWarehouse(){
+  public static ProductInWarehouses getProductInWarehouse() {
     Product product = new Product(1l, "alface", CategoryEnum.FS, null);
 
-
     List<ProductInWarehouse> productsSum = new ArrayList<>();
-    Map<Long, Integer> productQtyToSum = getBatch().stream()
+    Map<Long, Integer> productQtyToSum =
+        getBatch().stream()
             .collect(
-                    groupingBy(b-> b.getSection().getWarehouse().getId(), summingInt(Batch::getQuantity))
-            );
+                groupingBy(
+                    b -> b.getSection().getWarehouse().getId(), summingInt(Batch::getQuantity)));
 
-    for (Map.Entry<Long,Integer> item:productQtyToSum.entrySet()
-    ) {
+    for (Map.Entry<Long, Integer> item : productQtyToSum.entrySet()) {
       productsSum.add(
-              ProductInWarehouse.builder()
-                      .warehouseId(item.getKey())
-                      .productQty(item.getValue())
-                      .build()
-      );
+          ProductInWarehouse.builder()
+              .warehouseId(item.getKey())
+              .productQty(item.getValue())
+              .build());
     }
 
-    return ProductInWarehouses.builder()
-            .productId(product.getId())
-            .warehouses(productsSum)
-            .build();
+    return ProductInWarehouses.builder().productId(product.getId()).warehouses(productsSum).build();
   }
-
-
 }

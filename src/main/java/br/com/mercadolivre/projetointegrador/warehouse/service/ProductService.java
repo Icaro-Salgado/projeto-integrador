@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
 
@@ -64,32 +63,30 @@ public class ProductService {
     return productRepository.findAllByCategory(category);
   }
 
-  public ProductInWarehouses findProductInWarehouse(Long id) throws NotFoundException{
+  public ProductInWarehouses findProductInWarehouse(Long id) throws NotFoundException {
     List<Batch> batches = batchRepository.findAllByProductId(id);
 
-    if(batches.size() <= 0){
+    if (batches.size() <= 0) {
       throw new NotFoundException("Produto " + id + " não encontrado.");
     }
 
     List<ProductInWarehouse> productsSum = new ArrayList<>();
-    Map<Long, Integer> productQtyToSum = batches.stream()
+    Map<Long, Integer> productQtyToSum =
+        batches.stream()
             .collect(
-                      groupingBy(b-> b.getSection().getWarehouse().getId(), summingInt(Batch::getQuantity))
-            );
+                groupingBy(
+                    b -> b.getSection().getWarehouse().getId(), summingInt(Batch::getQuantity)));
 
-    for (Map.Entry<Long,Integer> item:productQtyToSum.entrySet()
-         ) {
-              productsSum.add(
-                    ProductInWarehouse.builder()
-                            .warehouseId(item.getKey())
-                            .productQty(item.getValue())
-                            .build()
-            );
+    for (Map.Entry<Long, Integer> item : productQtyToSum.entrySet()) {
+      productsSum.add(
+          ProductInWarehouse.builder()
+              .warehouseId(item.getKey())
+              .productQty(item.getValue())
+              .build());
     }
 
     return ProductInWarehouses.builder().productId(id).warehouses(productsSum).build();
   }
-
 
   public void delete(Long id) throws NotFoundException {
     Product product = findById(id);
