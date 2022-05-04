@@ -36,11 +36,11 @@ public class PurchaseController implements SecuredMarketplaceRestController {
   CartService cartService;
 
   @Operation(summary = "SALVA UMA COMPRA", description = "Registra uma compra.")
-  @ApiResponses(value = {
-      @ApiResponse(description = "Compra registrada.", responseCode = "201"),
-      @ApiResponse(description = "Carrinho não encontrado", responseCode = "404")
-    }
-  )
+  @ApiResponses(
+      value = {
+        @ApiResponse(description = "Compra registrada.", responseCode = "201"),
+        @ApiResponse(description = "Carrinho não encontrado", responseCode = "404")
+      })
   @PostMapping
   public ResponseEntity<Void> createPurchase(
       Authentication authentication, UriComponentsBuilder uriBuilder)
@@ -76,19 +76,18 @@ public class PurchaseController implements SecuredMarketplaceRestController {
   }
 
   @Operation(
-    summary = "ALTERA O STATUS DE UMA COMPRA", description = "Modifica o Status da compra com id informado na URL."
-  )
+      summary = "ALTERA O STATUS DE UMA COMPRA",
+      description = "Modifica o Status da compra com id informado na URL.")
   @ApiResponses(
-    value = {
-      @ApiResponse(description = "Compra finalizada", responseCode = "200"),
-      @ApiResponse(description = "Compra não encontrada", responseCode = "404"),
-      @ApiResponse(description = "Não autorizado", responseCode = "403")
-    }
-  )
+      value = {
+        @ApiResponse(description = "Compra finalizada", responseCode = "200"),
+        @ApiResponse(description = "Compra não encontrada", responseCode = "404"),
+        @ApiResponse(description = "Não autorizado", responseCode = "403")
+      })
   @PutMapping("/{buyerId}/{purchaseId}")
   public ResponseEntity<PurchaseResponseDTO> updatePurchaseStatus(
-    @PathVariable Long buyerId,
-    @PathVariable Long purchaseId) throws NotFoundException, UnauthorizedException {
+      @PathVariable Long buyerId, @PathVariable Long purchaseId)
+      throws NotFoundException, UnauthorizedException {
     PurchaseResponseDTO purchaseResponse = purchaseService.changeStatus(purchaseId, buyerId);
     return ResponseEntity.ok(purchaseResponse);
   }

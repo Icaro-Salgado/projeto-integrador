@@ -104,7 +104,7 @@ public class PurchaseServiceTests {
 
   @Test
   @DisplayName(
-    "Given a new status code, when call changeStatus, then the statusCode should be updated.")
+      "Given a new status code, when call changeStatus, then the statusCode should be updated.")
   public void shouldUpdateStatusCode() throws NotFoundException, UnauthorizedException {
 
     Purchase purchase = new Purchase();
@@ -112,7 +112,8 @@ public class PurchaseServiceTests {
     purchase.setStatusCode(PurchaseStatusCodeEnum.ABERTO);
     purchase.setTotal(BigDecimal.valueOf(11.90));
 
-    Mockito.when(purchaseRepository.findById(Mockito.any())).thenReturn(java.util.Optional.of(purchase));
+    Mockito.when(purchaseRepository.findById(Mockito.any()))
+        .thenReturn(java.util.Optional.of(purchase));
 
     PurchaseResponseDTO purchaseResponse = purchaseService.changeStatus(1L, 10L);
 

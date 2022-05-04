@@ -67,13 +67,13 @@ public class PurchaseService {
     List<AdPurchase> adPurchases = adPurchaseRepository.findAllByPurchase(purchase);
 
     return adPurchases.stream()
-      .map(
-        p -> {
-          Ad ad = p.getAd();
-          return new PurchaseProductResponseDTO(
-            ad.getName(), ad.getPrice(), p.getQuantity(), ad.getCategory());
-        })
-      .collect(Collectors.toList());
+        .map(
+            p -> {
+              Ad ad = p.getAd();
+              return new PurchaseProductResponseDTO(
+                  ad.getName(), ad.getPrice(), p.getQuantity(), ad.getCategory());
+            })
+        .collect(Collectors.toList());
   }
 
   public List<PurchaseResponseDTO> listAllPurchases(Long customerId) {
@@ -100,7 +100,8 @@ public class PurchaseService {
     return purchase;
   }
 
-  public PurchaseResponseDTO changeStatus(Long purchaseId, Long buyerId) throws NotFoundException, UnauthorizedException {
+  public PurchaseResponseDTO changeStatus(Long purchaseId, Long buyerId)
+      throws NotFoundException, UnauthorizedException {
     Purchase purchase = findPurchaseById(purchaseId);
     if (buyerId != purchase.getBuyerId()) {
       throw new UnauthorizedException("Essa compra não pertence ao usário indicado.");

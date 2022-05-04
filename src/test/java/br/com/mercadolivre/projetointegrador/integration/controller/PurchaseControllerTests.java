@@ -90,12 +90,13 @@ public class PurchaseControllerTests {
   }
 
   @Test
-  @DisplayName("PurchaseController - PUT - /api/v1/customer/marketplace/purchases/{buyerId}/{purchaseId}")
+  @DisplayName(
+      "PurchaseController - PUT - /api/v1/customer/marketplace/purchases/{buyerId}/{purchaseId}")
   public void testUpdatePurchaseStatus() throws Exception {
 
     mockMvc
-      .perform(MockMvcRequestBuilders.put(PURCHASE_URL + "/1/1"))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value("FINALIZADO"));
+        .perform(MockMvcRequestBuilders.put(PURCHASE_URL + "/1/1"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value("FINALIZADO"));
   }
 
   @Test
@@ -105,10 +106,10 @@ public class PurchaseControllerTests {
     List<CreatePurchaseDTO> purchases = integrationTestUtils.createPurchases();
 
     mockMvc
-      .perform(
-        MockMvcRequestBuilders.post(PURCHASE_URL)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(objectMapper.writeValueAsString(purchases)))
-      .andExpect(MockMvcResultMatchers.status().isNotFound());
+        .perform(
+            MockMvcRequestBuilders.post(PURCHASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(purchases)))
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }
