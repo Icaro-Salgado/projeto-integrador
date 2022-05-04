@@ -31,7 +31,7 @@ public class BatchServiceTests {
 
   BatchRepository batchRepository = Mockito.mock(BatchRepository.class);
 
-  ProductService productService = new ProductService(productRepository);
+  ProductService productService = new ProductService(productRepository, batchRepository);
 
   BatchService batchService = new BatchService(batchRepository, productService);
 

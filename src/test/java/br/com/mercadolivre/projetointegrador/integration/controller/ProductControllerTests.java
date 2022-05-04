@@ -1,12 +1,15 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductInWarehouseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -174,6 +178,41 @@ public class ProductControllerTests {
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty())
         .andReturn();
+  }
+
+  @Test
+  @DisplayName("ProductController - GET - /api/v1/fresh-products/location/{id}")
+  public void testWhenFindProductInWarehouseNotFindResult() throws Exception {
+    Product product = productRepository.save(fakeProduct);
+    ErrorDTO errorCreated = integrationTestUtils.createProductNotFoundError(product);
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get(API_URL + "/location/{id}", product.getId()))
+        .andExpect(MockMvcResultMatchers.status().isNotFound())
+        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(errorCreated.getError()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(errorCreated.getMessage()))
+        .andReturn();
+  }
+
+  @Test
+  @DisplayName("ProductController - GET - /api/v1/fresh-products/location/{id}")
+  public void testFindProductInWarehouse() throws Exception {
+
+    ProductInWarehouseDTO created = integrationTestUtils.createProductsInWarehouse();
+
+    MvcResult mvcResult =
+        mockMvc
+            .perform(MockMvcRequestBuilders.get(API_URL + "/location/{id}", created.getProductId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.productId").value(created.getProductId()))
+            .andReturn();
+
+    String contentAsString = mvcResult.getResponse().getContentAsString();
+    Object readWarehouses = JsonPath.read(contentAsString, "$.warehouses").toString();
+    String warehouseCreated = new ObjectMapper().writeValueAsString(created.getWarehouses());
+
+    Assertions.assertEquals(readWarehouses, warehouseCreated);
   }
 
   @Test

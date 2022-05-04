@@ -5,11 +5,14 @@ import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWareho
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateOrUpdateProductDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.assembler.ProductInWarehousesAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductInWarehouseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.InvalidCategoryException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.ProductInWarehouses;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import br.com.mercadolivre.projetointegrador.warehouse.view.ProductView;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -38,6 +41,7 @@ public class ProductControllerWarehouse implements SecuredWarehouseRestControlle
 
   private final ProductService productService;
   private final ProductAssembler productAssembler;
+  private final ProductInWarehousesAssembler productInWarehousesAssembler;
 
   @Operation(
       summary = "CRIA UM NOVO PRODUTO",
@@ -182,6 +186,34 @@ public class ProductControllerWarehouse implements SecuredWarehouseRestControlle
     HttpStatus status = products.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
 
     return productAssembler.toResponse(products, status);
+  }
+
+  @Operation(
+      summary = "OBTEM TODAS AS LOCALIDADES DE UM PRODUTO",
+      description = "Obtem todas as localidades de um produto informado")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Produto encontrado",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ProductInWarehouses.class))
+            }),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Produto não encontrado",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
+  @GetMapping("/location/{id}")
+  public ResponseEntity<ProductInWarehouseDTO> productInWarehouse(@PathVariable Long id)
+      throws NotFoundException {
+    return productInWarehousesAssembler.toResponse(productService.findProductInWarehouse(id));
   }
 
   @Operation(
