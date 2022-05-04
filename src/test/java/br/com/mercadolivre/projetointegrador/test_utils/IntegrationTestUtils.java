@@ -93,7 +93,7 @@ public class IntegrationTestUtils {
   }
 
   public Product createProduct() {
-    Product productMock = new Product("teste", CategoryEnum.FS, null);
+    Product productMock = new Product("teste" + new Random().nextInt(), CategoryEnum.FS, null);
     return productRepository.save(productMock);
   }
 
@@ -150,6 +150,22 @@ public class IntegrationTestUtils {
             .batchNumber(9595)
             .quantity(10)
             .build();
+
+    return batchRepository.save(batch);
+  }
+
+  public Batch createBatch(Product product) {
+    Batch batch =
+            Batch.builder()
+                    .product(product)
+                    .section(createSection())
+                    .seller(createUser())
+                    .price(BigDecimal.TEN)
+                    .order_number(123)
+                    .batchNumber(9595)
+                    .quantity(10)
+                    .dueDate(LocalDate.now().plusWeeks(10))
+                    .build();
 
     return batchRepository.save(batch);
   }
@@ -237,9 +253,9 @@ public class IntegrationTestUtils {
     return errorDTO;
   }
 
-  public ProductInWarehouse createProductInWarehouse() {
+  public ProductInWarehouse createProductInWarehouse(Product product) {
     ProductInWarehouse productInWarehouse = new ProductInWarehouse();
-    Batch batch = createBatch();
+    Batch batch = createBatch(product);
     Warehouse warehouse = batch.getSection().getWarehouse();
 
     productInWarehouse.setWarehouseId(warehouse.getId());
@@ -252,7 +268,7 @@ public class IntegrationTestUtils {
     Product product = createProduct();
 
     List<ProductInWarehouse> productInWarehouseList = new ArrayList<>();
-    productInWarehouseList.add(createProductInWarehouse());
+    productInWarehouseList.add(createProductInWarehouse(product));
 
     ProductInWarehouseDTO dto = new ProductInWarehouseDTO();
     dto.setProductId(product.getId());
