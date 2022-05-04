@@ -53,7 +53,7 @@ curl -X POST http://localhost:8080/api/v1/auth -H "Content-Type: application/jso
   "password": "123456"
 }'
 ```
-
+Nota: Nas próximas requisições, feita a autenticação acima, seu _buyerId_ será 2.
 ## Preparando o ambiente para testar o requisito 02
 
 ### Listando produtos disponíveis
@@ -82,7 +82,7 @@ curl -X POST http://localhost:8080/api/v1/marketplace/fresh-products/orders -H "
 
 ### Exibindo carrinho de compras
 ```shell
-curl -X GET http://localhost:8080/api/v1/marketplace/fresh-products/orders/{id} -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json"
+curl -X GET http://localhost:8080/api/v1/marketplace/fresh-products/orders/{buyerId} -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json"
 ```
 
 ### Efetivando uma compra
@@ -92,7 +92,7 @@ curl -X POST http://localhost:8080/api/v1/customers/marketplace/purchases -H "Au
 
 ### Listando as compras
 ```shell
-curl http://localhost:8080/api/v1/customers/marketplace/purchases/{id} -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json"
+curl http://localhost:8080/api/v1/customers/marketplace/purchases/{buyerId} -H "Authorization: Bearer {TOKEN}" -H "Content-Type: application/json"
 ```
 
 ### Alterando status da compra
