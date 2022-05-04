@@ -12,7 +12,9 @@ import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.security.model.UserRole;
 import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
 import br.com.mercadolivre.projetointegrador.security.repository.RolesRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.ProductInWarehouseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,9 +26,14 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 
 @Component
 public class IntegrationTestUtils {
@@ -194,5 +201,39 @@ public class IntegrationTestUtils {
     List<CreatePurchaseDTO> purchases = List.of(purchase);
 
     return purchases;
+  }
+
+  public ErrorDTO createProductNotFoundError(Product product){
+    ErrorDTO errorDTO = new ErrorDTO();
+
+    errorDTO.setError("Não encontrado");
+    errorDTO.setMessage("Produto " + product.getId() +" não encontrado.");
+
+    return errorDTO;
+  }
+
+  public ProductInWarehouse createProductInWarehouse(){
+      ProductInWarehouse productInWarehouse = new ProductInWarehouse();
+      Batch batch = createBatch();
+      Warehouse warehouse = batch.getSection().getWarehouse();
+
+      productInWarehouse.setWarehouseId(warehouse.getId());
+      productInWarehouse.setProductQty(batch.getQuantity());
+
+      return productInWarehouse;
+  }
+
+  public ProductInWarehouseDTO createProductsInWarehouse(){
+    Product product = createProduct();
+
+    List<ProductInWarehouse> productInWarehouseList = new ArrayList<>();
+    productInWarehouseList.add(createProductInWarehouse());
+
+
+    ProductInWarehouseDTO dto = new ProductInWarehouseDTO();
+    dto.setProductId(product.getId());
+    dto.setWarehouses(productInWarehouseList);
+
+    return dto;
   }
 }
