@@ -53,7 +53,6 @@ public class BatchControllerTests {
     batch.setPrice(BigDecimal.valueOf(33.0));
     batch.setOrder_number(2);
     batch.setBatchNumber(2);
-    batch.setQuantity(250);
     batch.setManufacturing_datetime(LocalDate.parse("2022-01-01"));
     batch.setDueDate(LocalDate.parse("2022-05-02"));
 
@@ -68,7 +67,6 @@ public class BatchControllerTests {
         .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(BigDecimal.valueOf(33.0)))
         .andExpect(MockMvcResultMatchers.jsonPath("$.order_number").value(2))
         .andExpect(MockMvcResultMatchers.jsonPath("$.batchNumber").value(2))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(250))
         .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturing_datetime").value("2022-01-01"))
         .andExpect(MockMvcResultMatchers.jsonPath("$.dueDate").value("2022-05-02"));
   }
