@@ -21,7 +21,7 @@
 ## SETUP INICIAL DO WAREHOUSE
 Na raíz do projeto execute o seguinte comando.
 ```shell
-./Doc/requisitos/setup_req02.sh
+./Doc/requisitos/setup.sh
 ```
 
 ### Autenticar o usuário
