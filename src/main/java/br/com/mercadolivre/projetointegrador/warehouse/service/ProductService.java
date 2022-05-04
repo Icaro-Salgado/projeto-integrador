@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.service;
 
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
@@ -48,6 +49,10 @@ public class ProductService {
 
   public List<Product> findAll() {
     return productRepository.findAll();
+  }
+
+  public List<Product> findAllByCategory(CategoryEnum category) {
+    return productRepository.findAllByCategory(category);
   }
 
   public void delete(Long id) throws NotFoundException {

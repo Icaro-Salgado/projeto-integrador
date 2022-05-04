@@ -1,16 +1,16 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
-import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
-import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
-
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.WarehouseMapper;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Warehouse;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
@@ -38,8 +38,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/warehouse")
-@Tag(name = "Warehouse")
-public class WarehouseController {
+@Tag(name = "[Warehouse] - Warehouse")
+public class WarehouseControllerWarehouse implements SecuredWarehouseRestController {
 
   private final WarehouseService warehouseService;
   private final WarehouseAssembler assembler;
@@ -49,7 +49,7 @@ public class WarehouseController {
   @ApiResponses(
       value = {
         @ApiResponse(
-            responseCode = "200",
+            responseCode = "201",
             description = "Armazém criado com sucesso",
             content = {
               @Content(
@@ -74,22 +74,66 @@ public class WarehouseController {
     HttpHeaders headers = new HttpHeaders();
     headers.add(
         "Location",
-        linkTo(methodOn(WarehouseController.class).findById(created.getId()))
+        linkTo(methodOn(WarehouseControllerWarehouse.class).findById(created.getId()))
             .withSelfRel()
             .toString());
 
     return assembler.toResponse(created, HttpStatus.CREATED, headers);
   }
 
+  @Operation(
+      summary = "RETORNA UM ARMAZÉM CADASTRADO",
+      description = "Retorna um armazém/depósito já cadastrado na base")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Retorno ok",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = WarehouseResponseDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Armazém não encontrado",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping("/{id}")
   public ResponseEntity<WarehouseResponseDTO> findById(@PathVariable Long id) {
     Warehouse warehouse = warehouseService.findWarehouse(id);
 
-    return assembler.toResponse(warehouse, HttpStatus.CREATED, null);
+    return assembler.toResponse(warehouse, HttpStatus.OK, null);
   }
 
+  @Operation(
+      summary = "RETORNA OS LOTES CADASTRADOS DO PRODUTO",
+      description = "Retorna os lotes do produto que estão armazenados na base")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Retorno ok",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = SectionBatchesDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Armazém, sessão ou produto não encontrado",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping("/fresh-products/list")
-  @JsonView(SectionView.SectionBatches.class)
+  @JsonView(SectionView.SectionWithBatches.class)
   public ResponseEntity<SectionBatchesDTO> listStockProducts(
       @RequestParam(required = false) Long product,
       @RequestParam(required = false, defaultValue = "L") SortTypeEnum sort,

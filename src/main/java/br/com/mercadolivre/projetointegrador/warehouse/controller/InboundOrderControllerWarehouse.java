@@ -1,5 +1,6 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
+import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
@@ -7,7 +8,7 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.mapper.InboundOrderMapper;
-import br.com.mercadolivre.projetointegrador.warehouse.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
 import br.com.mercadolivre.projetointegrador.warehouse.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,10 +25,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/inboundorder")
+@RequestMapping("/api/v1/warehouse/inboundorder")
 @RequiredArgsConstructor
-@Tag(name = "Inbound Order")
-public class InboundOrderController {
+@Tag(name = "[Warehouse] - Inbound Order")
+public class InboundOrderControllerWarehouse implements SecuredWarehouseRestController {
 
   private final WarehouseService warehouseService;
   private final InboundOrderMapper inboundOrderMapper;

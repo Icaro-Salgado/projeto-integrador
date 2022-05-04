@@ -1,5 +1,7 @@
 package br.com.mercadolivre.projetointegrador.marketplace.model;
 
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +12,7 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Ad {
 
@@ -28,5 +31,5 @@ public class Ad {
 
   @Column private int discount;
 
-  @Column private String category;
+  @Column private CategoryEnum category;
 }

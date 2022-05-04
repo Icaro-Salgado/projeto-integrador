@@ -1,15 +1,20 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreateOrUpdateAdDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.dtos.CreatePurchaseDTO;
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.PurchaseOrderDTO;
+import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
+import br.com.mercadolivre.projetointegrador.marketplace.repository.AdRepository;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.security.model.UserRole;
+import br.com.mercadolivre.projetointegrador.security.repository.AppUserRepository;
+import br.com.mercadolivre.projetointegrador.security.repository.RolesRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.*;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.SectionRepository;
-import br.com.mercadolivre.projetointegrador.warehouse.repository.WarehouseRepository;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -37,7 +42,14 @@ public class IntegrationTestUtils {
 
   @Autowired private BatchRepository batchRepository;
 
+  @Autowired private RolesRepository rolesRepository;
+
   @Autowired private RedisRepository redisRepository;
+
+  @Autowired private AppUserRepository appUserRepository;
+
+  private final Random random = new Random();
+  @Autowired private AdRepository adRepository;
 
   ObjectMapper objectMapper =
       new ObjectMapper()
@@ -78,7 +90,7 @@ public class IntegrationTestUtils {
   }
 
   public Product createProduct() {
-    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
+    Product productMock = new Product("teste", CategoryEnum.FS, null);
     return productRepository.save(productMock);
   }
 
@@ -87,11 +99,12 @@ public class IntegrationTestUtils {
         Batch.builder()
             .product(createProduct())
             .section(createSection())
-            .seller_id(1L)
+            .seller(createUser())
             .price(BigDecimal.TEN)
             .order_number(123)
             .batchNumber(9595)
             .quantity(10)
+            .dueDate(LocalDate.now().plusWeeks(10))
             .build();
 
     return batchRepository.save(batch);
@@ -99,24 +112,24 @@ public class IntegrationTestUtils {
 
   public List<Batch> createMultipleBatchesOnSameWarehouse() {
 
-    Random random = new Random();
     List<Batch> batchesToCreate = new ArrayList<>();
 
     Section section = createSection();
+    AppUser seller = createUser();
+    Product product = createProduct();
 
     for (int i = 0; i < 5; i++) {
       batchesToCreate.add(
           Batch.builder()
-              .product(createProduct())
+              .product(product)
               .section(section)
-              .seller_id(1L + i)
-              .price(BigDecimal.valueOf(10 * i))
+              .seller(seller)
+              .price(BigDecimal.valueOf(10 * i + 1))
               .order_number(i)
               .batchNumber(5 - i)
               .quantity(random.nextInt(350))
-              .dueDate(
-                  LocalDate.of(
-                      random.nextInt(2021) + 1977, random.nextInt(12) + 1, random.nextInt(27) + 1))
+              .dueDate(LocalDate.now().plusWeeks(10))
+              .manufacturing_datetime(LocalDate.now())
               .build());
     }
 
@@ -127,8 +140,8 @@ public class IntegrationTestUtils {
     Batch batch =
         Batch.builder()
             .product(createProduct())
-            .section(createSection())
-            .seller_id(1L)
+            .section(section)
+            .seller(createUser())
             .price(BigDecimal.TEN)
             .order_number(123)
             .batchNumber(9595)
@@ -162,5 +175,53 @@ public class IntegrationTestUtils {
     return cart;
   }
 
+  public List<UserRole> createRoles() {
+    List<UserRole> roles = rolesRepository.findAll();
+    if (roles.isEmpty()) {
+      return rolesRepository.saveAll(
+          List.of(new UserRole(null, "CUSTOMER"), new UserRole(null, "MANAGER")));
+    }
+    return roles;
+  }
+
+  public AppUser createUser() {
+    int randomWithNextInt = random.nextInt();
+
+    AppUser user =
+        AppUser.builder()
+            .name("Spring user")
+            .userName("mockedUser".concat(String.valueOf(randomWithNextInt)))
+            .email("email" + randomWithNextInt + "@email.com")
+            .password("123")
+            .build();
+
+    return appUserRepository.save(user);
+  }
+
   public void resetDatabase() {}
+
+  public CreateOrUpdateAdDTO createAdDTO() {
+    CreateOrUpdateAdDTO adDTO = new CreateOrUpdateAdDTO();
+    adDTO.setBatchesId(List.of(1L, 2L, 3L));
+    adDTO.setName("Fake Ad");
+    adDTO.setQuantity(10);
+    adDTO.setPrice(BigDecimal.valueOf(10.0));
+    adDTO.setDiscount(0);
+    adDTO.setCategory(CategoryEnum.FS);
+
+    return adDTO;
+  }
+
+  public List<CreatePurchaseDTO> createPurchases() {
+    Ad ad = createAdDTO().DTOtoModel();
+    ad.setSellerId(1L);
+    adRepository.save(ad);
+
+    CreatePurchaseDTO purchase = new CreatePurchaseDTO();
+    purchase.setAdId(1L);
+    purchase.setQuantity(10);
+    List<CreatePurchaseDTO> purchases = List.of(purchase);
+
+    return purchases;
+  }
 }

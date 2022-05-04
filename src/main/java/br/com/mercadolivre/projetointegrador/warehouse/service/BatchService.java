@@ -5,19 +5,24 @@ import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BatchService {
 
-  BatchRepository batchRepository;
-  ProductService productService;
+  private final BatchRepository batchRepository;
+  private final ProductService productService;
+
+  @Value("${ad.minimumWeeks}")
+  private Integer minimumWeeksToAnnounce;
 
   public void createBatch(Batch batch) throws NotFoundException {
     productService.findById(batch.getProduct().getId());
@@ -70,7 +75,7 @@ public class BatchService {
     batch.setProduct(updatedBatch.getProduct());
     batch.setOrder_number(updatedBatch.getOrder_number());
     batch.setSection(updatedBatch.getSection());
-    batch.setSeller_id(updatedBatch.getSeller_id());
+    batch.setSeller(updatedBatch.getSeller());
     batch.setQuantity(updatedBatch.getQuantity());
 
     return batch;
@@ -82,7 +87,15 @@ public class BatchService {
 
   public List<Batch> findBatchesByProductAndSection(
       Product product, Section section, Sort sortInfos) {
+    LocalDate date = LocalDate.now().plusWeeks(minimumWeeksToAnnounce);
 
-    return batchRepository.findBatchByProductAndSection(product, section, sortInfos);
+    return batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(
+        product, section, sortInfos, date);
+  }
+
+  public List<Batch> listBySellerId(final Long sellerId) {
+    LocalDate date = LocalDate.now().plusWeeks(minimumWeeksToAnnounce);
+
+    return batchRepository.findAllBySellerIdAndDueDateGreaterThan(sellerId, date);
   }
 }

@@ -5,8 +5,8 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-@WithSecurityContext(factory = CustomUserSecurityContextFactory.class)
-public @interface WithMockCustomUser {
+@WithSecurityContext(factory = ManagerUserSecurityContextFactory.class)
+public @interface WithMockManagerUser {
 
   String id() default "1";
 

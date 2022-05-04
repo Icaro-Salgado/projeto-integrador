@@ -1,5 +1,7 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
@@ -9,12 +11,12 @@ import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepositor
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.BatchService;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BatchServiceTests {
 
   ProductRepository productRepository = Mockito.mock(ProductRepository.class);
@@ -31,6 +34,11 @@ public class BatchServiceTests {
   ProductService productService = new ProductService(productRepository);
 
   BatchService batchService = new BatchService(batchRepository, productService);
+
+  @BeforeAll
+  public void setUp() {
+    ReflectionTestUtils.setField(batchService, "minimumWeeksToAnnounce", 3);
+  }
 
   @Test
   @DisplayName(
@@ -112,8 +120,8 @@ public class BatchServiceTests {
     Batch batch = new Batch();
     Mockito.when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
 
+    batch.setSeller(new AppUser());
     batch.setSection(new Section());
-    batch.setSeller_id(2L);
     batch.setPrice(BigDecimal.valueOf(33.0));
     batch.setOrder_number(2);
     batch.setBatchNumber(2);
@@ -170,15 +178,36 @@ public class BatchServiceTests {
   @Test
   public void shouldCallFindBatchByProductAndSection() {
     List<Batch> expectedBatch = List.of(new Batch());
-    Mockito.when(batchRepository.findBatchByProductAndSection(Mockito.any(), Mockito.any()))
+    Mockito.when(
+            batchRepository.findBatchByProductAndSectionAndDueDateGreaterThan(
+                Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
         .thenReturn(expectedBatch);
 
     Product productParam = new Product();
     Section sectionParam = new Section();
-    List<Batch> result = batchService.findBatchesByProductAndSection(productParam, sectionParam);
+    Sort sort = Sort.by(Sort.Direction.ASC, "some");
+    List<Batch> result =
+        batchService.findBatchesByProductAndSection(productParam, sectionParam, sort);
 
     Mockito.verify(batchRepository, Mockito.times(1))
-        .findBatchByProductAndSection(productParam, sectionParam);
+        .findBatchByProductAndSectionAndDueDateGreaterThan(
+            Mockito.eq(productParam),
+            Mockito.eq(sectionParam),
+            Mockito.eq(sort),
+            Mockito.any(LocalDate.class));
     Assertions.assertEquals(expectedBatch, result);
+  }
+
+  @DisplayName("Given a seller id, should return all relate batches")
+  public void shouldReturnListOfBatches() {
+    List<Batch> batchList = WarehouseTestUtils.getBatch();
+    Mockito.when(
+            batchRepository.findAllBySellerIdAndDueDateGreaterThan(
+                Mockito.anyLong(), Mockito.any()))
+        .thenReturn(batchList);
+
+    List<Batch> result = batchService.listBySellerId(1L);
+
+    Assertions.assertEquals(batchList, result);
   }
 }
