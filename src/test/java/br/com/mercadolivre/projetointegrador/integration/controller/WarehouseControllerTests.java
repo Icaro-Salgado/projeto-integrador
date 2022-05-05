@@ -2,6 +2,7 @@ package br.com.mercadolivre.projetointegrador.integration.controller;
 
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
 import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomerUser;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.RequestLocationDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
@@ -213,7 +214,7 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
+  @WithMockCustomerUser
   public void shouldListDueDateBatchesInSection() throws Exception {
     Batch batch = integrationTestUtils.okBatch();
 
@@ -229,7 +230,7 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
+  @WithMockCustomerUser
   public void shouldFailListDueDateBatchesInSection() throws Exception {
     Batch batch = integrationTestUtils.okBatch();
 
@@ -245,7 +246,7 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
+  @WithMockCustomerUser
   public void shouldListDueDateBatch() throws Exception {
     Batch batch = integrationTestUtils.dueDateFiveDays();
 
@@ -261,7 +262,7 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
+  @WithMockCustomerUser
   public void shouldFailListDueDateBatch() throws Exception {
     Batch batch = integrationTestUtils.dueDateFifteenDays();
 
@@ -277,7 +278,7 @@ public class WarehouseControllerTests {
   }
 
   @Test
-  @WithMockCustomUser
+  @WithMockCustomerUser
   public void shouldFailListDueDateBatchByCategory() throws Exception {
     Batch batch = integrationTestUtils.dueDateFiveDays();
 
