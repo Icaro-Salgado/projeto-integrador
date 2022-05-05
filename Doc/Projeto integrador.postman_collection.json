@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 2,\n    \"sectionCode\": 2,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 9,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-11-01\"\n        },\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 10,\n            \"quantity\": 20,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-11-01\"\n        }\n        \n    ]\n}",
+							"raw": "{\n    \"orderNumber\": 1,\n    \"warehouseCode\": 1,\n    \"sectionCode\": 1,\n    \"batches\": [\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 9,\n            \"quantity\": 100,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-11-01\"\n        },\n        {\n            \"product_id\": 1,\n            \"seller_id\": 1,\n            \"price\": 199.90,\n            \"batchNumber\": 10,\n            \"quantity\": 20,\n            \"manufacturing_datetime\": \"2022-01-01\",\n            \"due_date\": \"2022-11-01\"\n        }\n        \n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -327,7 +327,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"batchesId\": [1],\n    \"name\": \"Novo anùncio\",\n    \"quantity\": 1,\n    \"price\": 199.90,\n    \"discount\": 0,\n    \"category\": \"FS\"\n}",
+							"raw": "{\n    \"batchesId\": [9],\n    \"name\": \"Novo anùncio\",\n    \"quantity\": 1,\n    \"price\": 199.90,\n    \"discount\": 0,\n    \"category\": \"FS\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -552,7 +552,7 @@
 				{
 					"name": "[MARKETPLACE] - Update purchase status by buyer Id and Purchase ID",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [],
 						"url": {
 							"raw": "localhost:8080/api/v1/customers/marketplace/purchases/1/1",
