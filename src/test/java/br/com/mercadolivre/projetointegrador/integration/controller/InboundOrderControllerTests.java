@@ -1,12 +1,11 @@
 package br.com.mercadolivre.projetointegrador.integration.controller;
 
-import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.test_utils.IntegrationTestUtils;
-import br.com.mercadolivre.projetointegrador.test_utils.WithMockCustomUser;
+import br.com.mercadolivre.projetointegrador.test_utils.WithMockManagerUser;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.InboundOrderDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
@@ -29,17 +28,19 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles(profiles = "test")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
-@WithMockCustomUser
+@WithMockManagerUser
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class InboundOrderControllerTests {
-  private final String INBOUND_URL = "/api/v1/inboundorder";
+  private final String INBOUND_URL = "/api/v1/warehouse/inboundorder";
   @Autowired private MockMvc mockMvc;
   @Autowired private ProductRepository productRepository;
   @Autowired private BatchRepository batchRepository;
@@ -47,14 +48,22 @@ public class InboundOrderControllerTests {
 
   @Test
   public void TestIfInboundOrderIsCreated() throws Exception {
-
+    integrationTestUtils.createRoles();
+    integrationTestUtils.createUser();
     Section mockSection = integrationTestUtils.createSection();
 
-    Product productMock = new Product(1L, "teste", CategoryEnum.FS, null);
-    productRepository.save(productMock);
+    Product productMock = integrationTestUtils.createProduct();
 
     CreateBatchPayloadDTO batchMock =
-        CreateBatchPayloadDTO.builder().quantity(2).product_id(1L).build();
+        CreateBatchPayloadDTO.builder()
+            .seller_id(1L)
+            .quantity(2)
+            .batchNumber(new Random().nextInt())
+            .product_id(productMock.getId())
+            .due_date(LocalDate.now().plusMonths(10))
+            .manufacturing_datetime(LocalDate.now())
+            .price(BigDecimal.valueOf(199.99))
+            .build();
 
     InboundOrderDTO objPayload =
         InboundOrderDTO.builder()
@@ -95,7 +104,10 @@ public class InboundOrderControllerTests {
         CreateBatchPayloadDTO.builder()
             .batchNumber(mockedBatch.getBatchNumber())
             .product_id(mockedBatch.getProduct().getId())
-            .seller_id(mockedBatch.getSeller_id())
+            .seller_id(mockedBatch.getSeller().getId())
+            .due_date(LocalDate.now().plusMonths(10))
+            .manufacturing_datetime(LocalDate.now())
+            .price(BigDecimal.valueOf(199.99))
             .quantity(2)
             .build();
 
@@ -131,6 +143,7 @@ public class InboundOrderControllerTests {
             .price(BigDecimal.valueOf(112.99))
             .batchNumber(mockedBatch.getBatchNumber())
             .product_id(1L)
+            .seller_id(mockedBatch.getSeller().getId())
             .build();
 
     InboundOrderDTO objPayload =

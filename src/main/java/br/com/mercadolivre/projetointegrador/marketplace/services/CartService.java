@@ -1,8 +1,6 @@
 package br.com.mercadolivre.projetointegrador.marketplace.services;
 
 import br.com.mercadolivre.projetointegrador.marketplace.dtos.CartProductDTO;
-import br.com.mercadolivre.projetointegrador.marketplace.enums.CartStatusCodeEnum;
-import br.com.mercadolivre.projetointegrador.marketplace.exceptions.InvalidStatusCodeException;
 import br.com.mercadolivre.projetointegrador.marketplace.exceptions.NotFoundException;
 import br.com.mercadolivre.projetointegrador.marketplace.model.Cart;
 import br.com.mercadolivre.projetointegrador.marketplace.repository.RedisRepository;
@@ -36,6 +34,10 @@ public class CartService {
     return objectMapper.readValue(cartAsString, Cart.class);
   }
 
+  public void clearCart(Long id) {
+    redisRepository.del(String.valueOf(id));
+  }
+
   private BigDecimal totalPrice(Cart cart) {
     BigDecimal total = BigDecimal.ZERO;
     for (CartProductDTO product : cart.getProducts()) {
@@ -43,25 +45,5 @@ public class CartService {
       total = total.add(price);
     }
     return total;
-  }
-
-  public Cart changeStatus(Long id, String status)
-      throws JsonProcessingException, NotFoundException, InvalidStatusCodeException {
-    if (!CartStatusCodeEnum.contains(status)) {
-      throw new InvalidStatusCodeException("Verifique o status informado.");
-    }
-    Cart cart = getCart(id);
-    CartStatusCodeEnum statusCode = CartStatusCodeEnum.valueOf(status);
-    cart.setStatusCode(statusCode);
-
-    updateCart(id, cart);
-    return cart;
-  }
-
-  public Cart switchStatus(Long id) throws NotFoundException, JsonProcessingException {
-    Cart cart = getCart(id);
-    cart.setStatusCode(CartStatusCodeEnum.switchStatus(cart.getStatusCode()));
-    updateCart(id, cart);
-    return cart;
   }
 }

@@ -1,19 +1,20 @@
 package br.com.mercadolivre.projetointegrador.test_utils;
 
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Batch;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
-import br.com.mercadolivre.projetointegrador.warehouse.model.InboundOrder;
-import br.com.mercadolivre.projetointegrador.warehouse.model.Section;
+import br.com.mercadolivre.projetointegrador.warehouse.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 
 public class WarehouseTestUtils {
-
   public static List<Batch> getBatch() {
     List<Batch> batches = new ArrayList<>();
 
@@ -26,8 +27,8 @@ public class WarehouseTestUtils {
         new Batch(
             1l,
             product,
-            Section.builder().id(2L).build(),
-            3l,
+            Section.builder().id(2L).warehouse(Warehouse.builder().id(2L).build()).build(),
+            AppUser.builder().id(3L).build(),
             new BigDecimal(30.0),
             12345,
             250422,
@@ -40,8 +41,8 @@ public class WarehouseTestUtils {
         new Batch(
             2l,
             product,
-            Section.builder().id(3L).build(),
-            4l,
+            Section.builder().id(3L).warehouse(Warehouse.builder().id(3L).build()).build(),
+            AppUser.builder().id(4L).build(),
             new BigDecimal(36.0),
             12346,
             250423,
@@ -64,8 +65,8 @@ public class WarehouseTestUtils {
         new Batch(
             1l,
             product,
-            Section.builder().id(2L).build(),
-            3l,
+            Section.builder().id(2L).warehouse(Warehouse.builder().id(2L).build()).build(),
+            AppUser.builder().id(3L).build(),
             new BigDecimal(30.0),
             12345,
             250422,
@@ -85,8 +86,8 @@ public class WarehouseTestUtils {
         new Batch(
             2l,
             product,
-            Section.builder().id(3L).build(),
-            4l,
+            Section.builder().id(3L).warehouse(Warehouse.builder().id(3L).build()).build(),
+            AppUser.builder().id(4L).build(),
             new BigDecimal(36.0),
             12346,
             250423,
@@ -105,9 +106,30 @@ public class WarehouseTestUtils {
   public static InboundOrder getInboundOrder() {
     return InboundOrder.builder()
         .orderNumber(12345)
-        .warehouseCode(6l)
-        .sectionCode(2l)
+        .warehouseCode(2L)
+        .sectionCode(2L)
         .batches(getBatch())
         .build();
+  }
+
+  public static ProductInWarehouses getProductInWarehouse() {
+    Product product = new Product(1l, "alface", CategoryEnum.FS, null);
+
+    List<ProductInWarehouse> productsSum = new ArrayList<>();
+    Map<Long, Integer> productQtyToSum =
+        getBatch().stream()
+            .collect(
+                groupingBy(
+                    b -> b.getSection().getWarehouse().getId(), summingInt(Batch::getQuantity)));
+
+    for (Map.Entry<Long, Integer> item : productQtyToSum.entrySet()) {
+      productsSum.add(
+          ProductInWarehouse.builder()
+              .warehouseId(item.getKey())
+              .productQty(item.getValue())
+              .build());
+    }
+
+    return ProductInWarehouses.builder().productId(product.getId()).warehouses(productsSum).build();
   }
 }

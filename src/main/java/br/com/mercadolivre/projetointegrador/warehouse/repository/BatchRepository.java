@@ -17,11 +17,11 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 
   List<Batch> findAllByBatchNumberIn(List<Integer> batchNumberList);
 
+  List<Batch> findAllBySellerIdAndDueDateGreaterThan(Long id, LocalDate date);
+
   List<Batch> findAllBySection_IdIn(List<Long> ids);
 
   List<Batch> findAllBySectionIdAndDueDateLessThan(Long id, LocalDate date);
-
-  List<Batch> findBatchByProductAndSection(Product product, Section section);
 
   List<Batch> findBatchByProductAndSection(Product product, Section section, Sort sort);
 
@@ -30,4 +30,11 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 
   List<Batch> findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
       LocalDate date, CategoryEnum category);
+
+  List<Batch> findAllByProductId(Long id);
+
+  List<Batch> findBatchByProductAndSection(Product product, Section section);
+
+  List<Batch> findBatchByProductAndSectionAndDueDateGreaterThan(
+      Product product, Section section, Sort sort, LocalDate date);
 }

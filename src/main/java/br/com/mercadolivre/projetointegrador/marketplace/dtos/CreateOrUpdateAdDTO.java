@@ -1,5 +1,7 @@
 package br.com.mercadolivre.projetointegrador.marketplace.dtos;
 
+import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,12 +17,11 @@ import java.util.List;
 public class CreateOrUpdateAdDTO {
 
   @NotEmpty(message = "O produto deve pertencer a pelo menos um lote.")
-  private List<Long> batchesId;
+  private List<Integer> batchesId;
 
   @NotEmpty(message = "O campo nome deve ser preenchido.")
   private String name;
 
-  @Min(value = 1, message = "Deve conter ao menos um produto para ser vendido.")
   private int quantity;
 
   private BigDecimal price;
@@ -28,5 +29,16 @@ public class CreateOrUpdateAdDTO {
   @Min(value = 0, message = "O desconto não pode ser negativo.")
   private int discount;
 
-  private String category;
+  private CategoryEnum category;
+
+  public Ad DTOtoModel() {
+    Ad ad = new Ad();
+    ad.setName(name);
+    ad.setPrice(price);
+    ad.setCategory(category);
+    ad.setDiscount(discount);
+    ad.setQuantity(quantity);
+
+    return ad;
+  }
 }

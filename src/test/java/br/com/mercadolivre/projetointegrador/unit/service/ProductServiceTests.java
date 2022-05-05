@@ -1,9 +1,12 @@
 package br.com.mercadolivre.projetointegrador.unit.service;
 
+import br.com.mercadolivre.projetointegrador.test_utils.WarehouseTestUtils;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.ProductAlreadyExists;
 import br.com.mercadolivre.projetointegrador.warehouse.model.Product;
+import br.com.mercadolivre.projetointegrador.warehouse.model.ProductInWarehouses;
+import br.com.mercadolivre.projetointegrador.warehouse.repository.BatchRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.repository.ProductRepository;
 import br.com.mercadolivre.projetointegrador.warehouse.service.ProductService;
 import org.junit.jupiter.api.Assertions;
@@ -16,14 +19,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTests {
 
   @Mock private ProductRepository productRepository;
+
+  @Mock private BatchRepository batchRepository;
 
   @InjectMocks private ProductService productService;
 
@@ -61,6 +67,32 @@ public class ProductServiceTests {
     Product result = productService.findById(1L);
 
     assertEquals(newTestProduct, result);
+  }
+
+  @Test
+  @DisplayName(
+      "Given an existing product, when call find product in warehouse method, "
+          + "then return a exact product and all their locations(warehouses)")
+  public void shouldReturnAListOfWarehousesThatContainASpecificProduct() throws NotFoundException {
+
+    ProductInWarehouses expectedProduct = WarehouseTestUtils.getProductInWarehouse();
+    Mockito.when(batchRepository.findAllByProductId(1L)).thenReturn(WarehouseTestUtils.getBatch());
+
+    ProductInWarehouses founded = productService.findProductInWarehouse(1L);
+
+    assertEquals(expectedProduct.getProductId(), founded.getProductId());
+  }
+
+  @Test
+  @DisplayName(
+      "Given a non existing product, when a call find product in warehouse method, the throw an"
+          + " error")
+  public void shouldThrownNotFoundExceptionWhenTheProductDoesExistsInWarehouse() {
+    Exception thrown =
+        Assertions.assertThrows(
+            NotFoundException.class, () -> productService.findProductInWarehouse(10L));
+
+    Assertions.assertEquals("Produto " + 10 + " não encontrado.", thrown.getMessage());
   }
 
   @Test
@@ -113,5 +145,31 @@ public class ProductServiceTests {
     Assertions.assertEquals("Produto " + 2 + " não encontrado.", thrown.getMessage());
 
     Mockito.verify(productRepository, Mockito.times(0)).delete(Mockito.any());
+  }
+
+  @Test
+  @DisplayName("Given a category, should return a product list")
+  public void shouldFindAllProductsByCategory() {
+    List<Product> expected = List.of(newTestProduct);
+    Mockito.when(productRepository.findAllByCategory(Mockito.any(CategoryEnum.class)))
+        .thenReturn(expected);
+
+    List<Product> result = productService.findAllByCategory(CategoryEnum.FS);
+
+    Mockito.verify(productRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.FS);
+    assertEquals(expected, result);
+  }
+
+  @Test
+  @DisplayName("Given a category, should return a product list even if dont find any result")
+  public void shouldFindAllProductsByCategoryAndReturnEmptyList() {
+
+    Mockito.when(productRepository.findAllByCategory(Mockito.any(CategoryEnum.class)))
+        .thenReturn(Collections.emptyList());
+
+    List<Product> result = productService.findAllByCategory(CategoryEnum.FS);
+
+    Mockito.verify(productRepository, Mockito.times(1)).findAllByCategory(CategoryEnum.FS);
+    assertEquals(0, result.size());
   }
 }

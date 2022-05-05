@@ -1,6 +1,7 @@
 package br.com.mercadolivre.projetointegrador.marketplace.repository;
 
 import br.com.mercadolivre.projetointegrador.marketplace.model.Ad;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,8 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
   @Query(value = "SELECT * FROM ad a WHERE a.name LIKE %?1%", nativeQuery = true)
   List<Ad> findAdsByLikeName(String name);
+
+  List<Ad> findAllByCategory(CategoryEnum category);
+
+  List<Ad> findAllByCategoryAndNameLike(CategoryEnum category, String name);
 }
