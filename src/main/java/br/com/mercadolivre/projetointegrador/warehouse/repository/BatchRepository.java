@@ -30,7 +30,7 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 
   List<Batch> findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
       LocalDate date, CategoryEnum category);
-      
+
   List<Batch> findAllByProductId(Long id);
 
   List<Batch> findBatchByProductAndSection(Product product, Section section);
