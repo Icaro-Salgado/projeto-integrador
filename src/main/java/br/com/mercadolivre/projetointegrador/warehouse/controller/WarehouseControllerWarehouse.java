@@ -1,12 +1,16 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
 
 import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.docs.config.SecuredWarehouseRestController;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateBatchPayloadDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.request.CreateWarehousePayloadDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.dto.response.BatchResponseDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.SectionBatchesDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.dto.response.WarehouseResponseDTO;
+import br.com.mercadolivre.projetointegrador.warehouse.enums.CategoryEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.enums.SortTypeEnum;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.ErrorDTO;
 import br.com.mercadolivre.projetointegrador.warehouse.exception.db.NotFoundException;
@@ -44,6 +48,7 @@ public class WarehouseControllerWarehouse implements SecuredWarehouseRestControl
   private final WarehouseService warehouseService;
   private final WarehouseAssembler assembler;
   private final SectionAssembler sectionAssembler;
+  private final BatchAssembler batchAssembler;
 
   @Operation(summary = "CRIA UM NOVO ARMAZÉM", description = "Cria um novo armazém/depósito ")
   @ApiResponses(
@@ -111,27 +116,75 @@ public class WarehouseControllerWarehouse implements SecuredWarehouseRestControl
   }
 
   @Operation(
-      summary = "RETORNA OS LOTES CADASTRADOS DO PRODUTO",
-      description = "Retorna os lotes do produto que estão armazenados na base")
+      summary = "RETORNA LOTES A VENCER DE UMA DADA SEÇÃO",
+      description =
+          "Retorna uma lista de lotes que se encontram em uma seção específica e que a váliidade"
+              + " dos produtos é menor que os dias especificados")
   @ApiResponses(
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Retorno ok",
+            description = "Consulta realizada com sucesso",
             content = {
               @Content(
                   mediaType = "application/json",
-                  schema = @Schema(implementation = SectionBatchesDTO.class))
+                  schema = @Schema(implementation = CreateBatchPayloadDTO.class))
             }),
         @ApiResponse(
-            responseCode = "404",
-            description = "Armazém, sessão ou produto não encontrado",
+            responseCode = "400",
+            description = "Dados inválidos!",
             content = {
               @Content(
                   mediaType = "application/json",
                   schema = @Schema(implementation = ErrorDTO.class))
             })
       })
+  @GetMapping("/fresh-products/duedate")
+  public ResponseEntity<List<BatchResponseDTO>> findDueDateBatches(
+      @RequestParam(name = "numb_days") String numberOfDays,
+      @RequestParam(name = "section_id") String sectionId) {
+
+    List<Batch> batches =
+        warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
+    return batchAssembler.toRespondOk(batches);
+  }
+
+  @Operation(
+      summary = "RETORNA LOTES A VENCER COM PRODUTOS DE UMA DADA CATEGORIA",
+      description =
+          "Retorna uma lista de lotes que se encontram em uma determinada categoria, a válidade dos"
+              + " produtos é menor que os dias especificados, e o resultado e ordenado de forma"
+              + " crescente ou decrecente")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Consulta realizada com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = CreateBatchPayloadDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Dados inválidos!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
+  @GetMapping("/fresh-products/duedate-batches")
+  public ResponseEntity<List<BatchResponseDTO>> findDueDateBatchesByCategory(
+      @RequestParam(name = "numb_days") String numberOfDays,
+      @RequestParam(name = "category") CategoryEnum category,
+      @RequestParam(name = "order") String order) {
+
+    List<Batch> batches =
+        warehouseService.dueDateBatchesByCategory(Long.parseLong(numberOfDays), category, order);
+    return batchAssembler.toRespondOk(batches);
+  }
+
   @GetMapping("/fresh-products/list")
   @JsonView(SectionView.SectionWithBatches.class)
   public ResponseEntity<SectionBatchesDTO> listStockProducts(
