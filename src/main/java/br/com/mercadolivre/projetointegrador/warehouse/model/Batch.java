@@ -1,5 +1,7 @@
 package br.com.mercadolivre.projetointegrador.warehouse.model;
 
+import br.com.mercadolivre.projetointegrador.security.model.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +16,8 @@ import java.time.LocalDate;
       @UniqueConstraint(
           name = "UniqueBatchAndSeller",
           columnNames = {"seller_id", "batchNumber"})
-    })
+    },
+    indexes = {@Index(name = "batchNumberIdx", columnList = "batchNumber")})
 @Getter
 @Setter
 @Builder
@@ -37,7 +40,10 @@ public class Batch {
   @JoinColumn(name = "section_id", nullable = false)
   private Section section;
 
-  @Column private Long seller_id;
+  @ManyToOne
+  @JoinColumn(name = "seller_id", nullable = false)
+  @JsonIgnoreProperties("password")
+  private AppUser seller;
 
   @Column private BigDecimal price;
 

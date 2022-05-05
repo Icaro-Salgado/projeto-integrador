@@ -2,6 +2,9 @@ package br.com.mercadolivre.projetointegrador.warehouse.dto.request;
 
 import lombok.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -10,8 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InboundOrderDTO {
-  private Integer orderNumber;
-  private Long warehouseCode;
-  private Long sectionCode;
-  private List<CreateBatchPayloadDTO> batches;
+
+  @NotNull private Integer orderNumber;
+  @NotNull private Long warehouseCode;
+  @NotNull private Long sectionCode;
+  @NotEmpty @Valid private List<CreateBatchPayloadDTO> batches;
 }

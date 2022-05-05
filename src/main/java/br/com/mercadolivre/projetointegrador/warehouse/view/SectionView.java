@@ -4,4 +4,6 @@ public class SectionView {
   public interface Detail {}
 
   public interface SectionBatches {}
+
+  public interface SectionWithBatches extends SectionBatches, BatchView.BatchSection {}
 }
