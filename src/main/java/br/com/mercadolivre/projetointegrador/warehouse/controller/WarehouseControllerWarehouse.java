@@ -1,4 +1,5 @@
 package br.com.mercadolivre.projetointegrador.warehouse.controller;
+
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.BatchAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.SectionAssembler;
 import br.com.mercadolivre.projetointegrador.warehouse.assembler.WarehouseAssembler;

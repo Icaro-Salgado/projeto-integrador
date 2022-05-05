@@ -64,14 +64,15 @@ public class BatchAssembler {
     for (BatchResponseDTO dto : createdBatchesDTO) {
       Links links =
           Links.of(
-              linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId())).withSelfRel());
+              linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId()))
+                  .withSelfRel());
 
       dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(createdBatchesDTO);
   }
-  
+
   public ResponseEntity<List<BatchResponseDTO>> toBatchResponse(
       List<Batch> batchList, HttpStatus status) {
     List<BatchResponseDTO> batchResponseDTOList = BatchMapper.INSTANCE.toResponseDTOList(batchList);
