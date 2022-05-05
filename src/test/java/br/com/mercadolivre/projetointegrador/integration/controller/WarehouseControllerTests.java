@@ -211,4 +211,80 @@ public class WarehouseControllerTests {
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.error").isNotEmpty());
   }
+
+  @Test
+  public void shouldListDueDateBatchesInSection() throws Exception {
+    Batch batch = integrationTestUtils.okBatch();
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get(
+                    SECTION_URL.concat(
+                        "/fresh-products/duedate?numb_days=11&section_id="
+                            + batch.getSection().getId()))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+  }
+
+  @Test
+  public void shouldFailListDueDateBatchesInSection() throws Exception {
+    Batch batch = integrationTestUtils.okBatch();
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get(
+                    SECTION_URL.concat(
+                        "/fresh-products/duedate?numb_days=10&section_id="
+                            + batch.getSection().getId()))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+  }
+
+  @Test
+  public void shouldListDueDateBatch() throws Exception {
+    Batch batch = integrationTestUtils.dueDateFiveDays();
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get(
+                    SECTION_URL.concat(
+                        "/fresh-products/duedate-batches?numb_days=10&category="
+                            + batch.getProduct().getCategory()
+                            + "&order=ASC"))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+  }
+
+  @Test
+  public void shouldFailListDueDateBatch() throws Exception {
+    Batch batch = integrationTestUtils.dueDateFifteenDays();
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get(
+                    SECTION_URL.concat(
+                        "/fresh-products/duedate-batches?numb_days=10&category="
+                            + batch.getProduct().getCategory()
+                            + "&order=ASC"))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+  }
+
+  @Test
+  public void shouldFailListDueDateBatchByCategory() throws Exception {
+    Batch batch = integrationTestUtils.dueDateFiveDays();
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get(
+                    SECTION_URL.concat(
+                        "/fresh-products/duedate-batches?numb_days=10&category=FF&order=ASC"))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
+  }
 }

@@ -10,7 +10,7 @@ MercadoFresh é um projeto de fechamento do curso de programação Java da escol
 -   Framework: Springboot v. 2.6.7
 -   Autenticação: Java-JWT v.3.18.2
 -   Banco de dados: Postgres (PostgreSQL) 13.6
--   Ambiente virtual: Docker v. 3.1
+-   Ambiente virtual: Docker v. 20.10.11
 
 ## Ferramentas necessárias
 
