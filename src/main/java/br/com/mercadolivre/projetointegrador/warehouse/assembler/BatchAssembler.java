@@ -55,18 +55,18 @@ public class BatchAssembler {
   }
 
   public ResponseEntity<List<BatchResponseDTO>> toRespondOk(List<Batch> createdBatches)
-          throws NotFoundException {
+      throws NotFoundException {
 
     List<BatchResponseDTO> createdBatchesDTO =
-            createdBatches.stream()
-                    .map(BatchMapper.INSTANCE::toResponseDTO)
-                    .collect(Collectors.toList());
+        createdBatches.stream()
+            .map(BatchMapper.INSTANCE::toResponseDTO)
+            .collect(Collectors.toList());
 
     for (BatchResponseDTO dto : createdBatchesDTO) {
       Links links =
-              Links.of(
-                      linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId()))
-                              .withSelfRel());
+          Links.of(
+              linkTo(methodOn(BatchControllerWarehouse.class).findBatchById(dto.getId()))
+                  .withSelfRel());
 
       dto.setLinks(List.of(ResponseUtils.parseLinksToMap(links)));
     }

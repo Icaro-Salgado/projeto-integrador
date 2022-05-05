@@ -116,74 +116,75 @@ public class WarehouseControllerWarehouse implements SecuredWarehouseRestControl
   }
 
   @Operation(
-          summary = "RETORNA LOTES A VENCER DE UMA DADA SEÇÃO",
-          description =
-                  "Retorna uma lista de lotes que se encontram em uma seção específica e que a váliidade"
-                          + " dos produtos é menor que os dias especificados")
+      summary = "RETORNA LOTES A VENCER DE UMA DADA SEÇÃO",
+      description =
+          "Retorna uma lista de lotes que se encontram em uma seção específica e que a váliidade"
+              + " dos produtos é menor que os dias especificados")
   @ApiResponses(
-          value = {
-                  @ApiResponse(
-                          responseCode = "200",
-                          description = "Consulta realizada com sucesso",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = CreateBatchPayloadDTO.class))
-                          }),
-                  @ApiResponse(
-                          responseCode = "400",
-                          description = "Dados inválidos!",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = ErrorDTO.class))
-                          })
-          })
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Consulta realizada com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = CreateBatchPayloadDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Dados inválidos!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
+            })
+      })
   @GetMapping("/fresh-products/duedate")
   public ResponseEntity<List<BatchResponseDTO>> findDueDateBatches(
-          @RequestParam(name = "numb_days") String numberOfDays,
-          @RequestParam(name = "section_id") String sectionId) {
+      @RequestParam(name = "numb_days") String numberOfDays,
+      @RequestParam(name = "section_id") String sectionId) {
 
-      List<Batch> batches =
-              warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
-      return batchAssembler.toRespondOk(batches);
+    List<Batch> batches =
+        warehouseService.dueDateBatches(Long.parseLong(numberOfDays), Long.parseLong(sectionId));
+    return batchAssembler.toRespondOk(batches);
   }
 
-    @Operation(
-            summary = "RETORNA LOTES A VENCER COM PRODUTOS DE UMA DADA CATEGORIA",
-            description =
-                    "Retorna uma lista de lotes que se encontram em uma determinada categoria, a válidade dos"
-                            + " produtos é menor que os dias especificados, e o resultado e ordenado de forma"
-                            + " crescente ou decrecente")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Consulta realizada com sucesso",
-                            content = {
-                                    @Content(
-                                            mediaType = "application/json",
-                                            schema = @Schema(implementation = CreateBatchPayloadDTO.class))
-                            }),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Dados inválidos!",
-                            content = {
-                                    @Content(
-                                            mediaType = "application/json",
-                                            schema = @Schema(implementation = ErrorDTO.class))
-                            })
+  @Operation(
+      summary = "RETORNA LOTES A VENCER COM PRODUTOS DE UMA DADA CATEGORIA",
+      description =
+          "Retorna uma lista de lotes que se encontram em uma determinada categoria, a válidade dos"
+              + " produtos é menor que os dias especificados, e o resultado e ordenado de forma"
+              + " crescente ou decrecente")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Consulta realizada com sucesso",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = CreateBatchPayloadDTO.class))
+            }),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Dados inválidos!",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = ErrorDTO.class))
             })
-    @GetMapping("/fresh-products/duedate-batches")
-    public ResponseEntity<List<BatchResponseDTO>> findDueDateBatchesByCategory(
-            @RequestParam(name = "numb_days") String numberOfDays,
-            @RequestParam(name = "category") CategoryEnum category,
-            @RequestParam(name = "order") String order) {
+      })
+  @GetMapping("/fresh-products/duedate-batches")
+  public ResponseEntity<List<BatchResponseDTO>> findDueDateBatchesByCategory(
+      @RequestParam(name = "numb_days") String numberOfDays,
+      @RequestParam(name = "category") CategoryEnum category,
+      @RequestParam(name = "order") String order) {
 
-        List<Batch> batches =
-                warehouseService.dueDateBatchesByCategory(Long.parseLong(numberOfDays), category, order);
-        return batchAssembler.toRespondOk(batches);
-    }
+    List<Batch> batches =
+        warehouseService.dueDateBatchesByCategory(Long.parseLong(numberOfDays), category, order);
+    return batchAssembler.toRespondOk(batches);
+  }
+
   @GetMapping("/fresh-products/list")
   @JsonView(SectionView.SectionWithBatches.class)
   public ResponseEntity<SectionBatchesDTO> listStockProducts(

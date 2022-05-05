@@ -98,8 +98,8 @@ public class WarehouseTest {
     List<Batch> expected = WarehouseTestUtils.getBatch();
     Mockito.when(
             batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDate(
-                    Mockito.any(), Mockito.any()))
-            .thenReturn(expected);
+                Mockito.any(), Mockito.any()))
+        .thenReturn(expected);
     List<Batch> testBatch = warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "ASC");
     assertEquals(expected, testBatch);
   }
@@ -109,8 +109,8 @@ public class WarehouseTest {
     List<Batch> expected = WarehouseTestUtils.getBatch();
     Mockito.when(
             batchRepository.findAllByDueDateLessThanAndProductCategoryOrderByDueDateDesc(
-                    Mockito.any(), Mockito.any()))
-            .thenReturn(expected);
+                Mockito.any(), Mockito.any()))
+        .thenReturn(expected);
     List<Batch> testBatch = warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "DESC");
     assertEquals(expected, testBatch);
   }
@@ -118,11 +118,11 @@ public class WarehouseTest {
   @Test
   public void TestIfDueDateBatchesByCategoryAssertThrows() {
     IllegalArgumentException exception =
-            Assertions.assertThrows(
-                    IllegalArgumentException.class,
-                    () -> {
-                      warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "ERR");
-                    });
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> {
+              warehouseService.dueDateBatchesByCategory(10L, CategoryEnum.FS, "ERR");
+            });
 
     Assertions.assertEquals("Informe o seletor de ordenação (ASC ou DESC)", exception.getMessage());
   }
@@ -131,7 +131,7 @@ public class WarehouseTest {
   public void TestIfDueDateBatchesBySection() {
     List<Batch> expected = WarehouseTestUtils.getBatch();
     Mockito.when(batchRepository.findAllBySectionIdAndDueDateLessThan(Mockito.any(), Mockito.any()))
-            .thenReturn(expected);
+        .thenReturn(expected);
     List<Batch> testBatch = warehouseService.dueDateBatches(10l, 1l);
     assertEquals(expected, testBatch);
   }
