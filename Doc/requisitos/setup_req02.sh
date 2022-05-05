@@ -1,34 +1,34 @@
 echo "========== Registrando o manager ==========\n"
 curl -X POST http://localhost:8080/api/v1/warehouse/auth/register -H "Content-Type: application/json" -s -d '{
-  "name": "John Doe",
-  "userName": "john",
-  "email": "john.doe@email.com",
-  "password": "123456"
+  "name": "Warehouse Manager",
+  "userName": "wrhmng",
+  "email": "warehouse@email.com",
+  "password": "123"
 }' > /dev/null
 
 echo "========== Registrando o customer ==========\n"
 curl -X POST http://localhost:8080/api/v1/marketplace/auth/register -H "Content-Type: application/json" -s -d '{
-  "name": "John Tre",
-  "userName": "jon",
-  "email": "john.tre@email.com",
-  "password": "123456"
+  "name": "MarketPlace Customer",
+  "userName": "mktpcustmr",
+  "email": "marketplace@email.com",
+  "password": "123"
 }' > /dev/null
 
 echo "========== Obtendo o token do manager ==========\n"
 output=`curl -X POST http://localhost:8080/api/v1/auth -H "Content-Type: application/json" -s -d '{
- "email": "john.doe@email.com",
- "password": "123456"
+ "email": "warehouse@email.com",
+ "password": "123"
 }'`
 
 echo "========== Obtendo o token do customer ==========\n"
 output2=`curl -X POST http://localhost:8080/api/v1/auth -H "Content-Type: application/json" -s -d '{
- "email": "john.tre@email.com",
- "password": "123456"
+ "email": "marketplace@email.com",
+ "password": "123"
 }'`
 
 echo "========== Criando o warehouse ==========\n"
 curl -X POST http://localhost:8080/api/v1/warehouse -H "Authorization: Bearer $output" -H "Content-Type: application/json" -s -d '{
-  "name": "warehouse 1",
+  "name": "warehouse",
   "location": {
     "country": "Brazil",
     "state": "SP",
@@ -56,83 +56,62 @@ curl -X POST http://localhost:8080/api/v1/warehouse/fresh-products -H "Authoriza
     "category": "FS"
 }' > /dev/null
 curl -X POST http://localhost:8080/api/v1/warehouse/fresh-products -H "Authorization: Bearer $output" -H "Content-Type: application/json" -s -d '{
-    "name":  "danoninho",
+    "name":  "Danoninho",
     "category": "FS"
 }' > /dev/null
 
-echo "========== Criando um lote do produto 1 ==========\n"
+echo "========== Criando lotes dos produtos 1 e 2 ==========\n"
 curl -X POST http://localhost:8080/api/v1/warehouse/inboundorder -H "Authorization: Bearer $output" -H "Content-Type: application/json" -s -d '{
-  "orderNumber": 999,
+  "orderNumber": 1,
   "warehouseCode": 1,
   "sectionCode": 1,
-  "batches":
-    [
-      {
+  "batches": [
+    {
         "product_id": 1,
         "seller_id": 1,
-        "price": 1.90,
-        "batch_number": 12,
-        "quantity": 1000,
-        "manufacturing_datetime": "2022-01-01",
-        "due_date": "2022-06-01"
-      }
-    ]
-}' > /dev/null
-
-echo "========== Criando um lote do produto 2 ==========\n"
-curl -X POST http://localhost:8080/api/v1/warehouse/inboundorder -H "Authorization: Bearer $output" -H "Content-Type: application/json" -s -d '{
-  "orderNumber": 999,
-  "warehouseCode": 1,
-  "sectionCode": 1,
-  "batches":
-    [
-      {
+        "price": 199.90,
+        "batchNumber": 9,
+        "quantity": 100,
+        "manufacturing_datetime": "2022-05-01",
+        "due_date": "2022-05-15"
+    },
+    {
+        "product_id": 1,
+        "seller_id": 1,
+        "price": 199.90,
+        "batchNumber": 10,
+        "quantity": 20,
+        "manufacturing_datetime": "2022-05-02",
+        "due_date": "2022-05-16"
+    },
+    {
         "product_id": 2,
         "seller_id": 1,
-        "price": 7.90,
-        "batch_number": 11,
-        "quantity": 100,
-        "manufacturing_datetime": "2022-01-01",
+        "price": 399.90,
+        "batchNumber": 11,
+        "quantity": 150,
+        "manufacturing_datetime": "2022-03-01",
         "due_date": "2022-06-01"
-      }
-    ]
-}' > /dev/null
-
-echo "========== Criando um lote do produto 2 ==========\n"
-curl -X POST http://localhost:8080/api/v1/warehouse/inboundorder -H "Authorization: Bearer $output" -H "Content-Type: application/json" -s -d '{
-  "orderNumber": 999,
-  "warehouseCode": 1,
-  "sectionCode": 1,
-  "batches":
-    [
-      {
-        "product_id": 2,
-        "seller_id": 1,
-        "price": 7.90,
-        "batch_number": 10,
-        "quantity": 100,
-        "manufacturing_datetime": "2022-01-01",
-        "due_date": "2022-06-01"
-      }
-    ]
+    }
+  ]
 }' > /dev/null
 
 echo "========== Criando o anúncio do produto 01 ==========\n"
 curl -X POST http://localhost:8080/api/v1/marketplace/ads -H "Authorization: Bearer $output2" -H "Content-Type: application/json" -d '{
-  "batchesId": [10, 11],
-  "name": "Alface crocante",
-  "quantity": 1000,
-  "price": 1.99,
-  "discount": 5,
-  "category": "FS"
+    "batchesId": [9, 10],
+    "name": "Alface crocante",
+    "quantity": 1,
+    "price": 3.90,
+    "discount": 0,
+    "category": "FS"
 }'
 
 echo "========== Criando o anúncio do produto 02 ==========\n"
 curl -X POST http://localhost:8080/api/v1/marketplace/ads -H "Authorization: Bearer $output2" -H "Content-Type: application/json" -d '{
-  "batchesId": [12],
-  "name": "Danoninho",
-  "quantity": 100,
-  "price": 7.99,
-  "discount": 5,
-  "category": "FS"
+    "batchesId": [11],
+    "name": "Danoninho",
+    "quantity": 1,
+    "price": 3.90,
+    "discount": 0,
+    "category": "FS"
 }'

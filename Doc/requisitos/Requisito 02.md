@@ -49,8 +49,8 @@ Depois, execute o seguinte comando para preparar o banco:
 ### Autenticar o usuário
 ```shell
 curl -X POST http://localhost:8080/api/v1/auth -H "Content-Type: application/json" -d '{
-  "email": "john.tre@email.com",
-  "password": "123456"
+  "email": "marketplace@email.com",
+  "password": "123"
 }'
 ```
 Nota: Nas próximas requisições, feita a autenticação acima, seu _buyerId_ será 2.
