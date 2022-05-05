@@ -141,6 +141,7 @@ public class IntegrationTestUtils {
                     .build();
     return batchRepository.save(batch);
   }
+
   public Batch dueDateFifteenDays() {
     Batch batch =
             Batch.builder()
@@ -155,6 +156,7 @@ public class IntegrationTestUtils {
                     .build();
     return batchRepository.save(batch);
   }
+
   public List<Batch> createMultipleBatchesOnSameWarehouse() {
 
     List<Batch> batchesToCreate = new ArrayList<>();
